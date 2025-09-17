@@ -1,0 +1,12 @@
+{
+    "vendor": "AboPlayer",
+    "largeIcon": "app_launcher_lg.png",
+    "icon": "app_launcher_lg.png",
+    "main": "index.html",
+    "id": "aboplayer.lg",
+    "title": "Abo IPTV",
+    "type": "web",
+    "resolution": "1920x1080",
+    "version": "1.0.2",
+    "disableBackHistoryAPI":true
+}
