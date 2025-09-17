@@ -204,16 +204,10 @@ var login_page={
                             mac_address = data.macAddress;
                             that.fetchPlaylistInformation();
                         } else {
-                            that.hideLoadImage();
-                            $('#network-issue-container').show();
-                            keys.focused_part = "network_issue_btn";
-                            keys.network_issue_btn = 0;
+                            that.fetchPlaylistInformation();
                         }
                     } else {
-                        that.hideLoadImage();
-                        $('#network-issue-container').show();
-                        keys.focused_part = "network_issue_btn";
-                        keys.network_issue_btn = 0;
+                        that.fetchPlaylistInformation();
                     }
                 })
             }catch (e) {
@@ -237,11 +231,7 @@ var login_page={
                     that.fetchPlaylistInformation();
                 },
                 onFailure: function (inError) {
-                    that.hideLoadImage();
-                    $('#network-issue-container').show();
-                    if(keys.focused_part!=='turn_off_modal')
-                        keys.focused_part="network_issue_btn";
-                    keys.network_issue_btn=0;
+                    that.fetchPlaylistInformation();
                 }
             });
         }
