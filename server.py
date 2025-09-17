@@ -19,10 +19,13 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
         
-        # Disable caching for development (critical for Replit)
-        self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-        self.send_header('Pragma', 'no-cache')
-        self.send_header('Expires', '0')
+        # Smart caching: no-cache for HTML, long cache for static assets
+        if self.path.endswith('.html') or self.path == '/' or self.path == '':
+            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        elif any(self.path.endswith(ext) for ext in ['.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico']):
+            self.send_header('Cache-Control', 'public, max-age=31536000, immutable')
+        else:
+            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
         
         super().end_headers()
     
@@ -37,12 +40,13 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 def run_server():
     """Start the HTTP server"""
-    PORT = 5000
+    PORT = int(os.environ.get('PORT', 5000))
     
     # Change to the directory containing the web files
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     
     with socketserver.TCPServer(("0.0.0.0", PORT), CORSHTTPRequestHandler) as httpd:
+        httpd.allow_reuse_address = True
         print(f"Serving Abo IPTV application at http://0.0.0.0:{PORT}")
         print(f"Files being served from: {os.getcwd()}")
         print("Server is ready for connections...")
