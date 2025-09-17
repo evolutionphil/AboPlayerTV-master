@@ -5,7 +5,7 @@ var mac_address,
     api_host_url,
     device_key,
     is_trial,
-    panel_urls = ["https://asatv.app/CNdvBMKcnS/"],
+    panel_urls = ["https://asatv.app/CNdvBMKcnS"],
     time_difference_with_server = 0; // time difference between user time and server time, measured by mins
 var expire_date,
     app_loading = false;
