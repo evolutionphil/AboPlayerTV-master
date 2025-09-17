@@ -5,7 +5,7 @@ var mac_address,
     server_info,
     user_info,
     api_host_url,
-    panel_url = "https://asatv.app/CNdvBMKcn",
+    panel_url = "https://asatv.app/CNdvBMKcnS/",
     time_difference_with_server = 0; // time difference between user time and server time, measured by mins
 
 var adverts = [],
