@@ -1,4 +1,4 @@
-# Abo IPTV - Tizen TV Application
+# ASA IPTV - Tizen TV Application
 
 ## Overview
 This is a Tizen TV IPTV application that provides live TV streaming, movies, series, and other entertainment content. The application is designed for Samsung Tizen TVs and LG WebOS TVs.

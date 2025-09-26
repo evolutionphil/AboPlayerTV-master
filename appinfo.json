@@ -1,10 +1,10 @@
 {
-    "vendor": "AboPlayer",
+    "vendor": "ASAPlayer",
     "largeIcon": "app_launcher_lg.png",
     "icon": "app_launcher_lg.png",
     "main": "index.html",
-    "id": "aboplayer.lg",
-    "title": "Abo IPTV",
+    "id": "asaplayer.lg",
+    "title": "ASA IPTV",
     "type": "web",
     "resolution": "1920x1080",
     "version": "1.0.2",
