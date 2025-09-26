@@ -19,10 +19,13 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
         
-        # Force no-cache for all resources to ensure fresh ASA IPTV logo display
-        self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-        self.send_header('Pragma', 'no-cache')
-        self.send_header('Expires', '0')
+        # Smart caching: no-cache for HTML, long cache for static assets
+        if self.path.endswith('.html') or self.path == '/' or self.path == '':
+            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        elif any(self.path.endswith(ext) for ext in ['.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico']):
+            self.send_header('Cache-Control', 'public, max-age=31536000, immutable')
+        else:
+            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
         
         super().end_headers()
     
