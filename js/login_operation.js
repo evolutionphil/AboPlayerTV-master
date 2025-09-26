@@ -195,7 +195,7 @@ var login_page={
         var that=this;
         var keys=this.keys;
         keys.focused_part="playlist_selection";
-        mac_address='52:54:00:12:34:57';
+        mac_address='52:54:00:12:34:58';
         if(platform==='samsung'){
             try {
                 tizen.systeminfo.getPropertyValue('ETHERNET_NETWORK', function (data) {
