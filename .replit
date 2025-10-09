@@ -16,10 +16,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Abo IPTV Server"
+args = "ASA IPTV Server"
 
 [[workflows.workflow]]
-name = "Abo IPTV Server"
+name = "ASA IPTV Server"
 author = "agent"
 
 [[workflows.workflow.tasks]]
@@ -33,10 +33,6 @@ outputType = "webview"
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 5001
-externalPort = 3002
 
 [[ports]]
 localPort = 32863
