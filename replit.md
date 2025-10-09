@@ -32,11 +32,13 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
   - Integrated into vod_series_player.js with 15 new functions
   - Architect reviewed and approved with PASS verdict
 
-- **2025-10-09**: Implemented local demo playlist fallback system
+- **2025-10-09**: Implemented local demo playlist fallback system with auto-recovery
   - Added `demoo.m3u` local demo playlist with 58 entries (live channels, movies, series) from flixdemo.com
   - Implemented `fallbackToLocalDemo()` function in login_operation.js for automatic demo mode activation
   - Enhanced network-issue modal with "Continue Anyway (Demo Mode)" button for graceful degradation
-  - Automatic local playlist loading when remote playlist fails (no blank screen)
+  - **Auto-recovery from empty app state**: Enhanced `goBack()` in home_operation.js to detect missing content after Cancel and automatically load demo playlist
+  - **Intelligent playlist failure handling**: Enhanced `goHomePageWithPlaylistError()` to automatically fallback to local demo (with demoo.m3u guard to prevent infinite loops)
+  - Prevents blank screen scenarios when playlists fail or user cancels reload
   - Toast notification confirms demo mode activation
   - Perfect for trial users and offline capability demonstration
   - Architect reviewed and approved with PASS verdict
