@@ -1,0 +1,242 @@
+📝 Complete Subtitle System Documentation
+Overview
+This is a sophisticated subtitle system that combines API-based subtitles (from exoapp.tv) with native embedded subtitles, providing automatic fallback and multi-language support for both movies and TV series.
+
+🏗️ Architecture
+Core Components:
+SrtParser (js/srt_parser.js) - Parses SRT subtitle format
+SrtOperation (js/srt_operation.js) - Handles subtitle display timing & styling
+SubtitleFetcher (js/subtitle_fetcher.js) - Fetches subtitles from API
+EnhancedSubtitleWorkflow (js/enhanced_subtitle_workflow.js) - Orchestrates everything
+Subtitle CSS (css/subtitle.css) - Styling for subtitle display & modals
+🔄 How It Works
+1. SRT Parser (SrtParser)
+Converts SRT subtitle files into JavaScript objects:
+
+// INPUT: SRT text content
+1
+00:00:01,000 --> 00:00:04,000
+Hello world
+// OUTPUT: Parsed object
+{
+    id: "1",
+    startTime: "00:00:01,000",
+    startSeconds: 1.0,
+    endTime: "00:00:04,000", 
+    endSeconds: 4.0,
+    text: "Hello world"
+}
+Key Features:
+
+Handles both comma (,) and dot (.) separators
+Converts timestamps to seconds for easy comparison
+Binary search for efficient subtitle lookup
+2. SRT Operation (SrtOperation)
+Manages subtitle display timing and synchronization:
+
+Initialization:
+
+SrtOperation.init(subtitle, current_time);
+// subtitle = {content: "SRT file content"}
+// current_time = current video time in seconds
+Time Sync:
+
+SrtOperation.timeChange(current_time);
+// Called on every video time update
+// Shows/hides subtitles based on timing
+Key Logic:
+
+Binary Search: Finds correct subtitle for any video time instantly
+Gap Detection: Hides subtitle when between subtitle ranges
+Seek Detection: Handles backward/forward seeks properly
+Smart Progression: Advances to next subtitle automatically
+Customization:
+
+// User can adjust:
+- Position (bottom 0-50vh)
+- Size (5 levels: 14px to 40px)
+- Background (transparent, black, red, green, etc.)
+- Stored in localStorage
+3. Subtitle Fetcher (SubtitleFetcher)
+Fetches subtitles from exoapp.tv API with intelligent matching:
+
+For Movies:
+
+SubtitleFetcher.fetchSubtitles(movieData, 'movie', successCallback, errorCallback);
+// Sends:
+{
+    movie_name: "Inception",  // Cleaned name
+    year: 2010,              // Extracted from title
+    tmdb_id: "27205"         // TMDB ID (if available)
+}
+For Series Episodes:
+
+SubtitleFetcher.fetchSubtitles(episodeData, 'episode', successCallback, errorCallback);
+// Sends (ExoApp format):
+{
+    season_number: 1,
+    episode_number: 3
+    // API auto-detects series from these
+}
+Staged Request Strategy:
+
+Stage 1: Episode TMDB ID + season/episode → Most specific
+Stage 2: Series name "Show S01 E03" → Name-based fallback
+Stage 3: Season/episode numbers only → Structure fallback
+Stage 4: Series TMDB ID → Last resort
+Episode Name Parsing:
+Automatically extracts season/episode from formats like:
+
+"Show Name S01 E03"
+"Show Name Season 1 Episode 3"
+"Show Name 1x03"
+"TR: Show Name S01E03"
+4. Enhanced Workflow (EnhancedSubtitleWorkflow)
+Orchestrates the complete subtitle experience:
+
+Flow:
+
+1. initializeSubtitles(movieData, movieType)
+   ↓
+2. Try API subtitles first
+   ↓
+3. If API fails → Fallback to native subtitles
+   ↓
+4. Combine API + Native into single list
+   ↓
+5. Present to user with "Off" option
+Selection Handling:
+
+EnhancedSubtitleWorkflow.selectSubtitle(index, loadingCallback, successCallback, errorCallback);
+// Handles 3 types:
+- 'off': Disable all subtitles
+- 'api': Download SRT file → Parse → Display via SrtOperation
+- 'native': Enable embedded subtitle track (platform-specific)
+Platform-Specific Logic:
+
+Samsung Tizen: Uses webapis.avplay for native subtitles
+LG WebOS: Uses HTML5 textTracks API
+Browser: Falls back gracefully when APIs unavailable
+📊 Data Flow Example
+Complete Flow for Series Episode:
+USER SELECTS EPISODE "Breaking Bad S01 E01"
+    ↓
+EnhancedSubtitleWorkflow.initializeSubtitles(episodeData, 'episode')
+    ↓
+SubtitleFetcher.fetchSubtitles()
+    ↓ Parse episode name → season: 1, episode: 1
+    ↓
+API REQUEST: POST https://exoapp.tv/api/get-subtitles
+{
+    season_number: 1,
+    episode_number: 1
+}
+    ↓
+API RESPONSE:
+{
+    status: "success",
+    subtitles: [
+        {language: "en", label: "English", file: "/subs/123.srt"},
+        {language: "es", label: "Spanish", file: "/subs/456.srt"}
+    ]
+}
+    ↓
+SubtitleFetcher.getNativeSubtitles() → Get embedded tracks
+    ↓
+SubtitleFetcher.combineSubtitles() → Merge API + Native
+    ↓
+SHOW MODAL: User picks "English"
+    ↓
+EnhancedSubtitleWorkflow.selectApiSubtitle()
+    ↓
+AJAX GET: https://exoapp.tv/subs/123.srt
+    ↓
+SrtParser.fromSrt(content) → Parse SRT
+    ↓
+SrtOperation.init(subtitle, currentTime) → Initialize display
+    ↓
+VIDEO PLAYS: SrtOperation.timeChange() called every frame
+    ↓
+SUBTITLES DISPLAY: Synced perfectly with video timing
+🎨 Styling System
+User Customization (localStorage):
+localStorage.setItem('subtitle_position', '10');  // 0-50vh from bottom
+localStorage.setItem('subtitle_level', '2');      // 0-4 size levels
+localStorage.setItem('subtitle_background', 'black'); // transparent/black/red/green
+CSS Variables:
+:root {
+    --subtitle-size: 24px;
+    --subtitle-bg: rgba(0, 0, 0, 0.8);
+    --subtitle-color: white;
+    --subtitle-outline: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+Display Structure:
+<div class="subtitle-container">
+    <div class="subtitle-text">Subtitle text here</div>
+</div>
+🔑 Key Integration Points
+In Your Video Player:
+// 1. Initialize when video starts
+media_player.init(videoId, parentId);
+// 2. Call timeChange on every video time update
+this.videoObj.ontimeupdate = function() {
+    SrtOperation.timeChange(videoObj.currentTime);
+};
+// 3. Initialize subtitles when content loads
+EnhancedSubtitleWorkflow.initializeSubtitles(
+    movieData,           // Movie/episode data
+    'movie',            // or 'episode'
+    function(subs) {    // Success
+        // Show subtitle selection modal
+    },
+    function(error) {   // Error
+        console.error(error);
+    }
+);
+Required HTML:
+<!-- In your video player container -->
+<div id="video-player">
+    <video id="video-lg"></video>
+    <div class="subtitle-container"></div>
+</div>
+📦 Files You Need
+JavaScript Files (5):
+js/srt_parser.js - SRT format parser
+js/srt_operation.js - Subtitle display engine
+js/subtitle_fetcher.js - API integration
+js/enhanced_subtitle_workflow.js - Workflow orchestrator
+Include in HTML:
+<script src="js/srt_parser.js"></script>
+<script src="js/srt_operation.js"></script>
+<script src="js/subtitle_fetcher.js"></script>
+<script src="js/enhanced_subtitle_workflow.js"></script>
+CSS File (1):
+css/subtitle.css - Complete styling
+<link rel="stylesheet" href="css/subtitle.css">
+🌐 API Endpoints
+ExoApp API:
+POST https://exoapp.tv/api/get-subtitles
+Content-Type: application/x-www-form-urlencoded
+// For movies:
+movie_name=Inception&year=2010&tmdb_id=27205
+// For episodes:
+season_number=1&episode_number=3
+Response:
+{
+    status: "success",
+    subtitles: [
+        {
+            language: "en",
+            label: "English", 
+            file: "/path/to/subtitle.srt"
+        }
+    ]
+}
+✅ Works With:
+✅ Samsung Tizen Smart TVs
+✅ LG WebOS Smart TVs
+✅ Web browsers (with limited native subtitle support)
+✅ Movies and TV series
+✅ Multi-language subtitles
+✅ User customization (size, position, style)
+That's it! Copy all 5 JS files + 1 CSS file to your Replit project and it will work exactly the same! 🎯
