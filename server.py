@@ -47,7 +47,7 @@ def run_server():
     
     with socketserver.TCPServer(("0.0.0.0", PORT), CORSHTTPRequestHandler) as httpd:
         httpd.allow_reuse_address = True
-        print(f"Serving Abo IPTV application at http://0.0.0.0:{PORT}")
+        print(f"Serving ASA IPTV application at http://0.0.0.0:{PORT}")
         print(f"Files being served from: {os.getcwd()}")
         print("Server is ready for connections...")
         
