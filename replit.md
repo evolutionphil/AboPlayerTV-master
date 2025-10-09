@@ -10,6 +10,15 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - **Server**: Python HTTP server for static file serving
 
 ## Recent Changes
+- **2025-10-09**: Implemented local demo playlist fallback system
+  - Added `demoo.m3u` local demo playlist with 58 entries (live channels, movies, series) from flixdemo.com
+  - Implemented `fallbackToLocalDemo()` function in login_operation.js for automatic demo mode activation
+  - Enhanced network-issue modal with "Continue Anyway (Demo Mode)" button for graceful degradation
+  - Automatic local playlist loading when remote playlist fails (no blank screen)
+  - Toast notification confirms demo mode activation
+  - Perfect for trial users and offline capability demonstration
+  - Architect reviewed and approved with PASS verdict
+
 - **2025-10-09**: Implemented enhanced subtitle system with API integration
   - Integrated ExoApp.tv API for automatic subtitle fetching
   - Added intelligent episode matching with staged request strategy (TMDB ID → name-based → structure-based)
@@ -31,9 +40,11 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 ## Key Files
 - `index.html` - Main application entry point
 - `server.py` - Python HTTP server for development/deployment
+- `demoo.m3u` - Local demo playlist for offline/trial mode (58 entries)
 - `appinfo.json` - Tizen application configuration
 - `config.xml` - Tizen widget configuration
 - `js/` - JavaScript application logic and libraries
+  - `js/login_operation.js` - Login flow with demo fallback functionality
   - `js/subtitle_fetcher.js` - API integration for subtitle fetching
   - `js/enhanced_subtitle_workflow.js` - Subtitle workflow orchestration
   - `js/srt_parser.js` - SRT subtitle format parser
