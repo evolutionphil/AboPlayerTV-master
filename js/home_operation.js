@@ -652,21 +652,33 @@ var home_page={
                 console.log('hasContent check:', hasContent, 'Live:', LiveModel.movies.length, 'VOD:', VodModel.movies.length, 'Series:', SeriesModel.movies.length);
                 
                 if(!hasContent) {
-                    // No content loaded, activate demo mode
-                    console.log('No content loaded after Cancel - activating local demo mode');
+                    // No content loaded, activate demo mode IMMEDIATELY
+                    console.log('No content loaded after Cancel - loading local demo immediately');
+                    showToast("Demo Mode", "Loading demo content...");
+                    
                     settings.playlist_type = "type1";
                     settings.playlist_url = "demoo.m3u";
                     settings.saveSettings('playlist_type', 'type1', '');
                     settings.saveSettings('playlist_url', 'demoo.m3u', '');
                     
-                    $('#app').hide();
-                    $('#login-container').show();
-                    current_route="login";
-                    login_page.proceed_login();
+                    // Load demo playlist immediately and stay on home page
+                    $.ajax({
+                        method:'get',
+                        url: 'demoo.m3u',
+                        success: function(data) {
+                            parseM3uResponse("type1", data);
+                            LiveModel.insertMoviesToCategories();
+                            VodModel.insertMoviesToCategories();
+                            SeriesModel.insertMoviesToCategories();
+                            showToast("Demo Loaded", "Demo content ready!");
+                            playlist_succeed = true;
+                        },
+                        error: function(error) {
+                            showToast("Error", "Failed to load demo playlist");
+                        }
+                    });
                     
-                    setTimeout(function() {
-                        showToast("Demo Mode", "Loading local demo content");
-                    }, 1000);
+                    this.hoverToMainMenu(keys.menu_selection);
                 } else {
                     console.log('Content exists, going back to main menu');
                     this.hoverToMainMenu(keys.menu_selection);

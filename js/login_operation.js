@@ -289,7 +289,7 @@ var login_page={
         this.proceed_login();
     },
     fallbackToLocalDemo:function(){
-        console.log('📺 Activating Demo Mode - Loading local demo playlist');
+        console.log('📺 Activating Demo Mode - Loading local demo playlist IMMEDIATELY');
         
         settings.playlist_type = "type1";
         settings.playlist_url = "demoo.m3u";
@@ -301,11 +301,29 @@ var login_page={
         $('#network-issue-container').hide();
         $('#login-page-error-playlists-container').hide();
         
-        this.proceed_login();
+        showToast("Demo Mode", "Loading demo content...");
         
-        setTimeout(function() {
-            showToast("Demo Mode", "Using local demo content - explore the app!");
-        }, 1000);
+        // Load demo playlist IMMEDIATELY without going to login flow
+        $.ajax({
+            method:'get',
+            url: 'demoo.m3u',
+            success: function(data) {
+                parseM3uResponse("type1", data);
+                LiveModel.insertMoviesToCategories();
+                VodModel.insertMoviesToCategories();
+                SeriesModel.insertMoviesToCategories();
+                playlist_succeed = true;
+                
+                $('#turn-off-modal').modal('hide');
+                login_page.goToHomePage();
+                
+                showToast("Demo Loaded", "Demo content ready!");
+            },
+            error: function(error) {
+                showToast("Error", "Failed to load demo playlist");
+                login_page.proceed_login(); // Fallback to regular flow
+            }
+        });
     },
     goHomePageWithPlaylistError:function (){
         // Check if we're already trying to load the local demo
