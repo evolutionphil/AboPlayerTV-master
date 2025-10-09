@@ -1071,6 +1071,235 @@ var vod_series_player = {
         $(this.subtitle_audio_menus).removeClass("active");
         $(this.subtitle_audio_menus[index]).addClass("active");
     },
+    
+    // Subtitle Settings Modal Functions
+    SUBTITLE_LEVELS: {
+        MIN: 0,
+        MAX: 4,
+        DEFAULT: 2,
+        SIZES: [14, 18, 24, 32, 40],
+        LABELS: ['Small', 'Normal', 'Large', 'Extra Large', 'Maximum']
+    },
+    
+    showSubtitlePositionModal: function() {
+        // Save original settings for cancel functionality
+        this.originalSubtitlePosition = parseInt(localStorage.getItem('subtitle_position') || '10');
+        this.originalSubtitleLevel = this.getSubtitleLevel();
+        this.originalSubtitleSize = this.SUBTITLE_LEVELS.SIZES[this.originalSubtitleLevel];
+        this.originalSubtitleBackground = localStorage.getItem('subtitle_background') || 'black';
+        
+        // Set current values
+        this.currentSubtitlePosition = this.originalSubtitlePosition;
+        this.currentSubtitleSize = this.originalSubtitleSize;
+        this.currentSubtitleBackground = this.originalSubtitleBackground;
+        
+        // Show overlay
+        $('#vod-series-player-operation-modal').modal('hide');
+        $('#subtitle-position-overlay').show();
+        
+        // Update displays
+        this.updateAllDisplays();
+        
+        // Focus first control
+        this.keys.focused_part = "subtitle_position_overlay";
+        this.positionControlIndex = 0;
+        this.hoverPositionControl(0);
+    },
+    
+    getSubtitleLevel: function() {
+        var level = parseInt(localStorage.getItem('subtitle_level') || this.SUBTITLE_LEVELS.DEFAULT);
+        return Math.max(this.SUBTITLE_LEVELS.MIN, Math.min(this.SUBTITLE_LEVELS.MAX, level));
+    },
+    
+    adjustSubtitlePosition: function(direction) {
+        var step = 2; // 2vh per press
+        
+        if(direction === 'up') {
+            this.currentSubtitlePosition = Math.min(50, this.currentSubtitlePosition + step);
+        } else if(direction === 'down') {
+            this.currentSubtitlePosition = Math.max(0, this.currentSubtitlePosition - step);
+        }
+        
+        // Auto-save immediately
+        localStorage.setItem('subtitle_position', this.currentSubtitlePosition);
+        
+        // Apply live
+        this.applyLiveSubtitleStyles();
+        this.updateAllDisplays();
+    },
+    
+    setSubtitlePosition: function(position) {
+        this.currentSubtitlePosition = parseInt(position);
+        localStorage.setItem('subtitle_position', this.currentSubtitlePosition);
+        this.applyLiveSubtitleStyles();
+        this.updateAllDisplays();
+    },
+    
+    adjustSubtitleSize: function(direction) {
+        var currentLevel = this.getSubtitleLevel();
+        
+        if(direction === 'larger') {
+            this.setSubtitleLevel(currentLevel + 1);
+        } else if(direction === 'smaller') {
+            this.setSubtitleLevel(currentLevel - 1);
+        }
+    },
+    
+    setSubtitleSize: function(size) {
+        // Convert absolute size to level
+        var level = this.SUBTITLE_LEVELS.SIZES.indexOf(parseInt(size));
+        if(level !== -1) {
+            this.setSubtitleLevel(level);
+        }
+    },
+    
+    setSubtitleLevel: function(level) {
+        level = Math.max(this.SUBTITLE_LEVELS.MIN, Math.min(this.SUBTITLE_LEVELS.MAX, level));
+        this.currentSubtitleSize = this.SUBTITLE_LEVELS.SIZES[level];
+        
+        // Save both level and size
+        localStorage.setItem('subtitle_level', level);
+        
+        this.applyLiveSubtitleStyles();
+        this.updateAllDisplays();
+    },
+    
+    setSubtitleBackground: function(bgType) {
+        this.currentSubtitleBackground = bgType;
+        
+        // Auto-save immediately
+        localStorage.setItem('subtitle_background', this.currentSubtitleBackground);
+        
+        this.applyLiveSubtitleStyles();
+        this.updateAllDisplays();
+    },
+    
+    getBackgroundStyle: function(bgType) {
+        switch(bgType) {
+            case 'transparent':
+                return {
+                    background: 'transparent',
+                    color: '#fff',
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.9)',
+                    padding: '0px',
+                    borderRadius: '0px'
+                };
+            case 'black':
+                return {
+                    background: 'rgba(0,0,0,0.8)',
+                    color: '#fff',
+                    textShadow: 'none',
+                    padding: '4px 8px',
+                    borderRadius: '4px'
+                };
+            case 'gray': // Actually RED
+                return {
+                    background: 'rgba(255,0,0,0.8)',
+                    color: '#fff',
+                    textShadow: 'none',
+                    padding: '4px 8px',
+                    borderRadius: '4px'
+                };
+            case 'dark': // Actually GREEN
+                return {
+                    background: 'rgba(0,128,0,0.8)',
+                    color: '#fff',
+                    textShadow: 'none',
+                    padding: '4px 8px',
+                    borderRadius: '4px'
+                };
+            default:
+                return {
+                    background: 'rgba(0,0,0,0.8)',
+                    color: '#fff',
+                    textShadow: 'none',
+                    padding: '4px 8px',
+                    borderRadius: '4px'
+                };
+        }
+    },
+    
+    applyLiveSubtitleStyles: function() {
+        var position = this.currentSubtitlePosition;
+        var size = this.currentSubtitleSize;
+        var bgType = this.currentSubtitleBackground;
+        
+        // Get background style
+        var backgroundStyle = this.getBackgroundStyle(bgType);
+        
+        // Apply to ACTUAL subtitles in real-time
+        $('#' + media_player.parent_id).find('.subtitle-container').css({
+            'bottom': position + 'vh',
+            'top': 'auto',
+            'font-size': size + 'px',
+            'background': backgroundStyle.background,
+            'color': backgroundStyle.color,
+            'text-shadow': backgroundStyle.textShadow,
+            'padding': backgroundStyle.padding,
+            'border-radius': backgroundStyle.borderRadius
+        });
+        
+        // Also update subtitle text elements
+        $('.subtitle-text').css({
+            'font-size': size + 'px',
+            'background': backgroundStyle.background,
+            'color': backgroundStyle.color,
+            'text-shadow': backgroundStyle.textShadow,
+            'padding': backgroundStyle.padding,
+            'border-radius': backgroundStyle.borderRadius
+        });
+    },
+    
+    updateAllDisplays: function() {
+        // Update info display at top
+        $('#position-value').text(this.currentSubtitlePosition + 'vh');
+        $('#size-value').text(this.currentSubtitleSize + 'px');
+        
+        var bgLabels = {
+            'transparent': 'None',
+            'black': 'Black',
+            'gray': 'Red',
+            'dark': 'Green'
+        };
+        $('#background-value').text(bgLabels[this.currentSubtitleBackground] || 'Black');
+    },
+    
+    hoverPositionControl: function(index) {
+        this.positionControlIndex = index;
+        $('.subtitle-control').css('border-color', '#666');
+        $('.subtitle-control[data-index="' + index + '"]').css('border-color', '#0078d4');
+    },
+    
+    saveSubtitlePosition: function() {
+        // Settings already auto-saved during adjustments
+        // Just close overlay and confirm
+        $('#subtitle-position-overlay').hide();
+        this.keys.focused_part = "control_bar";
+        
+        showToast("Success", "Subtitle settings saved globally!");
+    },
+    
+    cancelSubtitlePosition: function() {
+        // Restore original settings
+        this.currentSubtitlePosition = this.originalSubtitlePosition;
+        this.currentSubtitleSize = this.originalSubtitleSize;
+        this.currentSubtitleBackground = this.originalSubtitleBackground;
+        
+        // Reset level storage
+        var level = this.SUBTITLE_LEVELS.SIZES.indexOf(this.originalSubtitleSize);
+        if(level !== -1) {
+            localStorage.setItem('subtitle_level', level);
+        }
+        localStorage.setItem('subtitle_position', this.originalSubtitlePosition);
+        localStorage.setItem('subtitle_background', this.originalSubtitleBackground);
+        
+        // Revert visual changes
+        this.applyLiveSubtitleStyles();
+        
+        // Close overlay
+        $('#subtitle-position-overlay').hide();
+        this.keys.focused_part = "control_bar";
+    },
     hoverResumeBar: function (index) {
         var keys = this.keys;
         keys.resume_bar = index;
