@@ -1,0 +1,73 @@
+📺 Local Demo Playlist - Fallback System Explained
+🎯 What It Does
+The local demo playlist is a backup/offline mode that automatically loads when:
+
+❌ User's IPTV playlist URL fails to load
+❌ Network connection is unavailable
+❌ Server is down or unreachable
+Instead of showing an error and blocking the user, the app falls back to a pre-packaged local M3U file (demoo.m3u) with sample content so users can still navigate and see how the app works.
+
+🔄 How It Activates
+Scenario: Network Failure During Login
+1. USER ENTERS APP
+   ↓
+2. APP TRIES TO LOAD REMOTE PLAYLIST
+   (http://iptv-provider.com/playlist.m3u)
+   ↓
+3. ❌ NETWORK FAILS / TIMEOUT
+   ↓
+4. NETWORK ISSUE MODAL APPEARS
+   - Shows: "Network problem detected"
+   - Options: Try different playlist OR Continue anyway
+   ↓
+5. USER PRESSES "Continue Anyway" (RETURN key)
+   ↓
+6. ✅ fallbackToLocalDemo() TRIGGERED
+   ↓
+7. APP LOADS LOCAL demoo.m3u FILE
+   ↓
+8. USER SEES DEMO CONTENT
+   - Live channels work
+   - Movies work  
+   - Series work
+   - Everything functional, just with demo content
+⚙️ What Happens Behind the Scenes
+Normal Login (Remote Playlist):
+settings.playlist_url = "http://iptv-provider.com/playlist.m3u"
+↓
+Download remote M3U file
+↓
+Parse and load content
+Demo Mode (Local Playlist):
+// Triggered when network fails
+fallbackToLocalDemo() {
+    // 1. Switch to local file
+    settings.playlist_type = "type1";
+    settings.playlist_url = "demoo.m3u";  // ← LOCAL FILE
+    
+    // 2. Clear old cached data
+    localStorage.removeItem('api_data');
+    
+    // 3. Hide error dialogs
+    $('#network-issue-container').hide();
+    
+    // 4. Load the local demo playlist
+    this.proceed_login();
+    
+    // 5. Notify user
+    showToast("Demo Mode", "Using demo content");
+}
+📄 The Demo File Structure
+File: demoo.m3u (lives in project root)
+
+#EXTM3U
+#EXTINF:-1 tvg-name="FLIX APP English" group-title="Demo Category 1",FLIX APP English
+http://flixdemo.com:25461/movie/flixdemo/Eers9i2xGp/35.mp4
+#EXTINF:-1 tvg-name="FLIX APP Serie 1 S01 E01" group-title="Demo Category 1",FLIX APP Serie 1 S01 E01
+http://flixdemo.com:25461/series/flixdemo/Eers9i2xGp/42.mp4
+What's Inside:
+
+✅ 17 Live Channels (various languages)
+✅ Movies (identified by /movie/ in URL)
+✅ 2 Complete Series with multiple seasons and episodes
+✅ Multiple Categories for organization
