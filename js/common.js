@@ -274,6 +274,13 @@ function changeBackgroundImage() {
                 "background-image": "url(" + bg_img + ")",
             });
             $("#app").css({ "background-image": "url(" + bg_img + ")" });
+        } else {
+            // Fallback to local background1.png when themes are not available
+            var bg_img = "images/background1.png";
+            $("#login-container").css({
+                "background-image": "url(" + bg_img + ")",
+            });
+            $("#app").css({ "background-image": "url(" + bg_img + ")" });
         }
     }
 }
