@@ -308,25 +308,33 @@ var login_page={
         }, 1000);
     },
     goHomePageWithPlaylistError:function (){
-        LiveModel.setCategories([]);
-        VodModel.setCategories([]);
-        SeriesModel.setCategories([]);
-        LiveModel.setMovies([]);
-        VodModel.setMovies([]);
-        SeriesModel.setMovies([]);
-        LiveModel.insertMoviesToCategories();
-        VodModel.insertMoviesToCategories();
-        SeriesModel.insertMoviesToCategories();
+        // Check if we're already trying to load the local demo
+        if(settings.playlist_url === "demoo.m3u") {
+            // Already on demo playlist and it failed, show error
+            LiveModel.setCategories([]);
+            VodModel.setCategories([]);
+            SeriesModel.setCategories([]);
+            LiveModel.setMovies([]);
+            VodModel.setMovies([]);
+            SeriesModel.setMovies([]);
+            LiveModel.insertMoviesToCategories();
+            VodModel.insertMoviesToCategories();
+            SeriesModel.insertMoviesToCategories();
 
-        playlist_succeed=false;
-        $('#turn-off-modal').modal('hide');
-        $('#playlist-error').show();
-        // this.hideLoadImage();
-        this.goToHomePage();
-        home_page.hoverToMainMenu(3);
-        home_page.handleMenuClick();
-        home_page.hoverSettingModal(5);
-        home_page.handleMenuClick();
+            playlist_succeed=false;
+            $('#turn-off-modal').modal('hide');
+            $('#playlist-error').show();
+            // this.hideLoadImage();
+            this.goToHomePage();
+            home_page.hoverToMainMenu(3);
+            home_page.handleMenuClick();
+            home_page.hoverSettingModal(5);
+            home_page.handleMenuClick();
+        } else {
+            // Playlist failed, try local demo as fallback
+            console.log('Playlist failed to load - falling back to local demo playlist');
+            this.fallbackToLocalDemo();
+        }
     },
     proceed_login:function(){
         $('#playlist-error').hide();

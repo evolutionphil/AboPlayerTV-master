@@ -639,6 +639,32 @@ var home_page={
                 break;
             case "parent_account_modal":
             case "refresh_modal":
+                $('.modal').modal('hide');
+                // Check if app has content loaded, if not load local demo
+                var hasContent = LiveModel.getMovies().length > 0 || 
+                                VodModel.getMovies().length > 0 || 
+                                SeriesModel.getMovies().length > 0;
+                
+                if(!hasContent && keys.focused_part === "refresh_modal") {
+                    // No content loaded, activate demo mode
+                    console.log('No content loaded after Cancel - activating local demo mode');
+                    settings.playlist_type = "type1";
+                    settings.playlist_url = "demoo.m3u";
+                    settings.saveSettings('playlist_type', 'type1', '');
+                    settings.saveSettings('playlist_url', 'demoo.m3u', '');
+                    
+                    $('#app').hide();
+                    $('#login-container').show();
+                    current_route="login";
+                    login_page.proceed_login();
+                    
+                    setTimeout(function() {
+                        showToast("Demo Mode", "Loading local demo content");
+                    }, 1000);
+                } else {
+                    this.hoverToMainMenu(keys.menu_selection);
+                }
+                break;
             case "setting_modal":
             case "lock_account_selection":
             case "hide_category_modal":
