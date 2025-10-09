@@ -10,6 +10,16 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - **Server**: Python HTTP server for static file serving
 
 ## Recent Changes
+- **2025-10-09**: Complete branding update from "Abo" to "ASA"
+  - Updated all application titles and branding from "Abo IPTV" to "ASA IPTV"
+  - Changed Tizen widget ID from "AboPlayer" to "ASAPlayer"
+  - Changed Tizen application ID from "kiSsTUE1Jx.AboPlayer" to "kiSsTUE1Jx.ASAPlayer"
+  - Updated all hardcoded URLs from "asaplayer.tv" to "asatv.app"
+  - Changed 6 URL references in login/activation messages
+  - Renamed workflow from "Abo IPTV Server" to "ASA IPTV Server"
+  - Verified no remaining "abo" or "aboxa" references in codebase
+  - Architect reviewed and approved with PASS verdict
+
 - **2025-10-09**: Implemented Subtitle Settings Modal with live customization
   - Added live overlay subtitle settings accessible from video player options menu
   - Real-time preview with instant CSS application to actual subtitles during playback
