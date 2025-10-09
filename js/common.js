@@ -124,20 +124,29 @@ function getCurrentMovieFromId(value, movies, key) {
 
 function moveScrollPosition(parent_element, element, direction, to_top) {
     // move the scroll bar according to element position
+    // Guard: Check if elements exist
+    if (!element || !$(element).length || !parent_element || !$(parent_element).length) {
+        console.warn('moveScrollPosition: invalid element or parent_element');
+        return 0;
+    }
+    
     if (direction === "vertical") {
-        var padding_top = parseInt(
-            $(parent_element).css("padding-top").replace("px", ""),
-        );
-        var padding_bottom = parseInt(
-            $(parent_element).css("padding-bottom").replace("px", ""),
-        );
-        var parent_height = parseInt(
-            $(parent_element).css("height").replace("px", ""),
-        );
+        var padding_top_str = $(parent_element).css("padding-top");
+        var padding_bottom_str = $(parent_element).css("padding-bottom");
+        var parent_height_str = $(parent_element).css("height");
+        var element_height_str = $(element).css("height");
+        
+        // Guard: Check if CSS values exist before calling replace
+        if (!padding_top_str || !padding_bottom_str || !parent_height_str || !element_height_str) {
+            console.warn('moveScrollPosition: missing CSS values');
+            return 0;
+        }
+        
+        var padding_top = parseInt(padding_top_str.replace("px", ""));
+        var padding_bottom = parseInt(padding_bottom_str.replace("px", ""));
+        var parent_height = parseInt(parent_height_str.replace("px", ""));
         var child_position = $(element).position();
-        var element_height = parseInt(
-            $(element).css("height").replace("px", ""),
-        );
+        var element_height = parseInt(element_height_str.replace("px", ""));
         if (!to_top) {
             if (
                 child_position.top + element_height >=

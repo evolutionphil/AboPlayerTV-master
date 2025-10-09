@@ -115,6 +115,26 @@ var channel_page={
                 }
             }
         }
+        
+        // Guard: Check if we have any content before showing channels
+        if(categories.length === 0 || !categories[current_category_index] || categories[current_category_index].movies.length === 0){
+            console.log('No channels available - loading demo mode');
+            showToast("No Content", "Loading demo content...");
+            this.Exit();
+            
+            // Trigger demo fallback
+            settings.playlist_type = "type1";
+            settings.playlist_url = "demoo.m3u";
+            settings.saveSettings('playlist_type', 'type1', '');
+            settings.saveSettings('playlist_url', 'demoo.m3u', '');
+            
+            $('#app').hide();
+            $('#login-container').show();
+            current_route="login";
+            login_page.proceed_login();
+            return;
+        }
+        
         this.hoverCategory(current_category_index);
         this.showCategoryChannels();
         if(!channel_id){

@@ -645,11 +645,11 @@ var home_page={
                 console.log('goBack called for refresh_modal');
                 $('.modal').modal('hide');
                 // Check if app has content loaded, if not load local demo
-                var hasContent = LiveModel.getMovies().length > 0 || 
-                                VodModel.getMovies().length > 0 || 
-                                SeriesModel.getMovies().length > 0;
+                var hasContent = LiveModel.movies.length > 0 || 
+                                VodModel.movies.length > 0 || 
+                                SeriesModel.movies.length > 0;
                 
-                console.log('hasContent check:', hasContent, 'Live:', LiveModel.getMovies().length, 'VOD:', VodModel.getMovies().length, 'Series:', SeriesModel.getMovies().length);
+                console.log('hasContent check:', hasContent, 'Live:', LiveModel.movies.length, 'VOD:', VodModel.movies.length, 'Series:', SeriesModel.movies.length);
                 
                 if(!hasContent) {
                     // No content loaded, activate demo mode

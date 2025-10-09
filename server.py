@@ -19,13 +19,15 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
         
-        # Smart caching: no-cache for HTML, long cache for static assets
-        if self.path.endswith('.html') or self.path == '/' or self.path == '':
-            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-        elif any(self.path.endswith(ext) for ext in ['.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico']):
-            self.send_header('Cache-Control', 'public, max-age=31536000, immutable')
+        # No caching for development - ensures fresh code after updates
+        # Images can be cached, but JS/CSS/HTML should always be fresh
+        if any(self.path.endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf']):
+            self.send_header('Cache-Control', 'public, max-age=31536000')
         else:
+            # No cache for HTML, CSS, JS, and other files
             self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            self.send_header('Pragma', 'no-cache')
+            self.send_header('Expires', '0')
         
         super().end_headers()
     

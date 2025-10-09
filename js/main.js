@@ -31,10 +31,13 @@ $(document).ready(function () {
     parent_account_password=saved_parent_password!=null ? saved_parent_password : parent_account_password;
     if(platform==='samsung'){
         document.addEventListener("visibilitychange", function(){
-            if(document.hidden)
-                webapis.avplay.suspend();
-            else
-                webapis.avplay.restore();
+            // Feature detection: Check if webapis exists (only on Samsung TVs)
+            if(typeof webapis !== 'undefined' && webapis.avplay){
+                if(document.hidden)
+                    webapis.avplay.suspend();
+                else
+                    webapis.avplay.restore();
+            }
         });
     }
     else if(platform==='lg')
@@ -48,7 +51,12 @@ $(document).ready(function () {
                     }catch (e) {
                     }
                 }
-                tizen.application.getCurrentApplication().exit();
+                // Feature detection: Check if tizen API exists (only on Samsung TVs)
+                if(typeof tizen !== 'undefined' && tizen.application){
+                    tizen.application.getCurrentApplication().exit();
+                } else {
+                    console.log('Tizen API not available (browser environment)');
+                }
             }
             switch (e.keyCode) {
                 case 65376: // Done
