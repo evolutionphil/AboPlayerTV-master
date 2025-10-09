@@ -10,6 +10,18 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - **Server**: Python HTTP server for static file serving
 
 ## Recent Changes
+- **2025-10-09**: Implemented Subtitle Settings Modal with live customization
+  - Added live overlay subtitle settings accessible from video player options menu
+  - Real-time preview with instant CSS application to actual subtitles during playback
+  - Position controls: Up/Down arrows + 4 presets (Bottom 5vh, Middle 20vh, Center 30vh, Upper 40vh)
+  - Size controls: 5 levels (14px, 18px, 24px, 32px, 40px) with Smaller/Larger buttons
+  - Background controls: 4 options (None/transparent, Black, Red, Green)
+  - Auto-save to localStorage for global persistence across all videos
+  - Cancel/Revert functionality to restore original settings
+  - Button highlighting for active control with blue border focus
+  - Integrated into vod_series_player.js with 15 new functions
+  - Architect reviewed and approved with PASS verdict
+
 - **2025-10-09**: Implemented local demo playlist fallback system
   - Added `demoo.m3u` local demo playlist with 58 entries (live channels, movies, series) from flixdemo.com
   - Implemented `fallbackToLocalDemo()` function in login_operation.js for automatic demo mode activation
