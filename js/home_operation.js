@@ -638,14 +638,20 @@ var home_page={
                 this.hoverToSubMenu(keys.submenu_selection);
                 break;
             case "parent_account_modal":
+                $('.modal').modal('hide');
+                this.hoverToMainMenu(keys.menu_selection);
+                break;
             case "refresh_modal":
+                console.log('goBack called for refresh_modal');
                 $('.modal').modal('hide');
                 // Check if app has content loaded, if not load local demo
                 var hasContent = LiveModel.getMovies().length > 0 || 
                                 VodModel.getMovies().length > 0 || 
                                 SeriesModel.getMovies().length > 0;
                 
-                if(!hasContent && keys.focused_part === "refresh_modal") {
+                console.log('hasContent check:', hasContent, 'Live:', LiveModel.getMovies().length, 'VOD:', VodModel.getMovies().length, 'Series:', SeriesModel.getMovies().length);
+                
+                if(!hasContent) {
                     // No content loaded, activate demo mode
                     console.log('No content loaded after Cancel - activating local demo mode');
                     settings.playlist_type = "type1";
@@ -662,6 +668,7 @@ var home_page={
                         showToast("Demo Mode", "Loading local demo content");
                     }, 1000);
                 } else {
+                    console.log('Content exists, going back to main menu');
                     this.hoverToMainMenu(keys.menu_selection);
                 }
                 break;
