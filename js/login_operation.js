@@ -288,6 +288,25 @@ var login_page={
         api_host_url=settings.playlist_url;
         this.proceed_login();
     },
+    fallbackToLocalDemo:function(){
+        console.log('📺 Activating Demo Mode - Loading local demo playlist');
+        
+        settings.playlist_type = "type1";
+        settings.playlist_url = "demoo.m3u";
+        settings.saveSettings('playlist_type', 'type1', '');
+        settings.saveSettings('playlist_url', 'demoo.m3u', '');
+        
+        localStorage.removeItem(storage_id + 'api_data');
+        
+        $('#network-issue-container').hide();
+        $('#login-page-error-playlists-container').hide();
+        
+        this.proceed_login();
+        
+        setTimeout(function() {
+            showToast("Demo Mode", "Using local demo content - explore the app!");
+        }, 1000);
+    },
     goHomePageWithPlaylistError:function (){
         LiveModel.setCategories([]);
         VodModel.setCategories([]);

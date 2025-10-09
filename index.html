@@ -67,11 +67,17 @@
                              onclick="login_page.getPlayListDetail()"
                              onmouseenter="login_page.hoverNetworkIssueBtn(0)"
                         >
-                            Retry.
+                            Retry
+                        </div>
+                        <div class="network-issue-btn"
+                             onclick="login_page.fallbackToLocalDemo()"
+                             onmouseenter="login_page.hoverNetworkIssueBtn(1)"
+                        >
+                            Continue Anyway (Demo Mode)
                         </div>
                         <div class="network-issue-btn"
                              onclick="closeApp()"
-                             onmouseenter="login_page.hoverNetworkIssueBtn(1)"
+                             onmouseenter="login_page.hoverNetworkIssueBtn(2)"
                         >
                             Exit
                         </div>

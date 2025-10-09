@@ -1,0 +1,287 @@
+🎬 Subtitle Settings Modal - Complete Documentation
+Overview
+The subtitle settings modal is a live, real-time customization overlay that allows users to adjust subtitle appearance (position, size, background) while watching movies or series. Changes are applied instantly and saved globally to localStorage for all future videos.
+
+🎯 Two Access Methods
+1. From Settings Modal (Current Implementation)
+USER PRESSES OPTIONS on Remote
+    ↓
+Settings Modal Opens
+    ↓
+USER SELECTS "Subtitle Settings" Option
+    ↓
+showSubtitlePositionModal() Triggered
+    ↓
+Live Overlay Appears Over Video
+2. Planned: Modal Version (HTML exists but not connected)
+Standalone modal with preview area
+Size, background color, text color options
+Save/Cancel buttons
+Located at #subtitle-settings-modal
+📺 Live Overlay System (Active)
+What It Does:
+Overlay appears ON TOP of playing video
+Real-time preview - see changes immediately on actual subtitles
+Auto-saves every adjustment to localStorage
+Remote control navigation - TV-friendly interface
+Activation Flow:
+// Line 1116 in js/vod_series_player.js
+showSubtitlePositionModal: function() {
+    // 1. Save original settings for cancel functionality
+    this.originalSubtitlePosition = parseInt(localStorage.getItem('subtitle_position') || '10');
+    this.originalSubtitleLevel = this.getSubtitleLevel();
+    this.originalSubtitleSize = this.SUBTITLE_LEVELS.SIZES[this.originalSubtitleLevel];
+    this.originalSubtitleBackground = localStorage.getItem('subtitle_background') || 'black';
+    
+    // 2. Set current values
+    this.currentSubtitlePosition = this.originalSubtitlePosition;
+    this.currentSubtitleSize = this.originalSubtitleSize;
+    this.currentSubtitleBackground = this.originalSubtitleBackground;
+    
+    // 3. Show overlay
+    $('#vod-series-player-operation-modal').modal('hide');
+    $('#subtitle-position-overlay').show();
+    
+    // 4. Focus first control
+    keys.focused_part = "subtitle_position_overlay";
+    this.positionControlIndex = 0;
+    this.hoverPositionControl(0);
+}
+🎛️ Control Sections
+1. POSITION CONTROLS
+Up/Down Arrows:
+
+adjustSubtitlePosition: function(direction) {
+    var step = 2; // 2vh per press
+    
+    if(direction === 'up') {
+        this.currentSubtitlePosition = Math.min(50, this.currentSubtitlePosition + step);
+    } else if(direction === 'down') {
+        this.currentSubtitlePosition = Math.max(-5, this.currentSubtitlePosition - step);
+    }
+    
+    // Auto-save immediately
+    localStorage.setItem('subtitle_position', this.currentSubtitlePosition);
+    
+    // Apply live
+    this.applyLiveSubtitleStyles();
+    this.updateAllDisplays();
+}
+Position Presets:
+
+Bottom (5vh) - Near video bottom
+Middle (20vh) - Lower-middle screen
+Center (30vh) - Center screen
+Upper (40vh) - Upper-middle screen
+setSubtitlePosition: function(position) {
+    this.currentSubtitlePosition = parseInt(position);
+    localStorage.setItem('subtitle_position', this.currentSubtitlePosition);
+    this.applyLiveSubtitleStyles();
+    this.updateAllDisplays();
+}
+2. SIZE CONTROLS
+Size System - 5 Levels:
+
+SUBTITLE_LEVELS: {
+    MIN: 0,
+    MAX: 4,
+    DEFAULT: 2,
+    SIZES: [14, 18, 24, 32, 40],  // pixels
+    LABELS: ['Small', 'Normal', 'Large', 'Extra Large', 'Maximum']
+}
+Smaller/Larger Buttons:
+
+adjustSubtitleSize: function(direction) {
+    var currentLevel = this.getSubtitleLevel();
+    
+    if(direction === 'larger') {
+        this.setSubtitleLevel(currentLevel + 1); // Auto-clamped to MAX (4)
+    } else if(direction === 'smaller') {
+        this.setSubtitleLevel(currentLevel - 1); // Auto-clamped to MIN (0)
+    }
+}
+Size Presets:
+
+Small (14px) - Level 0
+Normal (18px) - Level 1
+Large (24px) - Level 2
+Extra Large (32px) - Level 3
+setSubtitleSize: function(size) {
+    // Convert absolute size to level
+    var level = this.SUBTITLE_LEVELS.SIZES.indexOf(parseInt(size));
+    this.setSubtitleLevel(level);
+}
+setSubtitleLevel: function(level) {
+    level = Math.max(this.SUBTITLE_LEVELS.MIN, Math.min(this.SUBTITLE_LEVELS.MAX, level));
+    this.currentSubtitleSize = this.SUBTITLE_LEVELS.SIZES[level];
+    
+    // Save both level and size
+    localStorage.setItem('subtitle_level', level);
+    
+    this.applyLiveSubtitleStyles();
+    this.updateAllDisplays();
+}
+3. BACKGROUND CONTROLS
+4 Background Options:
+
+setSubtitleBackground: function(bgType) {
+    this.currentSubtitleBackground = bgType;
+    
+    // Auto-save immediately
+    localStorage.setItem('subtitle_background', this.currentSubtitleBackground);
+    
+    this.applyLiveSubtitleStyles();
+    this.updateAllDisplays();
+}
+Background Styles:
+
+None (transparent) - No background
+Black - Black background (rgba(0,0,0,0.8))
+Red (labeled as "gray") - Red background (rgba(255,0,0,0.8))
+Green (labeled as "dark") - Green background (rgba(0,128,0,0.8))
+🔄 Real-Time Application
+applyLiveSubtitleStyles():
+applyLiveSubtitleStyles: function() {
+    var position = this.currentSubtitlePosition;
+    var size = this.currentSubtitleSize;
+    var bgType = this.currentSubtitleBackground;
+    
+    // Get background style
+    var backgroundStyle = this.getBackgroundStyle(bgType);
+    
+    // Apply to ACTUAL subtitles in real-time
+    $('#' + media_player.parent_id).find('.subtitle-container').css({
+        'bottom': position + 'vh',
+        'top': 'auto',
+        'font-size': size + 'px',
+        'background': backgroundStyle.background,
+        'color': backgroundStyle.color,
+        'text-shadow': backgroundStyle.textShadow,
+        'padding': backgroundStyle.padding,
+        'border-radius': backgroundStyle.borderRadius
+    });
+    
+    // Also update subtitle text elements
+    $('.subtitle-text').css({
+        'font-size': size + 'px',
+        'background': backgroundStyle.background,
+        'color': backgroundStyle.color,
+        'text-shadow': backgroundStyle.textShadow,
+        'padding': backgroundStyle.padding,
+        'border-radius': backgroundStyle.borderRadius
+    });
+}
+Background Style Mapping:
+getBackgroundStyle: function(bgType) {
+    switch(bgType) {
+        case 'transparent':
+            return {
+                background: 'transparent',
+                color: '#fff',
+                textShadow: 'none',
+                padding: '0px',
+                borderRadius: '0px'
+            };
+        case 'black':
+            return {
+                background: 'rgba(0,0,0,0.8)',
+                color: '#fff',
+                textShadow: 'none',
+                padding: '4px 8px',
+                borderRadius: '4px'
+            };
+        case 'gray': // Actually RED
+            return {
+                background: 'rgba(255,0,0,0.8)',
+                color: '#fff',
+                textShadow: 'none',
+                padding: '4px 8px',
+                borderRadius: '4px'
+            };
+        case 'dark': // Actually GREEN
+            return {
+                background: 'rgba(0,128,0,0.8)',
+                color: '#fff',
+                textShadow: 'none',
+                padding: '4px 8px',
+                borderRadius: '4px'
+            };
+    }
+}
+💾 Save & Cancel
+Save (Line 1356):
+saveSubtitlePosition: function() {
+    // Settings already auto-saved during adjustments
+    // Just close overlay and confirm
+    $('#subtitle-position-overlay').hide();
+    this.keys.focused_part = "control_bar";
+    
+    showToast("Success", "Subtitle settings saved globally!");
+}
+Cancel (Line 1364):
+cancelSubtitlePosition: function() {
+    // Restore original settings
+    this.currentSubtitlePosition = this.originalSubtitlePosition;
+    this.currentSubtitleSize = this.originalSubtitleSize;
+    this.currentSubtitleBackground = this.originalSubtitleBackground;
+    
+    // Reset level storage
+    var level = this.SUBTITLE_LEVELS.SIZES.indexOf(this.originalSubtitleSize);
+    if(level !== -1) {
+        localStorage.setItem('subtitle_level', level);
+    }
+    
+    // Revert visual changes
+    this.applyLiveSubtitleStyles();
+    
+    // Close overlay
+    $('#subtitle-position-overlay').hide();
+    this.keys.focused_part = "control_bar";
+}
+🎮 Remote Control Navigation
+Control Index Map:
+// 18 total controls (0-17)
+0-1:    Position arrows (up/down)
+2-5:    Position presets (bottom/middle/center/upper)
+6-7:    Size arrows (smaller/larger)
+8-11:   Size presets (small/normal/large/extra-large)
+12-15:  Background options (none/black/red/green)
+16:     Save button
+17:     Cancel button
+Navigation Logic:
+LEFT/RIGHT: Move within same row
+UP/DOWN: Move between control sections
+ENTER: Activate selected control
+BACK: Cancel and close overlay
+📊 Display Updates
+updateAllDisplays():
+updateAllDisplays: function() {
+    // Update info display at top
+    $('#position-value').text(this.currentSubtitlePosition + 'vh');
+    $('#size-value').text(this.currentSubtitleSize + 'px');
+    
+    var bgLabels = {
+        'transparent': 'None',
+        'black': 'Black',
+        'gray': 'Red',
+        'dark': 'Green'
+    };
+    $('#background-value').text(bgLabels[this.currentSubtitleBackground] || 'Black');
+}
+Displays current settings in overlay header:
+
+10vh | 18px | Black
+💡 Key Features
+✅ Live Preview - Changes apply instantly to actual subtitles
+✅ Auto-Save - Every adjustment saved immediately to localStorage
+✅ Global Settings - Saved settings apply to ALL videos (movies & series)
+✅ Cancel Support - Can revert all changes if user changes mind
+✅ Remote Friendly - Full TV remote control support
+✅ Visual Feedback - Active controls highlighted with focus state
+✅ Range Limits - Position (0-50vh), Size (5 levels)
+✅ Smooth Navigation - Grid-based navigation between controls
+🔑 localStorage Keys
+'subtitle_position'    // 0-50 (vh from bottom)
+'subtitle_level'       // 0-4 (size level)
+'subtitle_background'  // 'transparent'|'black'|'gray'|'dark'
+In Summary: The subtitle settings overlay is a live, interactive customization tool that appears over the video player, allowing users to adjust subtitle position, size, and background in real-time with instant visual feedback and automatic saving
