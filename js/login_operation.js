@@ -303,6 +303,14 @@ var login_page={
         
         showToast("Demo Mode", "Loading demo content...");
         
+        // Clear existing categories and movies to prevent duplicates
+        LiveModel.setCategories([]);
+        VodModel.setCategories([]);
+        SeriesModel.setCategories([]);
+        LiveModel.setMovies([]);
+        VodModel.setMovies([]);
+        SeriesModel.setMovies([]);
+        
         // Load demo playlist IMMEDIATELY without going to login flow
         $.ajax({
             method:'get',
