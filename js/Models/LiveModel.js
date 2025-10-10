@@ -71,6 +71,15 @@ var LiveModel={
     insertMoviesToCategories:function(){
         var movies=this.movies;
         var categories=this.categories;
+        
+        // Remove any existing special categories to prevent duplicates
+        var special_category_ids = ['all', 'recent', 'favourite', 'resume', 'undefined'];
+        for(var i = categories.length - 1; i >= 0; i--) {
+            if(special_category_ids.includes(categories[i].category_id)) {
+                categories.splice(i, 1);
+            }
+        }
+        
         var recent_category={
             category_id:'recent',
             category_name:'Recently Viewed',
