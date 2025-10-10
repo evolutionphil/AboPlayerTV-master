@@ -298,8 +298,11 @@ var login_page={
         
         localStorage.removeItem(storage_id + 'api_data');
         
+        // Hide any visible modals
         $('#network-issue-container').hide();
         $('#login-page-error-playlists-container').hide();
+        $('#refresh-modal').modal('hide');
+        $('#turn-off-modal').modal('hide');
         
         showToast("Demo Mode", "Loading demo content...");
         
@@ -322,7 +325,6 @@ var login_page={
                 SeriesModel.insertMoviesToCategories();
                 playlist_succeed = true;
                 
-                $('#turn-off-modal').modal('hide');
                 login_page.goToHomePage();
                 
                 showToast("Demo Loaded", "Demo content ready!");
@@ -334,33 +336,25 @@ var login_page={
         });
     },
     goHomePageWithPlaylistError:function (){
-        // Check if we're already trying to load the local demo
-        if(settings.playlist_url === "demoo.m3u") {
-            // Already on demo playlist and it failed, show error
-            LiveModel.setCategories([]);
-            VodModel.setCategories([]);
-            SeriesModel.setCategories([]);
-            LiveModel.setMovies([]);
-            VodModel.setMovies([]);
-            SeriesModel.setMovies([]);
-            LiveModel.insertMoviesToCategories();
-            VodModel.insertMoviesToCategories();
-            SeriesModel.insertMoviesToCategories();
+        LiveModel.setCategories([]);
+        VodModel.setCategories([]);
+        SeriesModel.setCategories([]);
+        LiveModel.setMovies([]);
+        VodModel.setMovies([]);
+        SeriesModel.setMovies([]);
+        LiveModel.insertMoviesToCategories();
+        VodModel.insertMoviesToCategories();
+        SeriesModel.insertMoviesToCategories();
 
-            playlist_succeed=false;
-            $('#turn-off-modal').modal('hide');
-            $('#playlist-error').show();
-            // this.hideLoadImage();
-            this.goToHomePage();
-            home_page.hoverToMainMenu(3);
-            home_page.handleMenuClick();
-            home_page.hoverSettingModal(5);
-            home_page.handleMenuClick();
-        } else {
-            // Playlist failed, try local demo as fallback
-            console.log('Playlist failed to load - falling back to local demo playlist');
-            this.fallbackToLocalDemo();
-        }
+        playlist_succeed=false;
+        $('#turn-off-modal').modal('hide');
+        $('#playlist-error').show();
+        // this.hideLoadImage();
+        this.goToHomePage();
+        home_page.hoverToMainMenu(3);
+        home_page.handleMenuClick();
+        home_page.hoverSettingModal(5);
+        home_page.handleMenuClick();
     },
     proceed_login:function(){
         $('#playlist-error').hide();
