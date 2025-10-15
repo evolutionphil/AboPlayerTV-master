@@ -54,6 +54,17 @@ var vod_series_player = {
         this.resume_bar_doms = $("#video-resume-modal .resume-action-btn");
         var keys = this.keys;
         this.current_movie = movie;
+        
+        // Check if content is blocked (parental controls)
+        var contentName = movie.name || movie.title || '';
+        var contentType = movie_type === 'movies' ? 'movie' : (movie_type === 'series' ? 'series' : '');
+        if(contentType && isContentBlocked(contentName, contentType)) {
+            showToast("Access Denied", "This content is restricted");
+            console.log('🚫 Content blocked:', contentName);
+            this.goBack();
+            return;
+        }
+        
         this.current_time = 0;
         $("#vod-series-player-page").show();
         this.show_control = true;
@@ -101,6 +112,10 @@ var vod_series_player = {
                 );
             else if (settings.playlist_type === "type1") url = movie.url;
             $("#vod-series-video-title").html(movie.name);
+        } else if (movie_type === "storage") {
+            // USB/Local storage media playback support
+            url = movie.toURI();
+            $("#vod-series-video-title").html(movie.name);
         } else {
             if (settings.playlist_type === "xtreme")
                 url = getMovieUrl(
@@ -117,17 +132,21 @@ var vod_series_player = {
         if (movie_type === "movies") {
             current_model = VodModel;
             movie_key = "stream_id";
-        } else {
+        } else if (movie_type === "series") {
             current_model = SeriesModel;
             movie_key = "id";
         }
-        try {
-            movie_key = movie[movie_key].toString();
-            if (current_model.saved_video_times[movie_key])
-                this.resume_time = current_model.saved_video_times[movie_key];
-            else this.resume_time = 0;
-        } catch (e) {
-            console.log(e);
+        
+        // Only load saved video times for movies and series (not storage)
+        if (movie_type === "movies" || movie_type === "series") {
+            try {
+                movie_key = movie[movie_key].toString();
+                if (current_model.saved_video_times[movie_key])
+                    this.resume_time = current_model.saved_video_times[movie_key];
+                else this.resume_time = 0;
+            } catch (e) {
+                console.log(e);
+            }
         }
         try {
             media_player.close();

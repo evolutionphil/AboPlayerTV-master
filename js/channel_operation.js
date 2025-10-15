@@ -41,6 +41,41 @@ var channel_page={
     search_timer:null,
     action_btn_doms:$('.channel-action-btn'),
     current_movie:null,
+    ui_lock_until: 0,
+    display_area_timeout: null,
+    
+    lockUI: function(ms) {
+        ms = ms || 800;
+        this.ui_lock_until = Date.now() + ms;
+        console.log('🔒 UI LOCKED for ' + ms + 'ms until:', this.ui_lock_until);
+    },
+    
+    uiLocked: function() {
+        var locked = Date.now() < this.ui_lock_until;
+        if (locked) {
+            console.log('🔒 UI is LOCKED, remaining:', this.ui_lock_until - Date.now(), 'ms');
+        }
+        return locked;
+    },
+    
+    scheduleSetDisplayArea: function(callback, delay) {
+        delay = delay || 250;
+        console.log('📅 scheduleSetDisplayArea: delay=' + delay + 'ms, clearing previous timeout');
+        if (this.display_area_timeout) {
+            clearTimeout(this.display_area_timeout);
+            console.log('  ⚠️ CANCELLED previous setDisplayArea timeout');
+        }
+        var that = this;
+        this.display_area_timeout = setTimeout(function() {
+            console.log('⏰ scheduleSetDisplayArea: timeout fired, executing callback');
+            that.display_area_timeout = null;
+            try {
+                if (callback) callback();
+            } catch (e) {
+                console.log('❌ setDisplayArea error:', e);
+            }
+        }, delay);
+    },
 
     init:function (channel_id, is_favourite) {
         var categories=LiveModel.getCategories(false, true);
