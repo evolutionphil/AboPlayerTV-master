@@ -47,8 +47,10 @@ def run_server():
     # Change to the directory containing the web files
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     
+    # Allow address reuse before creating server
+    socketserver.TCPServer.allow_reuse_address = True
+    
     with socketserver.TCPServer(("0.0.0.0", PORT), CORSHTTPRequestHandler) as httpd:
-        httpd.allow_reuse_address = True
         print(f"Serving ASA IPTV application at http://0.0.0.0:{PORT}")
         print(f"Files being served from: {os.getcwd()}")
         print("Server is ready for connections...")
