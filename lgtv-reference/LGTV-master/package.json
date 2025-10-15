@@ -1,0 +1,23 @@
+{
+  "name": "lgtv-master",
+  "version": "1.1.7",
+  "description": "FLIX Iptv LGTV",
+  "main": "index.js",
+  "scripts": {
+    "version": "node tools/sync-version.cjs && git add appinfo.json",
+    "lg:package": "node tools/package-webos-app.js",
+
+    "sm:build": "rimraf .buildResult && tizen build-web -e 'node_modules/*' -e 'webOSTVjs-1.2.0/webOSTV-dev.js' -e '.vscode/*' -e '*.csproj' -e 'package*.json' -e '.targets' -e '*.md' -e '.git/*' -e 'scripts/*' -e 'Certficate/*' -e scripts -- .",
+    "sm:pack": "cd .buildResult && tizen package -t wgt -s flixiptv -- ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "rimraf": "^6.0.1"
+  },
+  "devDependencies": {
+    "@webos-tools/cli": "^3.2.1"
+  }
+}

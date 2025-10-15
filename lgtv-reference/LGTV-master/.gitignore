@@ -1,0 +1,15 @@
+.idea
+js/env.js
+*.wgt
+*.ipk
+*.zip
+.manifest
+.sign
+.buildResult/
+node_modules/
+.DS_Store
+Build
+Debug
+Release
+.gn
+Directory.Build.targets
