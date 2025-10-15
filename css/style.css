@@ -24,30 +24,115 @@
     display: none;
 }
 
+/* Modern Player Bar Design */
 .video-skin{
     position: absolute;
-    left:0;
-    bottom:0;
-    color:#fff;
-    width:100%;
-    background: #333;
-    padding: 10px 0;
-    padding-top: 0;
+    left: 0;
+    bottom: 0;
+    color: #fff;
+    width: 100%;
+    background: linear-gradient(180deg, 
+        rgba(0, 0, 0, 0) 0%,
+        rgba(15, 15, 25, 0.75) 30%,
+        rgba(20, 20, 35, 0.95) 100%
+    );
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    padding: 20px 30px 25px;
+    border-top: 1px solid rgba(100, 200, 255, 0.15);
+    box-shadow: 
+        0 -10px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    animation: slideUpFadeIn 0.4s ease-out;
 }
+
+@keyframes slideUpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .video-progress{
-    height: 10px;
-    overflow: hidden;
-    font-size: .75rem;
-    background-color: #e9ecef;
+    height: 6px;
+    overflow: visible;
+    background: linear-gradient(90deg, 
+        rgba(60, 60, 80, 0.4) 0%,
+        rgba(70, 70, 90, 0.4) 100%
+    );
+    border-radius: 8px;
+    position: relative;
+    margin-bottom: 15px;
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 1px 2px rgba(255, 255, 255, 0.05);
 }
+
 .progress-amount{
-    background: #dd0000;
-    height: 100px;
-    display: inline-block;
+    background: linear-gradient(90deg, 
+        #667eea 0%,
+        #764ba2 50%,
+        #f093fb 100%
+    );
+    height: 6px;
+    display: block;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 
+        0 0 15px rgba(102, 126, 234, 0.5),
+        0 0 30px rgba(118, 75, 162, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
+
+.progress-amount::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 0 4px rgba(102, 126, 234, 0.2),
+        0 0 20px rgba(102, 126, 234, 0.6),
+        0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.video-skin:hover .progress-amount::after {
+    width: 16px;
+    height: 16px;
+    box-shadow: 
+        0 0 0 6px rgba(102, 126, 234, 0.25),
+        0 0 25px rgba(102, 126, 234, 0.7),
+        0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
 .time-info {
-    padding-top: 10px;
-    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.time-info .current-time {
+    color: #fff;
+    font-weight: 600;
+}
+
+.time-info .total-time {
+    color: rgba(255, 255, 255, 0.7);
 }
 .video-error{
     position: absolute;
