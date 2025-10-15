@@ -591,6 +591,7 @@
     border-radius: 30px;
     transition: all 0.05s;
     border: 3px solid transparent;
+    white-space: nowrap;
 }
 .video-info-icon i{
     color: #fff;
