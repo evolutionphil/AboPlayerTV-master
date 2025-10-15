@@ -487,10 +487,6 @@ var login_page={
         $('#playlist-error').show();
         // this.hideLoadImage();
         this.goToHomePage();
-        home_page.hoverToMainMenu(3);
-        home_page.handleMenuClick();
-        home_page.hoverSettingModal(5);
-        home_page.handleMenuClick();
     },
     proceed_login:function(){
         $('#playlist-error').hide();
