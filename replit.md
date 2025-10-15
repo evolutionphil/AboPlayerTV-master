@@ -13,7 +13,8 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Branding:** Updated to "ASA IPTV" across all titles, IDs, and URLs (`asatv.app`).
 -   **Responsive Design:** Utilizes Bootstrap 4.4.1 for a consistent look and feel, adapted for TV interfaces.
 -   **Iconography:** Employs Font Awesome 5.12.1 for modern, semantic icons across all menus and settings.
--   **Settings Menu Icons:** Modern icons for clarity (user-circle, tv, film, video, palette, list, globe, shield, highlighter, fill-drip, font, broom).
+-   **Settings Menu Icons:** Modern icons for clarity (user-circle, tv, film, video, ban, palette, list-ul, sort-alpha-down, globe, shield-alt, highlighter, fill-drip, font, broom).
+-   **VOD/Series Player Icons:** Intuitive playback controls (step-backward, undo, pause/play, redo, step-forward) and info buttons (info-circle, closed-captioning, volume-up, expand-arrows-alt, arrow-left).
 -   **Theming:** Custom CSS (`youtube.css`, `storage_page.css`, `subtitle.css`) ensures a cohesive aesthetic throughout different features.
 -   **Interaction:** Optimized for TV remote control navigation with clear focus states and intuitive button mapping (UP/DOWN, LEFT/RIGHT, ENTER, RETURN).
 
