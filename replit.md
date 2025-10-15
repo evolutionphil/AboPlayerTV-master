@@ -44,6 +44,7 @@ The application is a static web application built with HTML, CSS, and JavaScript
     -   **Live Customization:** Modern glass morphism right-side panel for subtitle settings (position, size, background) accessible during playback with real-time preview.
     -   **Gear Icon Access:** Direct access to subtitle settings via gear icon (fa-cog) on VOD/series player bar.
     -   **Right-Side Panel Design:** 350px wide control panel positioned on right side (matching LGTV-Master reference), not full-screen overlay.
+    -   **Remote Control Support:** Full Samsung and LG TV remote navigation (UP/DOWN, LEFT/RIGHT, ENTER, RETURN) with smart 2D grid navigation across all controls.
     -   **API Integration:** Fetches subtitles from ExoApp.tv API with intelligent episode matching and fallback to native embedded subtitles.
     -   **Universal Support:** Enhanced subtitle workflow now works for ALL content types (movies and series) across all playlist types (Xtreme, demo, and custom playlists).
     -   **Modern UI:** Purple gradient titles, glass morphism buttons, backdrop blur effects, and smooth transitions.

@@ -309,6 +309,10 @@ var vod_series_player = {
     goBack: function () {
         $(".modal").modal("hide");
         var keys = this.keys;
+        if (keys.focused_part === "subtitle_position_overlay") {
+            this.cancelSubtitlePosition();
+            return;
+        }
         if (this.show_control) {
             this.hideControlBar();
         } else {
@@ -1261,8 +1265,21 @@ var vod_series_player = {
     
     hoverPositionControl: function(index) {
         this.positionControlIndex = index;
-        $('.subtitle-control').css('border-color', '#666');
-        $('.subtitle-control[data-index="' + index + '"]').css('border-color', '#0078d4');
+        $('.position-button, .preset-button, .position-action-btn, .size-button, .bg-color-button').removeClass('active');
+        
+        if (index >= 0 && index < 2) {
+            $('.position-button').eq(index).addClass('active');
+        } else if (index >= 2 && index < 6) {
+            $('.preset-button').eq(index - 2).addClass('active');
+        } else if (index >= 6 && index < 8) {
+            $('.size-button').eq(index - 6).addClass('active');
+        } else if (index >= 8 && index < 12) {
+            $('.size-presets .preset-button').eq(index - 8).addClass('active');
+        } else if (index >= 12 && index < 16) {
+            $('.bg-color-button').eq(index - 12).addClass('active');
+        } else if (index >= 16) {
+            $('.position-action-btn').eq(index - 16).addClass('active');
+        }
     },
     
     saveSubtitlePosition: function() {
@@ -1353,6 +1370,27 @@ var vod_series_player = {
                     .find("input")
                     .prop("checked", true);
             }
+        } else if (keys.focused_part === "subtitle_position_overlay") {
+            if (this.positionControlIndex >= 0 && this.positionControlIndex < 2) {
+                var direction = this.positionControlIndex === 0 ? 'up' : 'down';
+                this.adjustSubtitlePosition(direction);
+            } else if (this.positionControlIndex >= 2 && this.positionControlIndex < 6) {
+                var presets = [5, 20, 30, 40];
+                this.setSubtitlePosition(presets[this.positionControlIndex - 2]);
+            } else if (this.positionControlIndex >= 6 && this.positionControlIndex < 8) {
+                var direction = this.positionControlIndex === 6 ? 'smaller' : 'larger';
+                this.adjustSubtitleSize(direction);
+            } else if (this.positionControlIndex >= 8 && this.positionControlIndex < 12) {
+                var sizePresets = [14, 18, 24, 32];
+                this.setSubtitleSize(sizePresets[this.positionControlIndex - 8]);
+            } else if (this.positionControlIndex >= 12 && this.positionControlIndex < 16) {
+                var bgTypes = ['transparent', 'black', 'gray', 'dark'];
+                this.setSubtitleBackground(bgTypes[this.positionControlIndex - 12]);
+            } else if (this.positionControlIndex === 16) {
+                this.saveSubtitlePosition();
+            } else if (this.positionControlIndex === 17) {
+                this.cancelSubtitlePosition();
+            }
         } else if (keys.focused_part === "resume_bar") {
             this.goBack();
             if (keys.resume_bar == 0) {
@@ -1436,6 +1474,35 @@ var vod_series_player = {
                 );
                 this.seekTo(increment * 30);
             }
+        }
+        if (keys.focused_part === "subtitle_position_overlay") {
+            var currentIndex = this.positionControlIndex;
+            if (currentIndex >= 0 && currentIndex <= 1) {
+                this.positionControlIndex = currentIndex === 0 ? 1 : 0;
+            } else if (currentIndex >= 2 && currentIndex <= 5) {
+                if (increment > 0) {
+                    this.positionControlIndex = currentIndex === 2 ? 3 : currentIndex === 3 ? 2 : currentIndex === 4 ? 5 : 4;
+                } else {
+                    this.positionControlIndex = currentIndex === 3 ? 2 : currentIndex === 2 ? 3 : currentIndex === 5 ? 4 : 5;
+                }
+            } else if (currentIndex >= 6 && currentIndex <= 7) {
+                this.positionControlIndex = currentIndex === 6 ? 7 : 6;
+            } else if (currentIndex >= 8 && currentIndex <= 11) {
+                if (increment > 0) {
+                    this.positionControlIndex = currentIndex === 8 ? 9 : currentIndex === 9 ? 8 : currentIndex === 10 ? 11 : 10;
+                } else {
+                    this.positionControlIndex = currentIndex === 9 ? 8 : currentIndex === 8 ? 9 : currentIndex === 11 ? 10 : 11;
+                }
+            } else if (currentIndex >= 12 && currentIndex <= 15) {
+                if (increment > 0) {
+                    this.positionControlIndex = currentIndex === 12 ? 13 : currentIndex === 13 ? 12 : currentIndex === 14 ? 15 : 14;
+                } else {
+                    this.positionControlIndex = currentIndex === 13 ? 12 : currentIndex === 12 ? 13 : currentIndex === 15 ? 14 : 15;
+                }
+            } else if (currentIndex >= 16 && currentIndex <= 17) {
+                this.positionControlIndex = currentIndex === 16 ? 17 : 16;
+            }
+            this.hoverPositionControl(this.positionControlIndex);
         }
         if (keys.focused_part === "subtitle_audio_selection_modal") {
             if (this.subtitle_loading) return;
@@ -1575,6 +1642,56 @@ var vod_series_player = {
                 keys.subtitle_audio_selection_modal =
                     this.subtitle_audio_menus.length - 1;
             this.hoverSubtitleAudioModal(keys.subtitle_audio_selection_modal);
+        }
+        if (keys.focused_part === "subtitle_position_overlay") {
+            var currentIndex = this.positionControlIndex;
+            
+            if (increment > 0) {
+                switch(currentIndex) {
+                    case 0: this.positionControlIndex = 2; break;
+                    case 2: this.positionControlIndex = 4; break;
+                    case 4: this.positionControlIndex = 6; break;
+                    case 6: this.positionControlIndex = 8; break;
+                    case 8: this.positionControlIndex = 10; break;
+                    case 10: this.positionControlIndex = 12; break;
+                    case 12: this.positionControlIndex = 14; break;
+                    case 14: this.positionControlIndex = 16; break;
+                    case 1: this.positionControlIndex = 3; break;
+                    case 3: this.positionControlIndex = 5; break;
+                    case 5: this.positionControlIndex = 7; break;
+                    case 7: this.positionControlIndex = 9; break;
+                    case 9: this.positionControlIndex = 11; break;
+                    case 11: this.positionControlIndex = 13; break;
+                    case 13: this.positionControlIndex = 15; break;
+                    case 15: this.positionControlIndex = 17; break;
+                    case 16: this.positionControlIndex = 0; break;
+                    case 17: this.positionControlIndex = 1; break;
+                    default: this.positionControlIndex = 0; break;
+                }
+            } else {
+                switch(currentIndex) {
+                    case 16: this.positionControlIndex = 14; break;
+                    case 14: this.positionControlIndex = 12; break;
+                    case 12: this.positionControlIndex = 10; break;
+                    case 10: this.positionControlIndex = 8; break;
+                    case 8: this.positionControlIndex = 6; break;
+                    case 6: this.positionControlIndex = 4; break;
+                    case 4: this.positionControlIndex = 2; break;
+                    case 2: this.positionControlIndex = 0; break;
+                    case 0: this.positionControlIndex = 16; break;
+                    case 17: this.positionControlIndex = 15; break;
+                    case 15: this.positionControlIndex = 13; break;
+                    case 13: this.positionControlIndex = 11; break;
+                    case 11: this.positionControlIndex = 9; break;
+                    case 9: this.positionControlIndex = 7; break;
+                    case 7: this.positionControlIndex = 5; break;
+                    case 5: this.positionControlIndex = 3; break;
+                    case 3: this.positionControlIndex = 1; break;
+                    case 1: this.positionControlIndex = 17; break;
+                    default: this.positionControlIndex = 0; break;
+                }
+            }
+            this.hoverPositionControl(this.positionControlIndex);
         }
         if (keys.focused_part === "resume_bar") {
             var resume_bar_doms = this.resume_bar_doms;
