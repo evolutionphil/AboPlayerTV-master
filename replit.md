@@ -1,178 +1,71 @@
 # ASA IPTV - Tizen TV Application
 
 ## Overview
-This is a Tizen TV IPTV application that provides live TV streaming, movies, series, and other entertainment content. The application is designed for Samsung Tizen TVs and LG WebOS TVs.
-
-## Project Architecture
-- **Type**: Static web application (HTML/CSS/JavaScript)
-- **Platform**: Originally designed for Tizen TV (Samsung) and WebOS TV (LG)
-- **Frontend**: Vanilla JavaScript with jQuery, Bootstrap 4.4.1, Font Awesome icons
-- **Server**: Python HTTP server for static file serving
-
-## Recent Changes
-- **2025-10-15**: Implemented YouTube Playlist Integration for enhanced content variety
-  - **YouTube IFrame API Integration**: Embedded YouTube player with playlist support and full TV remote control
-  - **Playlist UI**: Added dedicated YouTube page with video thumbnails, titles, descriptions, and durations
-  - **Navigation Controls**: 
-    - UP/DOWN: Browse through playlist videos
-    - ENTER: Select and play video
-    - LEFT/RIGHT: Previous/Next video controls
-    - RETURN: Go back to home page
-  - **Player Features**: 
-    - Auto-play next video when current ends
-    - Full-screen toggle (zoom in/out)
-    - Quality control with playback quality change detection
-    - Play/Pause controls
-  - **Error Handling**: Comprehensive error handling for YouTube player errors (unplayable, not found, etc.)
-  - **Menu Integration**: Added YouTube menu item to home page navigation (index 5)
-  - **TV Platform Compatibility**: Fixed origin parameter issue - removed hard-coded `window.location.origin` to support Samsung Tizen and LG WebOS TV platforms (file:// and app:// protocols)
-  - **Backend Ready**: Expects playlist array from backend with structure: `{videoId, title, description, thumbnail, duration}`
-  - **Sample Implementation**: Includes sample playlist data for testing and demonstration
-  - **Styling**: Custom CSS (youtube.css) matching app theme for player container, playlist items, and controls
-  - Architect reviewed and approved with PASS verdict
-
-- **2025-10-15**: Implemented Terms of Use Popup (First Launch) feature for legal compliance
-  - **First-Launch Detection**: Modal shows only on first app launch or when terms version changes
-  - **Version-Based Acceptance**: Tracks accepted version in localStorage to re-show if terms are updated
-  - **Accept/Decline Buttons**: Accept continues to app, Decline triggers exit confirmation (legal protection)
-  - **Backend API Integration**: Fetches terms from `/api/device_info` endpoint response
-  - **Multi-Language Support**: Integrated with translation system via data-word_code attributes
-  - **TV Remote Navigation**: 
-    - UP/DOWN: Scroll through terms content
-    - LEFT/RIGHT: Navigate between Accept/Decline buttons
-    - ENTER: Confirm selection
-    - RETURN: Disabled (users must make a choice)
-  - **Version Tracking**: Stores accepted version in localStorage (storage_id+'terms_accepted_version')
-  - **Backend API Format**: `{terms: {version: "1.0", content: "...", updated_date: "2025-10-15"}}`
-  - Frontend implementation complete and ready for backend integration
-  - Architect reviewed and approved with confirmation that feature works when backend sends terms data
-
-- **2025-10-15**: Implemented Hide Blocked Content Toggle feature for parental controls
-  - **Settings Toggle**: Added "Hide Blocked Content" menu item with live ON/OFF indicator
-  - **Keyword Filtering**: isContentBlocked() function checks content names against blocked keywords from localStorage
-  - **Real-time UI Refresh**: Toggle instantly updates all active views (home, search, channels)
-  - **Accurate Category Counts**: Submenus show correct item counts excluding blocked content
-  - **Smart Content Filtering**: Applied to showCategoryContent(), changeSortKey(), showCategoryChannels(), and search results
-  - **Empty State Handling**: Shows "No items to show" message when all content is blocked in a category
-  - **Search Page Optimization**: Refactored keywordChange() → performSearch() + refreshSearch() for forced re-filtering
-  - **Toast Notifications**: Visual feedback when toggling ON/OFF
-  - **localStorage Persistence**: Setting saved globally across app sessions
-  - Architect reviewed and approved with PASS verdict
-
-- **2025-10-15**: Optimized local demo playlist loading logic (ported from LGTV-Master)
-  - **Simplified fallbackToLocalDemo()**: Now uses `proceed_login()` infrastructure instead of manual AJAX
-  - **Removed code duplication**: Eliminated redundant demo loading logic from home_operation.js goBack()
-  - **Better reliability**: Reuses proven login flow instead of custom implementation
-  - **Cleaner code**: 60% less code, single source of truth for demo loading
-  - Sets `api_host_url = "demoo.m3u"` and calls `proceed_login()` - simple and effective
-  - Matches LGTV-Master's exact implementation for consistency
-
-- **2025-10-15**: Fixed aspect ratio functionality for both Samsung Tizen and LG WebOS platforms
-  - **Samsung Tizen Enhancement**: Upgraded from 2-mode toggle to 3-mode cycling system
-    - Added `aspect_ratio_modes` configuration with 3 modes (Auto, Fit Screen, Fill Screen)
-    - Implemented proper cycling through all display modes using `current_aspect_ratio_index`
-    - Added toast notifications showing current aspect ratio mode to user
-    - Uses Samsung's native `webapis.avplay.setDisplayMethod()` API
-  - **LG WebOS Fix**: Implemented complete aspect ratio functionality (was completely broken/empty)
-    - Added `aspect_ratio_modes` configuration with 3 CSS object-fit modes (Letterbox, Zoom, Stretch)
-    - Implemented cycling through modes using CSS `object-fit` property
-    - Added toast notifications showing current aspect ratio mode to user
-    - Uses CSS-based approach for video element manipulation
-  - **Ported from LGTV-master**: Complete implementation matches the working reference project
-  - All modes cycle properly with visual feedback on both platforms
-
-- **2025-10-09**: Complete branding update from "Abo" to "ASA"
-  - Updated all application titles and branding from "Abo IPTV" to "ASA IPTV"
-  - Changed Tizen widget ID from "AboPlayer" to "ASAPlayer"
-  - Changed Tizen application ID from "kiSsTUE1Jx.AboPlayer" to "kiSsTUE1Jx.ASAPlayer"
-  - Updated all hardcoded URLs from "asaplayer.tv" to "asatv.app"
-  - Changed 6 URL references in login/activation messages
-  - Renamed workflow from "Abo IPTV Server" to "ASA IPTV Server"
-  - Verified no remaining "abo" or "aboxa" references in codebase
-  - Architect reviewed and approved with PASS verdict
-
-- **2025-10-09**: Implemented Subtitle Settings Modal with live customization
-  - Added live overlay subtitle settings accessible from video player options menu
-  - Real-time preview with instant CSS application to actual subtitles during playback
-  - Position controls: Up/Down arrows + 4 presets (Bottom 5vh, Middle 20vh, Center 30vh, Upper 40vh)
-  - Size controls: 5 levels (14px, 18px, 24px, 32px, 40px) with Smaller/Larger buttons
-  - Background controls: 4 options (None/transparent, Black, Red, Green)
-  - Auto-save to localStorage for global persistence across all videos
-  - Cancel/Revert functionality to restore original settings
-  - Button highlighting for active control with blue border focus
-  - Integrated into vod_series_player.js with 15 new functions
-  - Architect reviewed and approved with PASS verdict
-
-- **2025-10-09**: Implemented comprehensive app stability and crash prevention system
-  - **Fixed Cancel Button**: Removed data-dismiss conflict in refresh modal (index.html) - Cancel now properly triggers content check
-  - **Content Guards**: Added safety checks in channel_operation.js to prevent navigation to empty channels - auto-loads demo if no content
-  - **Null Safety**: Enhanced moveScrollPosition in common.js with element/CSS validation - prevents "Cannot read properties of undefined" crashes
-  - **TV API Feature Detection**: Added typeof checks for webapis and tizen in main.js - works gracefully in browser and TV environments
-  - **Cache Management**: Updated server.py cache headers (no-cache for code, long cache for assets) + version query strings in index.html for reliable updates
-  - **Model Access Fix**: Changed from LiveModel.getMovies() to LiveModel.movies property access in home_operation.js
-  - Eliminates all "webapis is not defined" errors in browser
-  - Prevents app crashes when displaying empty content
-  - Demo fallback triggers reliably across all failure scenarios
-  - Architect reviewed and approved with PASS verdict
-
-- **2025-10-09**: Implemented local demo playlist fallback system with auto-recovery
-  - Added `demoo.m3u` local demo playlist with 58 entries (live channels, movies, series) from flixdemo.com
-  - Implemented `fallbackToLocalDemo()` function in login_operation.js for automatic demo mode activation
-  - Enhanced network-issue modal with "Continue Anyway (Demo Mode)" button for graceful degradation
-  - **Auto-recovery from empty app state**: Enhanced `goBack()` in home_operation.js to detect missing content after Cancel and automatically load demo playlist
-  - **Intelligent playlist failure handling**: Enhanced `goHomePageWithPlaylistError()` to automatically fallback to local demo (with demoo.m3u guard to prevent infinite loops)
-  - Prevents blank screen scenarios when playlists fail or user cancels reload
-  - Toast notification confirms demo mode activation
-  - Perfect for trial users and offline capability demonstration
-  - Architect reviewed and approved with PASS verdict
-
-- **2025-10-09**: Implemented enhanced subtitle system with API integration
-  - Integrated ExoApp.tv API for automatic subtitle fetching
-  - Added intelligent episode matching with staged request strategy (TMDB ID → name-based → structure-based)
-  - Implemented subtitle.css for customizable subtitle display
-  - Added subtitle_fetcher.js for robust API subtitle integration
-  - Added enhanced_subtitle_workflow.js for API + native subtitle orchestration
-  - Enhanced srt_parser.js with better format correction (handles comma/dot separators)
-  - Enhanced srt_operation.js with user customization (position, size, background), better seek handling
-  - Integrated EnhancedSubtitleWorkflow into vod_series_player.js
-  - User subtitle settings stored in localStorage (position: 0-50vh, size: 5 levels, background: transparent/black/red/green)
-  - Automatic fallback from API subtitles to native embedded subtitles
-
-- **2025-09-17**: Successfully imported from GitHub and configured for Replit environment
-  - Added Python HTTP server (`server.py`) with CORS support for Replit proxy
-  - Configured workflow to serve on port 5000
-  - Set up deployment configuration for autoscale
-  - Verified all static assets load correctly
-
-## Key Files
-- `index.html` - Main application entry point
-- `server.py` - Python HTTP server for development/deployment
-- `demoo.m3u` - Local demo playlist for offline/trial mode (58 entries)
-- `appinfo.json` - Tizen application configuration
-- `config.xml` - Tizen widget configuration
-- `js/` - JavaScript application logic and libraries
-  - `js/login_operation.js` - Login flow with demo fallback functionality
-  - `js/home_operation.js` - Home page navigation and YouTube integration
-  - `js/youtube_page.js` - YouTube playlist page with IFrame API integration (369 lines)
-  - `js/subtitle_fetcher.js` - API integration for subtitle fetching
-  - `js/enhanced_subtitle_workflow.js` - Subtitle workflow orchestration
-  - `js/srt_parser.js` - SRT subtitle format parser
-  - `js/srt_operation.js` - Subtitle display timing and customization
-  - `js/vod_series_player.js` - Video player with subtitle integration
-  - `js/main.js` - Main key handling and route management with YouTube page support
-- `css/` - Stylesheets and UI frameworks
-  - `css/subtitle.css` - Subtitle display and customization styling
-  - `css/youtube.css` - YouTube player and playlist styling
-- `images/` - Application assets and icons
-
-## Development Setup
-The application is served via a Python HTTP server on port 5000. The server includes:
-- CORS headers for Replit proxy compatibility
-- Cache-control headers to prevent development caching issues
-- Static file serving for all application assets
-
-## Deployment
-Configured for Replit autoscale deployment using the Python HTTP server to serve static files.
+ASA IPTV is a Tizen TV application providing live TV streaming, movies, series, and other entertainment content, designed for Samsung Tizen and LG WebOS TVs. Its purpose is to deliver a comprehensive entertainment experience on smart TV platforms. The project aims for a rich, interactive user interface with robust content delivery and playback capabilities, including local media access and online streaming from various sources.
 
 ## User Preferences
 No specific user preferences recorded yet.
+
+## System Architecture
+The application is a static web application built with HTML, CSS, and JavaScript, designed for both Tizen and WebOS TV platforms.
+
+**UI/UX Decisions:**
+-   **Branding:** Updated to "ASA IPTV" across all titles, IDs, and URLs (`asatv.app`).
+-   **Responsive Design:** Utilizes Bootstrap 4.4.1 for a consistent look and feel, adapted for TV interfaces.
+-   **Iconography:** Employs Font Awesome for a rich set of icons.
+-   **Theming:** Custom CSS (`youtube.css`, `storage_page.css`, `subtitle.css`) ensures a cohesive aesthetic throughout different features.
+-   **Interaction:** Optimized for TV remote control navigation with clear focus states and intuitive button mapping (UP/DOWN, LEFT/RIGHT, ENTER, RETURN).
+
+**Technical Implementations & Feature Specifications:**
+-   **Content Delivery:** Supports live TV, movies, and series.
+-   **Local File Browser / USB Storage:** Enables browsing internal TV storage and external USB drives.
+    -   Uses Tizen Filesystem API (`tizen.filesystem.listStorages()`, `resolve()`) for real device enumeration.
+    -   Automatic file type detection (video, image) and directory navigation.
+    -   Playback of local video files via `vod_series_player` and image viewing via `image_page` with photobox.
+-   **YouTube Playlist Integration:** Embeds YouTube player with playlist support.
+    -   Full TV remote control, auto-play next video, full-screen toggle, quality control, and error handling.
+    -   Expects playlist data from a backend API.
+-   **Terms of Use Popup:** Displays on first app launch or version change, requiring acceptance.
+    -   Fetches terms from `/api/device_info` and stores acceptance in `localStorage`.
+    -   Multi-language support.
+-   **Hide Blocked Content:** Parental control feature to filter content based on keywords.
+    -   Settings toggle with real-time UI refresh across all views (home, search, channels).
+    -   Persistence via `localStorage`.
+-   **Aspect Ratio Functionality:**
+    -   **Samsung Tizen:** 3-mode cycling (Auto, Fit Screen, Fill Screen) using `webapis.avplay.setDisplayMethod()`.
+    -   **LG WebOS:** 3-mode cycling (Letterbox, Zoom, Stretch) using CSS `object-fit`.
+-   **Subtitle System:**
+    -   **Live Customization:** Overlay subtitle settings (position, size, background) accessible during playback with real-time preview.
+    -   **API Integration:** Fetches subtitles from ExoApp.tv API with intelligent episode matching and fallback to native embedded subtitles.
+    -   SRT parsing with format correction.
+    -   User settings are stored in `localStorage`.
+-   **App Stability & Crash Prevention:**
+    -   Content guards to prevent navigation to empty channels.
+    -   Null safety checks for UI elements.
+    -   TV API feature detection (`typeof webapis` and `tizen`).
+    -   Cache management for reliable updates.
+-   **Local Demo Playlist Fallback:**
+    -   Includes `demoo.m3u` for offline/trial mode.
+    -   Automatic demo mode activation on network issues or content failure.
+    -   Graceful degradation with "Continue Anyway (Demo Mode)" option.
+
+**System Design Choices:**
+-   **Frontend Framework:** Vanilla JavaScript with jQuery for DOM manipulation.
+-   **Modular Structure:** Logic is organized into distinct JavaScript files (e.g., `login_operation.js`, `home_operation.js`, `youtube_page.js`, `storage_operation.js`, `vod_series_player.js`).
+-   **State Management:** `localStorage` is used for persisting user preferences, terms acceptance, and settings (e.g., blocked content, subtitle settings).
+-   **Tizen/WebOS Compatibility:** Specific platform-dependent APIs and CSS approaches are used to ensure functionality across both TV operating systems.
+-   **Development Server:** A Python HTTP server (`server.py`) with CORS support is used for local development and Replit deployment.
+
+## External Dependencies
+-   **Libraries:**
+    -   jQuery
+    -   Bootstrap 4.4.1
+    -   Font Awesome
+    -   photobox (for image gallery)
+-   **APIs/Services:**
+    -   YouTube IFrame API (for embedded video playback)
+    -   ExoApp.tv API (for subtitle fetching)
+    -   Tizen Filesystem API (for local storage access on Samsung TVs)
+-   **Backend Endpoints:**
+    -   `/api/device_info` (to fetch Terms of Use)
+    -   Expected backend API for YouTube playlist data (structure: `{videoId, title, description, thumbnail, duration}`)
