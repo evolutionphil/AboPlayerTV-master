@@ -348,54 +348,110 @@
     border-color: yellow !important;
 }
 
+/* Modern Episode Carousel Container */
 #player-seasons-container {
     max-height: 40px;
     overflow-y: hidden;
-    width: 90%;
+    width: 92%;
     margin: 0 auto;
-    transition: max-height 0.3s;
+    transition: max-height 0.4s ease;
     text-align: center;
     white-space: nowrap;
     position: relative;
+    padding: 10px 0;
 }
+
 #player-seasons-container.expanded{
-    /*max-height: fit-content;*/
-    max-height: 500px;
+    max-height: 520px;
 }
+
+/* Modern Episode Card with Glass Morphism */
 .player-season-item {
-    height: 200px;
-    width: 250px;
+    height: 220px;
+    width: 280px;
     position: relative;
     display: inline-block;
-    border-radius: 5px;
+    border-radius: 16px;
     overflow: hidden;
-    margin-right: 20px;
-    transition: all 0.1s;
-    border: 10px solid transparent;
+    margin-right: 24px;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    background: linear-gradient(135deg, 
+        rgba(30, 30, 50, 0.6) 0%,
+        rgba(40, 40, 65, 0.6) 100%
+    );
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: scale(0.95);
 }
+
+.player-season-item:hover {
+    transform: scale(0.98);
+    border-color: rgba(102, 126, 234, 0.4);
+}
+
+/* Active Episode with Purple Gradient */
 .player-season-item.active{
-    border:10px solid yellow;
-    /*border-bottom: none;*/
+    border: 3px solid transparent;
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.25) 0%,
+        rgba(118, 75, 162, 0.25) 100%
+    );
+    box-shadow: 
+        0 8px 32px rgba(102, 126, 234, 0.5),
+        0 0 40px rgba(102, 126, 234, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 0 3px rgba(102, 126, 234, 0.8);
+    transform: scale(1);
 }
+
 .player-episode-img {
     display: block;
     height: 100%;
     width: 100%;
     object-fit: cover;
-    margin:0 auto;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
 }
+
+.player-season-item.active .player-episode-img {
+    transform: scale(1.05);
+}
+
+/* Modern Episode Title Overlay */
 .player-episode-title {
     position: absolute;
     text-align: center;
     bottom: 0;
     width: 100%;
-    font-size: 20px;
-    padding: 0 5px;
+    font-size: 22px;
+    font-weight: 600;
+    padding: 12px 10px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    background: linear-gradient(180deg, 
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.85) 40%,
+        rgba(0, 0, 0, 0.95) 100%
+    );
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
 }
+
 .player-season-item.active .player-episode-title{
-    background: #6a7ede;
+    background: linear-gradient(180deg, 
+        rgba(102, 126, 234, 0) 0%,
+        rgba(102, 126, 234, 0.9) 40%,
+        rgba(118, 75, 162, 0.95) 100%
+    );
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
 }
 
 .subtitle-audio-option{

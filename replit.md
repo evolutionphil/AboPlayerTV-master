@@ -17,6 +17,7 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **VOD/Series Player Icons:** Intuitive playback controls (step-backward, undo, pause/play, redo, step-forward) and info buttons (info-circle, closed-captioning, volume-up, expand-arrows-alt, arrow-left).
 -   **Video Info Modal:** Modern glass morphism design with dark gradient background, purple accents, smooth animations, and custom scrollbar for long descriptions.
 -   **Search Input:** Modern glass morphism design with purple gradient focus state, blur effects, and animated search icon.
+-   **Episode Cards:** Modern glass morphism carousel with purple gradient active states, scaled animations, gradient overlays, and enhanced depth effects.
 -   **Theming:** Custom CSS (`youtube.css`, `storage_page.css`, `subtitle.css`, `search_page.css`) ensures a cohesive aesthetic throughout different features.
 -   **Interaction:** Optimized for TV remote control navigation with clear focus states and intuitive button mapping (UP/DOWN, LEFT/RIGHT, ENTER, RETURN).
 
