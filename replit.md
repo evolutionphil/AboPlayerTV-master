@@ -67,7 +67,8 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Modular Structure:** Logic is organized into distinct JavaScript files (e.g., `login_operation.js`, `home_operation.js`, `youtube_page.js`, `storage_operation.js`, `vod_series_player.js`).
 -   **State Management:** `localStorage` is used for persisting user preferences, terms acceptance, and settings (e.g., blocked content, subtitle settings).
 -   **Tizen/WebOS Compatibility:** Specific platform-dependent APIs and CSS approaches are used to ensure functionality across both TV operating systems.
--   **Development Server:** A Python HTTP server (`server.py`) with CORS support is used for local development and Replit deployment.
+-   **Development Server:** A Python HTTP server (`server.py`) with CORS support and socket reuse enabled for reliable workflow restarts.
+-   **Network Error Handling:** When playlists fail to load, the network error modal appears with options to Retry, Continue with Demo Mode, or Choose Another Playlist (if multiple available). RETURN key provides quick access to demo mode.
 
 ## External Dependencies
 -   **Libraries:**

@@ -553,6 +553,8 @@ var login_page={
         }, 2000);
     },
     goHomePageWithPlaylistError:function (){
+        var that = this;
+        
         LiveModel.setCategories([]);
         VodModel.setCategories([]);
         SeriesModel.setCategories([]);
@@ -565,9 +567,32 @@ var login_page={
 
         playlist_succeed=false;
         $('#turn-off-modal').modal('hide');
-        $('#playlist-error').show();
-        // this.hideLoadImage();
-        this.goToHomePage();
+        
+        // Hide loading and show network error modal when playlist fails
+        that.hideLoadImage();
+        
+        // Update MAC address in network issue modal
+        if(mac_address){
+            $('#network-issue-mac-address').text(mac_address);
+        }
+        
+        // Hide or show Choose Playlist button based on playlist count
+        var playlistCount = playlist_urls ? playlist_urls.length : 0;
+        var choosePlaylistBtn = $('.network-issue-btn').filter(function() {
+            return $(this).attr('onclick') === 'login_page.showPlaylistSelectionModal()';
+        });
+        
+        if (playlistCount > 1) {
+            choosePlaylistBtn.show();
+        } else {
+            choosePlaylistBtn.hide();
+        }
+        
+        // Show network error modal instead of empty home page
+        $('#network-issue-container').show();
+        if(this.keys.focused_part !== 'turn_off_modal') {
+            that.hoverNetworkIssueBtn(0);
+        }
     },
     proceed_login:function(){
         $('#playlist-error').hide();
