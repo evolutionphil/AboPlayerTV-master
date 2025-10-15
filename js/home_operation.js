@@ -81,8 +81,14 @@ var home_page={
         live_favourite_movies.map(function(movie, index){
             htmlContents+=home_page.makeSliderMovieItemElement(movie,'live',0, index)
         })
-        $('#favourite_tv_wrapper').html(htmlContents);
-        var vod_featured_movies=VodModel.getLatestMovies();
+        $('#featured_tv_wrapper').html(htmlContents);
+        
+        // Only load featured movies if setting is enabled
+        var vod_featured_movies = [];
+        if(settings.show_featured_movies === 'on') {
+            vod_featured_movies = VodModel.getLatestMovies();
+        }
+        
         htmlContents="";
         vod_featured_movies.map(function(movie, index){
             htmlContents+=home_page.makeSliderMovieItemElement(movie,'movie',1, index)

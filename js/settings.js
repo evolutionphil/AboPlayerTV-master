@@ -9,6 +9,7 @@ var settings={
     vod_sort:"added", // or a-z, z-a, rating, number
     series_sort:"added",
     live_sort:"default",
+    show_featured_movies:'on', // or 'off' - toggle featured movies display
     sort_keys:{
         'added':'order_by_added',
         'number':'order_by_number',
@@ -27,7 +28,7 @@ var settings={
         if(temp!=null)
             this.bg_img_index=parseInt(temp);
         this.playlist_id=localStorage.getItem(storage_id+'playlist_id');
-        var keys=['vod_sort','series_sort','live_sort','focus_color','background_color','epg_text_color'];
+        var keys=['vod_sort','series_sort','live_sort','show_featured_movies','focus_color','background_color','epg_text_color'];
         keys.map(function (key) {
             temp=localStorage.getItem(storage_id+key);
             if(temp)
