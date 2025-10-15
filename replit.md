@@ -41,6 +41,7 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Subtitle System:**
     -   **Live Customization:** Overlay subtitle settings (position, size, background) accessible during playback with real-time preview.
     -   **API Integration:** Fetches subtitles from ExoApp.tv API with intelligent episode matching and fallback to native embedded subtitles.
+    -   **Universal Support:** Enhanced subtitle workflow now works for ALL content types (movies and series) across all playlist types (Xtreme, demo, and custom playlists).
     -   SRT parsing with format correction.
     -   User settings are stored in `localStorage`.
 -   **App Stability & Crash Prevention:**

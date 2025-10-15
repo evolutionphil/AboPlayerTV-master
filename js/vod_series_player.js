@@ -700,13 +700,8 @@ var vod_series_player = {
                 // we will use our own made subtitles
                 if (!this.subtitle_loaded) {
                     $("#subtitle-selection-container").html("");
-                    if (
-                        !(
-                            this.current_movie_type === "movies" ||
-                            (this.current_movie_type === "series" &&
-                                settings.playlist_type === "xtreme")
-                        )
-                    ) {
+                    // Enable enhanced subtitles for all content types (movies and series, any playlist)
+                    if (this.current_movie_type !== "movies" && this.current_movie_type !== "series") {
                         this.showEmptySubtitleMessage(kind);
                         return;
                     }
