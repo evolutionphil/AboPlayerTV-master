@@ -10,6 +10,18 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - **Server**: Python HTTP server for static file serving
 
 ## Recent Changes
+- **2025-10-15**: Implemented Hide Blocked Content Toggle feature for parental controls
+  - **Settings Toggle**: Added "Hide Blocked Content" menu item with live ON/OFF indicator
+  - **Keyword Filtering**: isContentBlocked() function checks content names against blocked keywords from localStorage
+  - **Real-time UI Refresh**: Toggle instantly updates all active views (home, search, channels)
+  - **Accurate Category Counts**: Submenus show correct item counts excluding blocked content
+  - **Smart Content Filtering**: Applied to showCategoryContent(), changeSortKey(), showCategoryChannels(), and search results
+  - **Empty State Handling**: Shows "No items to show" message when all content is blocked in a category
+  - **Search Page Optimization**: Refactored keywordChange() → performSearch() + refreshSearch() for forced re-filtering
+  - **Toast Notifications**: Visual feedback when toggling ON/OFF
+  - **localStorage Persistence**: Setting saved globally across app sessions
+  - Architect reviewed and approved with PASS verdict
+
 - **2025-10-15**: Optimized local demo playlist loading logic (ported from LGTV-Master)
   - **Simplified fallbackToLocalDemo()**: Now uses `proceed_login()` infrastructure instead of manual AJAX
   - **Removed code duplication**: Eliminated redundant demo loading logic from home_operation.js goBack()
