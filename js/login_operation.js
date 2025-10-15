@@ -743,7 +743,9 @@ var login_page={
             }
         }
         else if(keys.focused_part==="network_issue_btn"){
-            $(this.network_btn_doms[keys.network_issue_btn]).trigger('click');
+            // Filter to only visible buttons for dynamic button visibility support
+            var visibleBtns = $('.network-issue-btn:visible');
+            $(visibleBtns[keys.network_issue_btn]).trigger('click');
         }
     },
     handleMenuUpDown:function(increment){
@@ -777,13 +779,15 @@ var login_page={
     handleMenuLeftRight:function(increment){
         var keys=this.keys;
         if(keys.focused_part==="network_issue_btn"){
+            // Filter to only visible buttons for dynamic button visibility support
+            var visibleBtns = $('.network-issue-btn:visible');
             keys.network_issue_btn+=increment;
             if(keys.network_issue_btn<0)
                 keys.network_issue_btn=0;
-            else if(keys.network_issue_btn>=this.network_btn_doms.length)
-                keys.network_issue_btn=this.network_btn_doms.length-1;
-            $(this.network_btn_doms).removeClass('active');
-            $(this.network_btn_doms[keys.network_issue_btn]).addClass('active');
+            else if(keys.network_issue_btn>=visibleBtns.length)
+                keys.network_issue_btn=visibleBtns.length-1;
+            $('.network-issue-btn').removeClass('active');
+            $(visibleBtns[keys.network_issue_btn]).addClass('active');
         }
         else if(keys.focused_part==="terms_of_use_modal"){
             keys.terms_of_use_button+=increment;
@@ -834,11 +838,18 @@ var login_page={
                     // When playlist modal is open, RETURN key should only close the modal
                     $('#playlist-selection-modal').hide();
                     this.keys.focused_part="network_issue_btn";
-                    // Refresh network button focus
-                    this.network_btn_doms = $('.network-issue-btn:visible');
+                    // Refresh network button focus with visible buttons only
+                    var visibleBtns = $('.network-issue-btn:visible');
                     $('.network-issue-btn').removeClass('active');
-                    if(this.network_btn_doms[this.keys.network_issue_btn]) {
-                        $(this.network_btn_doms[this.keys.network_issue_btn]).addClass('active');
+                    // Ensure index is within visible buttons range
+                    if(this.keys.network_issue_btn >= visibleBtns.length) {
+                        this.keys.network_issue_btn = visibleBtns.length - 1;
+                    }
+                    if(this.keys.network_issue_btn < 0) {
+                        this.keys.network_issue_btn = 0;
+                    }
+                    if(visibleBtns[this.keys.network_issue_btn]) {
+                        $(visibleBtns[this.keys.network_issue_btn]).addClass('active');
                     }
                 }
                 else if(this.keys.focused_part==="network_issue_btn"){
