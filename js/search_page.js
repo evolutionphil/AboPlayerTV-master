@@ -50,45 +50,58 @@ var search_page={
             var keyword=$('#search-page-input').val().toLowerCase();
             if(prev_keyword==keyword || !keyword)
                 return;
-            showLoader(true);
-            that.is_loading=true;
-            var vod_categories=VodModel.getCategories(false,false);
-            var series_categories=SeriesModel.getCategories(false,false);
-            var live_categories=LiveModel.getCategories(false,false);
-
-            that.filtered_movies=[];
-            that.filtered_movies.push(that.getFilteredMovies(live_categories,keyword));
-            that.filtered_movies.push(that.getFilteredMovies(vod_categories,keyword));
-            that.filtered_movies.push(that.getFilteredMovies(series_categories,keyword));
-
-            that.render_counts=[0,0,0];
-            that.keys.hor_keys=[0,0,0];
-            that.movie_doms=[[],[],[]];
-            $(that.parent_elements[0]).html('');
-            $(that.parent_elements[1]).html('');
-            $(that.parent_elements[2]).html('');
-            for(var i=0;i<3;i++){
-                var movies=that.filtered_movies[i];
-                if(movies.length>0)
-                    that.renderFilteredMovies(i,false);
-                else {
-                    var nothing_found_text=current_words['nothing_found'] ? current_words['nothing_found'] : "Nothing Found"
-                    $(that.parent_elements[i]).html('<div class="empty-movie-text">'+nothing_found_text+'</div>');
-                }
-            }
-            that.prev_keyword=keyword;
-            var time_out=2000;
-            var total_length=that.filtered_movies[0].length+that.filtered_movies[1].length+that.filtered_movies[2].length;
-            if(total_length<50)
-                time_out=500;
-            setTimeout(function () {
-                showLoader(false);
-                that.is_loading=false;
-            },time_out)
+            that.performSearch(keyword);
         },400)
+    },
+    refreshSearch:function(){
+        // Force re-filter with current keyword (for hide blocked content toggle)
+        var keyword = this.prev_keyword;
+        if(keyword) {
+            this.performSearch(keyword);
+        }
+    },
+    performSearch:function(keyword){
+        var that = this;
+        showLoader(true);
+        that.is_loading=true;
+        var vod_categories=VodModel.getCategories(false,false);
+        var series_categories=SeriesModel.getCategories(false,false);
+        var live_categories=LiveModel.getCategories(false,false);
+
+        that.filtered_movies=[];
+        that.filtered_movies.push(that.getFilteredMovies(live_categories,keyword));
+        that.filtered_movies.push(that.getFilteredMovies(vod_categories,keyword));
+        that.filtered_movies.push(that.getFilteredMovies(series_categories,keyword));
+
+        that.render_counts=[0,0,0];
+        that.keys.hor_keys=[0,0,0];
+        that.movie_doms=[[],[],[]];
+        $(that.parent_elements[0]).html('');
+        $(that.parent_elements[1]).html('');
+        $(that.parent_elements[2]).html('');
+        for(var i=0;i<3;i++){
+            var movies=that.filtered_movies[i];
+            if(movies.length>0)
+                that.renderFilteredMovies(i,false);
+            else {
+                var nothing_found_text=current_words['nothing_found'] ? current_words['nothing_found'] : "Nothing Found"
+                $(that.parent_elements[i]).html('<div class="empty-movie-text">'+nothing_found_text+'</div>');
+            }
+        }
+        that.prev_keyword=keyword;
+        var time_out=2000;
+        var total_length=that.filtered_movies[0].length+that.filtered_movies[1].length+that.filtered_movies[2].length;
+        if(total_length<50)
+            time_out=500;
+        setTimeout(function () {
+            showLoader(false);
+            that.is_loading=false;
+        },time_out)
     },
     getFilteredMovies:function(categories, keyword){
         var result=[];
+        var hideBlocked = localStorage.getItem('hide_blocked_content') === 'true';
+        
         categories.map(function (item) {
             if(!checkForAdult(item,'category',[]) && item.category_id!=='resume'){
                 var movies=item.movies.filter(function (movie) {
@@ -97,6 +110,22 @@ var search_page={
                 result=result.concat(movies);
             }
         })
+        
+        // Filter out blocked content if hide_blocked_content is enabled
+        if(hideBlocked && result.length > 0) {
+            // Determine content type based on the first item's properties
+            var contentType = 'channel'; // default
+            if(result[0].hasOwnProperty('container_extension')) {
+                contentType = 'movie';
+            } else if(result[0].hasOwnProperty('cover')) {
+                contentType = 'series';
+            }
+            
+            result = result.filter(function(movie) {
+                return !isContentBlocked(movie.name, contentType);
+            });
+        }
+        
         return result;
     },
     renderFilteredMovies:function(index, hide_loader){

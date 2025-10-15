@@ -204,6 +204,25 @@ var channel_page={
         var categories=this.categories;
         var category=categories[keys.category_selection];
         this.movies=category.movies;
+        
+        // Filter blocked channels if hide_blocked_content is enabled
+        var hideBlocked = localStorage.getItem('hide_blocked_content') === 'true';
+        if(hideBlocked) {
+            this.movies = this.movies.filter(function(movie) {
+                return !isContentBlocked(movie.name, 'channel');
+            });
+            console.log('🔒 Filtered blocked channels, remaining:', this.movies.length);
+        }
+        
+        // Check if all channels are blocked - show empty state
+        if(this.movies.length === 0) {
+            console.log('⚠️ No channels available after filtering');
+            $('#channel-menus-count').text(0);
+            $('#channel-menu-wrapper').html('<div class="empty-movie-text">No channels available in this category</div>');
+            this.current_category_index=keys.category_selection;
+            return;
+        }
+        
         $('#channel-menus-count').text(this.movies.length);
         var  htmlContents='';
         this.movies.map(function(movie, index){
