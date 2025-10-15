@@ -618,9 +618,9 @@ var login_page={
     },
     checkAndShowTerms:function(){
         var that = this;
-        var terms = getData('terms');
+        var termsData = window.terms;
         
-        if(!terms || !terms.version || !terms.content) {
+        if(!termsData || !termsData.version || !termsData.content) {
             // No terms from backend, proceed with login
             return false;
         }
@@ -628,11 +628,11 @@ var login_page={
         var acceptedVersion = localStorage.getItem(storage_id+'terms_accepted_version');
         
         // Show terms if never accepted or version changed
-        if(!acceptedVersion || acceptedVersion !== terms.version) {
+        if(!acceptedVersion || acceptedVersion !== termsData.version) {
             // Populate terms content
-            $('#terms-content').text(terms.content);
-            $('#terms-version-text').text(terms.version);
-            $('#terms-updated-date').text(terms.updated_date || moment().format('YYYY-MM-DD'));
+            $('#terms-content').text(termsData.content);
+            $('#terms-version-text').text(termsData.version);
+            $('#terms-updated-date').text(termsData.updated_date || moment().format('YYYY-MM-DD'));
             
             // Show modal and set focus
             $('#terms-of-use-modal').modal('show');
@@ -666,9 +666,9 @@ var login_page={
         }
     },
     acceptTerms:function(){
-        var terms = getData('terms');
-        if(terms && terms.version) {
-            localStorage.setItem(storage_id+'terms_accepted_version', terms.version);
+        var termsData = window.terms;
+        if(termsData && termsData.version) {
+            localStorage.setItem(storage_id+'terms_accepted_version', termsData.version);
             showToast("Terms Accepted", "Thank you for accepting the terms of use");
         }
         $('#terms-of-use-modal').modal('hide');
