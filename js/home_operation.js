@@ -937,6 +937,35 @@ var home_page={
         this.Exit();
         search_page.init('home-page');
     },
+    showYouTubePage:function(){
+        // Sample YouTube playlist - replace with actual data from backend
+        var samplePlaylist = [
+            {
+                videoId: 'dQw4w9WgXcQ',
+                title: 'Sample Video 1',
+                description: 'This is a sample YouTube video in the playlist.',
+                thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
+                duration: '3:33'
+            },
+            {
+                videoId: 'M7lc1UVf-VE',
+                title: 'Sample Video 2',
+                description: 'Another sample video for testing YouTube integration.',
+                thumbnail: 'https://img.youtube.com/vi/M7lc1UVf-VE/mqdefault.jpg',
+                duration: '4:12'
+            },
+            {
+                videoId: 'L_jWHffIx5E',
+                title: 'Sample Video 3',
+                description: 'Third sample video in the YouTube playlist.',
+                thumbnail: 'https://img.youtube.com/vi/L_jWHffIx5E/mqdefault.jpg',
+                duration: '3:45'
+            }
+        ];
+        
+        this.Exit();
+        youtube_page.init(samplePlaylist, 'home-page');
+    },
     saveLockState:function(){
         $('#lock-state-message').removeClass('error').removeClass('visible');
         var keys=this.keys;

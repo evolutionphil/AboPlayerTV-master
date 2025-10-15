@@ -101,6 +101,9 @@ $(document).ready(function () {
             case "search-page":
                 search_page.HandleKey(e);
                 break;
+            case "youtube-page":
+                youtube_page.HandleKey(e);
+                break;
             case "parent-confirm-page":
                 parent_confirm_page.HandleKey(e);
                 break;

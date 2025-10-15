@@ -29,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="css/libs/slick.css">
     <link rel="stylesheet" type="text/css" href="css/libs/slick-theme.css">
     <link rel="stylesheet" href="css/search_page.css">
+    <link rel="stylesheet" href="css/youtube.css">
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -121,7 +122,8 @@
                         <div class="menu-item" data-type="series" data-word_code="series" onclick="home_page.showSubMenus(this,'series')" onmouseenter="home_page.hoverToMainMenu(2)">Series</div>
                         <div class="menu-item" data-word_code="settings" onclick="home_page.showSetting()" onmouseenter="home_page.hoverToMainMenu(3)">Settings</div>
                         <div class="menu-item" data-word_code="search" onclick="home_page.showSearchPage()" onmouseenter="home_page.hoverToMainMenu(4)">Search</div>
-                        <div class="menu-item" data-word_code="refresh_playlist" onclick="home_page.showRefreshModal()" onmouseenter="home_page.hoverToMainMenu(5)">Refresh Playlist</div>
+                        <div class="menu-item" data-word_code="youtube" onclick="home_page.showYouTubePage()" onmouseenter="home_page.hoverToMainMenu(5)">YouTube</div>
+                        <div class="menu-item" data-word_code="refresh_playlist" onclick="home_page.showRefreshModal()" onmouseenter="home_page.hoverToMainMenu(6)">Refresh Playlist</div>
                     </div>
                     <div id="sub-menu-container" class="key-level-2">
                         <div id="search-back-button-wrapper" class="key-level-3 row">
@@ -1332,6 +1334,52 @@
                 </div>
             </div>
         </div>
+        <div id="youtube-page" class="height-100" style="display: none">
+            <div class="youtube-page-container">
+                <!-- YouTube Player Section -->
+                <div id="youtube-player-section">
+                    <div id="youtube-player"></div>
+                    <div id="youtube-player-overlay" style="display:none">
+                        <div class="youtube-controls-overlay">
+                            <button class="youtube-control-btn" id="yt-prev-btn" data-word_code="previous">Previous</button>
+                            <button class="youtube-control-btn" id="yt-play-pause-btn" data-word_code="play">Play</button>
+                            <button class="youtube-control-btn" id="yt-next-btn" data-word_code="next">Next</button>
+                            <button class="youtube-control-btn" id="yt-fullscreen-btn" data-word_code="fullscreen">Fullscreen</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Playlist & Info Section -->
+                <div id="youtube-sidebar" class="youtube-sidebar">
+                    <!-- Video Info -->
+                    <div id="youtube-video-info" class="youtube-video-info">
+                        <div id="youtube-video-title" class="youtube-video-title">Select a video</div>
+                        <div id="youtube-video-description" class="youtube-video-description"></div>
+                        <div id="youtube-video-stats" class="youtube-video-stats">
+                            <span id="yt-current-index">0</span> / <span id="yt-total-videos">0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Playlist -->
+                    <div id="youtube-playlist-section" class="youtube-playlist-section">
+                        <div class="youtube-playlist-header">
+                            <i class="fa fa-list"></i>
+                            <span data-word_code="playlist">Playlist</span>
+                            <span id="youtube-playlist-count">(0)</span>
+                        </div>
+                        <div id="youtube-playlist-container" class="youtube-playlist-container">
+                            <!-- Playlist items will be added dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Back Button -->
+                <div id="youtube-back-btn" class="youtube-back-btn" onclick="youtube_page.goBack()" onmouseenter="youtube_page.hoverBackButton()">
+                    <i class="fa fa-arrow-left"></i>
+                    <span data-word_code="back">Back</span>
+                </div>
+            </div>
+        </div>
         <div id="trailer-player-page" class="height-100 position-relative" style="display: none">
             <div id="trailer-player" width="100%" height="100%">
             </div>
@@ -1588,5 +1636,6 @@
     <script src="js/subtitle_fetcher.js"></script>
     <script src="js/enhanced_subtitle_workflow.js"></script>
     <script src="js/parent_confirm_page.js"></script>
+    <script src="js/youtube_page.js"></script>
 </body>
 </html>
