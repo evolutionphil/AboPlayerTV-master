@@ -10,6 +10,27 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - **Server**: Python HTTP server for static file serving
 
 ## Recent Changes
+- **2025-10-15**: Implemented YouTube Playlist Integration for enhanced content variety
+  - **YouTube IFrame API Integration**: Embedded YouTube player with playlist support and full TV remote control
+  - **Playlist UI**: Added dedicated YouTube page with video thumbnails, titles, descriptions, and durations
+  - **Navigation Controls**: 
+    - UP/DOWN: Browse through playlist videos
+    - ENTER: Select and play video
+    - LEFT/RIGHT: Previous/Next video controls
+    - RETURN: Go back to home page
+  - **Player Features**: 
+    - Auto-play next video when current ends
+    - Full-screen toggle (zoom in/out)
+    - Quality control with playback quality change detection
+    - Play/Pause controls
+  - **Error Handling**: Comprehensive error handling for YouTube player errors (unplayable, not found, etc.)
+  - **Menu Integration**: Added YouTube menu item to home page navigation (index 5)
+  - **TV Platform Compatibility**: Fixed origin parameter issue - removed hard-coded `window.location.origin` to support Samsung Tizen and LG WebOS TV platforms (file:// and app:// protocols)
+  - **Backend Ready**: Expects playlist array from backend with structure: `{videoId, title, description, thumbnail, duration}`
+  - **Sample Implementation**: Includes sample playlist data for testing and demonstration
+  - **Styling**: Custom CSS (youtube.css) matching app theme for player container, playlist items, and controls
+  - Architect reviewed and approved with PASS verdict
+
 - **2025-10-15**: Implemented Terms of Use Popup (First Launch) feature for legal compliance
   - **First-Launch Detection**: Modal shows only on first app launch or when terms version changes
   - **Version-Based Acceptance**: Tracks accepted version in localStorage to re-show if terms are updated
@@ -131,13 +152,17 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - `config.xml` - Tizen widget configuration
 - `js/` - JavaScript application logic and libraries
   - `js/login_operation.js` - Login flow with demo fallback functionality
+  - `js/home_operation.js` - Home page navigation and YouTube integration
+  - `js/youtube_page.js` - YouTube playlist page with IFrame API integration (369 lines)
   - `js/subtitle_fetcher.js` - API integration for subtitle fetching
   - `js/enhanced_subtitle_workflow.js` - Subtitle workflow orchestration
   - `js/srt_parser.js` - SRT subtitle format parser
   - `js/srt_operation.js` - Subtitle display timing and customization
   - `js/vod_series_player.js` - Video player with subtitle integration
+  - `js/main.js` - Main key handling and route management with YouTube page support
 - `css/` - Stylesheets and UI frameworks
   - `css/subtitle.css` - Subtitle display and customization styling
+  - `css/youtube.css` - YouTube player and playlist styling
 - `images/` - Application assets and icons
 
 ## Development Setup
