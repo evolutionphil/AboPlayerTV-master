@@ -1218,86 +1218,86 @@
                     </div>
                 </div>
             </div>
-            <!-- Subtitle Position Overlay -->
-            <div id="subtitle-position-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000;">
-                <div style="color:white; padding:30px;">
-                    <h2 style="text-align:center; margin-bottom:30px;">Subtitle Settings</h2>
+            <!-- Modern Subtitle Position Overlay -->
+            <div id="subtitle-position-overlay">
+                <div>
+                    <h2>Subtitle Settings</h2>
                     
                     <!-- Current Settings Display -->
-                    <div style="text-align:center; margin-bottom:30px; font-size:20px; background:rgba(255,255,255,0.1); padding:15px; border-radius:8px;">
+                    <div>
                         Position: <span id="position-value">10vh</span> | 
                         Size: <span id="size-value">24px</span> | 
                         Background: <span id="background-value">Black</span>
                     </div>
                     
                     <!-- Position Controls -->
-                    <div style="margin-bottom:30px;">
-                        <h3 style="margin-bottom:15px;">Position</h3>
+                    <div>
+                        <h3>Position</h3>
                         <div style="display:flex; gap:15px; margin-bottom:15px;">
-                            <button class="subtitle-control position-control" data-index="0" onclick="vod_series_player.adjustSubtitlePosition('up')" style="flex:1; padding:12px; font-size:18px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control position-control" data-index="0" onclick="vod_series_player.adjustSubtitlePosition('up')">
                                 ▲ Move Up
                             </button>
-                            <button class="subtitle-control position-control" data-index="1" onclick="vod_series_player.adjustSubtitlePosition('down')" style="flex:1; padding:12px; font-size:18px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control position-control" data-index="1" onclick="vod_series_player.adjustSubtitlePosition('down')">
                                 ▼ Move Down
                             </button>
                         </div>
                         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <button class="subtitle-control position-control" data-index="2" onclick="vod_series_player.setSubtitlePosition(5)" style="flex:1; min-width:150px; padding:10px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control position-control" data-index="2" onclick="vod_series_player.setSubtitlePosition(5)">
                                 Bottom (5vh)
                             </button>
-                            <button class="subtitle-control position-control" data-index="3" onclick="vod_series_player.setSubtitlePosition(20)" style="flex:1; min-width:150px; padding:10px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control position-control" data-index="3" onclick="vod_series_player.setSubtitlePosition(20)">
                                 Middle (20vh)
                             </button>
-                            <button class="subtitle-control position-control" data-index="4" onclick="vod_series_player.setSubtitlePosition(30)" style="flex:1; min-width:150px; padding:10px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control position-control" data-index="4" onclick="vod_series_player.setSubtitlePosition(30)">
                                 Center (30vh)
                             </button>
-                            <button class="subtitle-control position-control" data-index="5" onclick="vod_series_player.setSubtitlePosition(40)" style="flex:1; min-width:150px; padding:10px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control position-control" data-index="5" onclick="vod_series_player.setSubtitlePosition(40)">
                                 Upper (40vh)
                             </button>
                         </div>
                     </div>
                     
                     <!-- Size Controls -->
-                    <div style="margin-bottom:30px;">
-                        <h3 style="margin-bottom:15px;">Size</h3>
+                    <div>
+                        <h3>Size</h3>
                         <div style="display:flex; gap:15px; margin-bottom:15px;">
-                            <button class="subtitle-control size-control" data-index="6" onclick="vod_series_player.adjustSubtitleSize('smaller')" style="flex:1; padding:12px; font-size:18px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control size-control" data-index="6" onclick="vod_series_player.adjustSubtitleSize('smaller')">
                                 ◄ Smaller
                             </button>
-                            <button class="subtitle-control size-control" data-index="7" onclick="vod_series_player.adjustSubtitleSize('larger')" style="flex:1; padding:12px; font-size:18px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control size-control" data-index="7" onclick="vod_series_player.adjustSubtitleSize('larger')">
                                 ► Larger
                             </button>
                         </div>
                         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <button class="subtitle-control size-control" data-index="8" onclick="vod_series_player.setSubtitleSize(14)" style="flex:1; min-width:110px; padding:10px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control size-control" data-index="8" onclick="vod_series_player.setSubtitleSize(14)">
                                 Small
                             </button>
-                            <button class="subtitle-control size-control" data-index="9" onclick="vod_series_player.setSubtitleSize(18)" style="flex:1; min-width:110px; padding:10px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control size-control" data-index="9" onclick="vod_series_player.setSubtitleSize(18)">
                                 Normal
                             </button>
-                            <button class="subtitle-control size-control" data-index="10" onclick="vod_series_player.setSubtitleSize(24)" style="flex:1; min-width:110px; padding:10px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control size-control" data-index="10" onclick="vod_series_player.setSubtitleSize(24)">
                                 Large
                             </button>
-                            <button class="subtitle-control size-control" data-index="11" onclick="vod_series_player.setSubtitleSize(32)" style="flex:1; min-width:110px; padding:10px; background:#444; color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control size-control" data-index="11" onclick="vod_series_player.setSubtitleSize(32)">
                                 Extra
                             </button>
                         </div>
                     </div>
                     
                     <!-- Background Controls -->
-                    <div style="margin-bottom:30px;">
-                        <h3 style="margin-bottom:15px;">Background</h3>
+                    <div>
+                        <h3>Background</h3>
                         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <button class="subtitle-control bg-control" data-index="12" onclick="vod_series_player.setSubtitleBackground('transparent')" style="flex:1; min-width:110px; padding:10px; background:transparent; color:white; border:2px solid #666; border-radius:6px; cursor:pointer; text-shadow:2px 2px 4px black;">
+                            <button class="subtitle-control bg-control" data-index="12" onclick="vod_series_player.setSubtitleBackground('transparent')">
                                 None
                             </button>
-                            <button class="subtitle-control bg-control" data-index="13" onclick="vod_series_player.setSubtitleBackground('black')" style="flex:1; min-width:110px; padding:10px; background:rgba(0,0,0,0.8); color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control bg-control" data-index="13" onclick="vod_series_player.setSubtitleBackground('black')">
                                 Black
                             </button>
-                            <button class="subtitle-control bg-control" data-index="14" onclick="vod_series_player.setSubtitleBackground('gray')" style="flex:1; min-width:110px; padding:10px; background:rgba(255,0,0,0.8); color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control bg-control" data-index="14" onclick="vod_series_player.setSubtitleBackground('gray')">
                                 Red
                             </button>
-                            <button class="subtitle-control bg-control" data-index="15" onclick="vod_series_player.setSubtitleBackground('dark')" style="flex:1; min-width:110px; padding:10px; background:rgba(0,128,0,0.8); color:white; border:2px solid #666; border-radius:6px; cursor:pointer;">
+                            <button class="subtitle-control bg-control" data-index="15" onclick="vod_series_player.setSubtitleBackground('dark')">
                                 Green
                             </button>
                         </div>
@@ -1305,10 +1305,10 @@
                     
                     <!-- Action Buttons -->
                     <div style="display:flex; gap:20px; margin-top:40px;">
-                        <button class="subtitle-control action-control" data-index="16" onclick="vod_series_player.saveSubtitlePosition()" style="flex:1; padding:15px; font-size:20px; background:#0078d4; color:white; border:2px solid #0078d4; border-radius:6px; cursor:pointer; font-weight:bold;">
+                        <button class="subtitle-control action-control" data-index="16" onclick="vod_series_player.saveSubtitlePosition()">
                             Save
                         </button>
-                        <button class="subtitle-control action-control" data-index="17" onclick="vod_series_player.cancelSubtitlePosition()" style="flex:1; padding:15px; font-size:20px; background:#666; color:white; border:2px solid #666; border-radius:6px; cursor:pointer; font-weight:bold;">
+                        <button class="subtitle-control action-control" data-index="17" onclick="vod_series_player.cancelSubtitlePosition()">
                             Cancel
                         </button>
                     </div>
