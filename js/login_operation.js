@@ -5,6 +5,7 @@ var login_page={
         playlist_selection:0,
         turn_off_modal:0,
         network_issue_btn:0,
+        playlist_modal_selection:0,
         terms_of_use_button:1
     },
     playlist_doms:[],
@@ -192,6 +193,19 @@ var login_page={
                     if(mac_address){
                         $('#network-issue-mac-address').text(mac_address);
                     }
+                    
+                    // Hide or show Choose Playlist button based on playlist count
+                    var playlistCount = playlist_urls ? playlist_urls.length : 0;
+                    var choosePlaylistBtn = $('.network-issue-btn').filter(function() {
+                        return $(this).attr('onclick') === 'login_page.showPlaylistSelectionModal()';
+                    });
+                    
+                    if (playlistCount > 1) {
+                        choosePlaylistBtn.show();
+                    } else {
+                        choosePlaylistBtn.hide();
+                    }
+                    
                     $('#network-issue-container').show();
                     if(keys.focused_part!=='turn_off_modal')
                         that.hoverNetworkIssueBtn(0);
@@ -398,9 +412,76 @@ var login_page={
     hoverNetworkIssueBtn:function(index){
         var keys=this.keys;
         keys.focused_part='network_issue_btn';
-        keys.network_issue_btn=index;
-        $(this.network_btn_doms).removeClass('active');
-        $(this.network_btn_doms[index]).addClass('active');
+
+        // Always refresh button references to include dynamically added buttons
+        this.network_btn_doms = $('.network-issue-btn:visible');
+
+        // Clear ONLY network issue button active states, not playlist items
+        $('.network-issue-btn').removeClass('active');
+
+        // Ensure index is within bounds
+        if(index >= 0 && index < this.network_btn_doms.length) {
+            keys.network_issue_btn = index;
+            $(this.network_btn_doms[index]).addClass('active');
+        } else {
+            // If index is out of bounds, default to first button
+            keys.network_issue_btn = 0;
+            if(this.network_btn_doms.length > 0) {
+                $(this.network_btn_doms[0]).addClass('active');
+            }
+        }
+    },
+    selectPlaylistFromError: function(playlistIndex) {
+        var that = this;
+        var keys = this.keys;
+
+        // Only clear network issue button states, don't touch playlist items
+        $('.network-issue-btn').removeClass('active');
+
+        // Update selected playlist
+        keys.playlist_selection = playlistIndex;
+        settings.saveSettings('playlist_url', playlist_urls[playlistIndex].url, '');
+        settings.saveSettings('playlist_id', playlist_urls[playlistIndex].id, '');
+        parseM3uUrl();
+
+        // Hide playlist selection modal and network issue dialog
+        $('#playlist-selection-modal').hide();
+        $('#network-issue-container').hide();
+        that.showLoadImage();
+        that.proceed_login();
+    },
+    showPlaylistSelectionModal: function() {
+        var that = this;
+        var keys = this.keys;
+
+        if (playlist_urls && playlist_urls.length > 1) {
+            var playlistOptionsHtml = '';
+            for (var i = 0; i < playlist_urls.length; i++) {
+                var isSelected = i === keys.playlist_selection ? ' playlist-selected' : '';
+                playlistOptionsHtml += '<div class="playlist-modal-item' + isSelected + '" ' +
+                    'data-playlist-index="' + i + '" ' +
+                    'onclick="login_page.selectPlaylistFromError(' + i + ')" ' +
+                    'onmouseenter="login_page.hoverPlaylistModalItem(' + i + ')">' +
+                    'Playlist ' + (i + 1) + 
+                    (i === keys.playlist_selection ? ' (Current)' : '') +
+                    '</div>';
+            }
+
+            $('#playlist-modal-items').html(playlistOptionsHtml);
+            $('#playlist-selection-modal').show();
+
+            // Set focus to playlist modal
+            keys.focused_part = "playlist_modal";
+            keys.playlist_modal_selection = 0;
+            $('.playlist-modal-item').removeClass('active');
+            $('.playlist-modal-item').first().addClass('active');
+        }
+    },
+    hoverPlaylistModalItem: function(index) {
+        var keys = this.keys;
+        keys.playlist_modal_selection = index;
+        $('.playlist-modal-item').removeClass('active');
+        $('.playlist-modal-item').eq(index).addClass('active');
     },
     login:function(){
         var keys=this.keys;
@@ -633,6 +714,10 @@ var login_page={
                 showToast("Sorry","You can not use our service now, please activate your device at https://asatv.app/activation and restart your app");
             }
         }
+        else if(keys.focused_part==="playlist_modal"){
+            // Select playlist from modal
+            this.selectPlaylistFromError(keys.playlist_modal_selection);
+        }
         else if(keys.focused_part==="terms_of_use_modal"){
             if(keys.terms_of_use_button === 0){
                 // Decline button clicked
@@ -672,6 +757,16 @@ var login_page={
             $(this.playlist_doms).removeClass('active');
             $(this.playlist_doms[keys.playlist_selection]).addClass('active');
             moveScrollPosition($('#login-playlist-items-container'),this.playlist_doms[keys.playlist_selection],'vertical',false);
+        }
+        else if(keys.focused_part==="playlist_modal"){
+            var playlistItems = $('.playlist-modal-item');
+            keys.playlist_modal_selection += increment;
+            if(keys.playlist_modal_selection < 0)
+                keys.playlist_modal_selection = playlistItems.length - 1;
+            if(keys.playlist_modal_selection >= playlistItems.length)
+                keys.playlist_modal_selection = 0;
+            playlistItems.removeClass('active');
+            playlistItems.eq(keys.playlist_modal_selection).addClass('active');
         }
         else if(keys.focused_part==="terms_of_use_modal"){
             // Scroll terms content
@@ -735,7 +830,22 @@ var login_page={
                     break;
                 }
                 
-                if(this.keys.focused_part==="playlist_selection" || this.keys.focused_part==="network_issue_btn"){
+                if(this.keys.focused_part==="playlist_modal"){
+                    // When playlist modal is open, RETURN key should only close the modal
+                    $('#playlist-selection-modal').hide();
+                    this.keys.focused_part="network_issue_btn";
+                    // Refresh network button focus
+                    this.network_btn_doms = $('.network-issue-btn:visible');
+                    $('.network-issue-btn').removeClass('active');
+                    if(this.network_btn_doms[this.keys.network_issue_btn]) {
+                        $(this.network_btn_doms[this.keys.network_issue_btn]).addClass('active');
+                    }
+                }
+                else if(this.keys.focused_part==="network_issue_btn"){
+                    // When network issue modal is open, RETURN key should trigger "Continue Anyway"
+                    this.fallbackToLocalDemo();
+                }
+                else if(this.keys.focused_part==="playlist_selection"){
                     $('#turn-off-modal').modal('show');
                     this.keys.focused_part="turn_off_modal";
                     this.keys.turn_off_modal=0;
