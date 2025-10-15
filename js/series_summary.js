@@ -24,16 +24,19 @@ var series_summary_page={
         $('#series-summary-release-cast').text(current_series.cast);
         $('#series-summary-description').text(current_series.plot);
         $('#series-summary-image-wrapper img').attr('src',current_series.cover)
+        var backdrop_image='';
         try{
-            var backdrop_image=current_series.backdrop_path[0];
-            if(backdrop_image){
-                console.log(backdrop_image);
-                {
-                    $('.vod-series-background-img').attr('src',backdrop_image).show();
-                    $('.vod-series-background-img-overlay').show()
-                }
-            }
+            backdrop_image=current_series.backdrop_path[0];
         }catch (e) {
+        }
+        
+        // Use backdrop if available, otherwise use poster as fallback
+        if(backdrop_image) {
+            $('.vod-series-background-img').attr('src',backdrop_image).show();
+            $('.vod-series-background-img-overlay').show();
+        } else if(current_series.cover) {
+            $('.vod-series-background-img').attr('src',current_series.cover).show();
+            $('.vod-series-background-img-overlay').show();
         }
         this.hoverButtons(1);
         if(SeriesModel.favourite_ids.includes(current_series.series_id)){

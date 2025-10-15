@@ -74,13 +74,19 @@ var vod_summary_page={
                         $('#vod-summary-release-cast').text(info.cast);
                         $('#vod-summary-description').text(info.description);
 
+                        var backdrop_image='';
                         try{
-                            var backdrop_image=info.backdrop_path[0];
-                            if(backdrop_image){
-                                $('#vod-summary-page .vod-series-background-img-overlay').show();
-                                $('#vod-summary-page .vod-series-background-img').attr('src',backdrop_image).show();
-                            }
+                            backdrop_image=info.backdrop_path[0];
                         }catch (e) {
+                        }
+                        
+                        // Use backdrop if available, otherwise use poster as fallback
+                        if(backdrop_image) {
+                            $('#vod-summary-page .vod-series-background-img').attr('src',backdrop_image).show();
+                            $('#vod-summary-page .vod-series-background-img-overlay').show();
+                        } else if(current_movie.stream_icon) {
+                            $('#vod-summary-page .vod-series-background-img').attr('src',current_movie.stream_icon).show();
+                            $('#vod-summary-page .vod-series-background-img-overlay').show();
                         }
                         if(info.tmdb_id)
                             current_movie.tmdb_id=info.tmdb_id;

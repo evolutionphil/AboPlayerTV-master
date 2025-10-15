@@ -73,6 +73,7 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Development Server:** A Python HTTP server (`server.py`) with CORS support and socket reuse enabled for reliable workflow restarts.
 -   **Network Error Handling:** When playlists fail to load, the network error modal appears with options to Retry, Continue with Demo Mode, or Choose Another Playlist (if multiple available). RETURN key provides quick access to demo mode.
 -   **Background Image Fallback:** API background images are tested on load; if they fail, the app automatically falls back to `images/background1.png` for reliable display.
+-   **Backdrop Image Fallback:** For movies and series, if no backdrop image is available from the API, the app automatically uses the poster/cover image as the background, ensuring a consistent visual experience (matches LGTV-Master implementation).
 
 ## External Dependencies
 -   **Libraries:**
