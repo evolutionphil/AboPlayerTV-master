@@ -637,3 +637,8 @@
     height: 100%;
     z-index: 2;
 }
+
+/* Hide elements with .not-lg class on LG WebOS TVs */
+#app.lg .not-lg {
+    display: none !important;
+}

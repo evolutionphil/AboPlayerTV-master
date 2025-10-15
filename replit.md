@@ -20,6 +20,7 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Content Delivery:** Supports live TV, movies, and series.
 -   **Local File Browser / USB Storage:** Enables browsing internal TV storage and external USB drives.
     -   Uses Tizen Filesystem API (`tizen.filesystem.listStorages()`, `resolve()`) for real device enumeration.
+    -   **Platform Visibility:** Storage Play menu is hidden on LG WebOS (class `not-lg`) as LG doesn't support Tizen Filesystem API.
     -   Automatic file type detection (video, image) and directory navigation.
     -   Playback of local video files via `vod_series_player` and image viewing via `image_page` with photobox.
 -   **YouTube Playlist Integration:** Embeds YouTube player with playlist support.
