@@ -424,30 +424,83 @@
 #channel-page .player-container.expanded #channel-page-video-lg{
     position:fixed;
 }
+/* Modern Live TV Info Bar */
 #channel-page .channel-information-container{
-    padding:20px;
+    padding: 30px 40px;
     position: relative;
     height: 60vh;
+    background: linear-gradient(180deg, 
+        rgba(0, 0, 0, 0) 0%,
+        rgba(15, 15, 25, 0.75) 20%,
+        rgba(20, 20, 35, 0.95) 100%
+    );
+    backdrop-filter: blur(25px) saturate(150%);
+    -webkit-backdrop-filter: blur(25px) saturate(150%);
+    border-top: 1px solid rgba(100, 200, 255, 0.15);
+    box-shadow: 
+        0 -10px 50px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
+
 #channel-title{
-    font-size:45px;
-    color:#fff;
-    margin-top:20px;
-    margin-bottom:0px;
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    text-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(102, 126, 234, 0.2);
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
+
 .next-program-item{
-    font-size:35px;
-    color:#eee;
+    font-size: 28px;
+    color: rgba(255, 255, 255, 0.8);
     white-space: nowrap;
     width: 100%;
-    overflow:hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
+    padding: 12px 20px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.08) 0%,
+        rgba(118, 75, 162, 0.08) 100%
+    );
+    border-left: 3px solid rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
+
+.next-program-item:hover {
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.15) 0%,
+        rgba(118, 75, 162, 0.15) 100%
+    );
+    border-left-color: rgba(102, 126, 234, 0.5);
+    transform: translateX(4px);
+}
+
 .next-program-item span{
-    font-weight: normal;
+    font-weight: 500;
 }
+
 .next-program-item.current{
-    color: #ffff00;
+    color: #fff;
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.25) 0%,
+        rgba(118, 75, 162, 0.25) 100%
+    );
+    border-left: 4px solid #667eea;
+    box-shadow: 
+        0 0 20px rgba(102, 126, 234, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
 }
 .program-time{
     margin-right:20px;
@@ -535,37 +588,67 @@
 .full-screen-program-names-wrapper {
     margin-right: 50px;
 }
+/* Modern Channel Action Buttons */
 #channel-action-btns-container {
     position: absolute;
     right: 20px;
     bottom: 20px;
-    /* transform: translateY(-50%); */
 }
+
 .channel-action-btn {
-    font-size: 25px;
+    font-size: 24px;
+    font-weight: 500;
     width: 310px;
     text-align: center;
-    padding: 15px 10px;
-    /*border-radius: 15px;*/
-    /*color: #FF4132;*/
-    /*border: 3px solid #FF4132;*/
-    background: #520178;
-    color: #ccc;
-    border-radius: 35px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.15) 0%,
+        rgba(118, 75, 162, 0.15) 100%
+    );
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    border: 2px solid rgba(102, 126, 234, 0.3);
     white-space: nowrap;
-    transition: all 0.2s;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-block;
     vertical-align: middle;
-    margin-left: 10px;
+    margin-left: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.3px;
 }
+
+.channel-action-btn:hover {
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.25) 0%,
+        rgba(118, 75, 162, 0.25) 100%
+    );
+    border-color: rgba(102, 126, 234, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 20px rgba(102, 126, 234, 0.3),
+        0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
 .channel-action-btn *{
     display: inline-block;
     vertical-align: middle;
 }
+
 .channel-action-btn i {
-    margin-right: 5px;
+    margin-right: 8px;
 }
+
 .channel-action-btn.active{
-    color: #eee;
-    background: #FF4132;
+    color: #fff;
+    background: linear-gradient(135deg, 
+        #667eea 0%,
+        #764ba2 100%
+    );
+    border-color: rgba(102, 126, 234, 0.8);
+    box-shadow: 
+        0 0 25px rgba(102, 126, 234, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px) scale(1.02);
 }
