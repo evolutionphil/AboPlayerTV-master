@@ -966,6 +966,9 @@ var home_page={
         this.Exit();
         youtube_page.init(samplePlaylist, 'home-page');
     },
+    showStorages: function () {
+        storage_page.init();
+    },
     saveLockState:function(){
         $('#lock-state-message').removeClass('error').removeClass('visible');
         var keys=this.keys;

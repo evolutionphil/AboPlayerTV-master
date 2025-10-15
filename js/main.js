@@ -104,6 +104,12 @@ $(document).ready(function () {
             case "youtube-page":
                 youtube_page.HandleKey(e);
                 break;
+            case "storage-page":
+                storage_page.HandleKey(e);
+                break;
+            case "image-page":
+                image_page.HandleKey(e);
+                break;
             case "parent-confirm-page":
                 parent_confirm_page.HandleKey(e);
                 break;
