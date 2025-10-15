@@ -41,8 +41,9 @@ The application is a static web application built with HTML, CSS, and JavaScript
     -   **Samsung Tizen:** 3-mode cycling (Auto, Fit Screen, Fill Screen) using `webapis.avplay.setDisplayMethod()`.
     -   **LG WebOS:** 3-mode cycling (Letterbox, Zoom, Stretch) using CSS `object-fit`.
 -   **Subtitle System:**
-    -   **Live Customization:** Modern glass morphism overlay subtitle settings (position, size, background) accessible during playback with real-time preview.
+    -   **Live Customization:** Modern glass morphism right-side panel for subtitle settings (position, size, background) accessible during playback with real-time preview.
     -   **Gear Icon Access:** Direct access to subtitle settings via gear icon (fa-cog) on VOD/series player bar.
+    -   **Right-Side Panel Design:** 350px wide control panel positioned on right side (matching LGTV-Master reference), not full-screen overlay.
     -   **API Integration:** Fetches subtitles from ExoApp.tv API with intelligent episode matching and fallback to native embedded subtitles.
     -   **Universal Support:** Enhanced subtitle workflow now works for ALL content types (movies and series) across all playlist types (Xtreme, demo, and custom playlists).
     -   **Modern UI:** Purple gradient titles, glass morphism buttons, backdrop blur effects, and smooth transitions.

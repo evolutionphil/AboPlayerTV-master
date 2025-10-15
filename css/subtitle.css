@@ -40,31 +40,51 @@
     max-width: 100%;
 }
 
-/* Modern Subtitle Settings Overlay - Glass Morphism */
+/* Live Subtitle Position Right-Side Panel */
 #subtitle-position-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 10000;
-    display: none;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    pointer-events: none;
 }
 
-#subtitle-position-overlay > div {
-    color: white;
-    padding: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
+.position-control-panel {
+    position: absolute;
+    top: 80px;
+    right: 30px;
+    width: 350px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, 
+        rgba(30, 30, 50, 0.95) 0%,
+        rgba(40, 40, 65, 0.95) 100%
+    );
+    border: 2px solid rgba(102, 126, 234, 0.6);
+    border-radius: 16px;
+    padding: 20px;
+    pointer-events: auto;
+    z-index: 2001;
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(102, 126, 234, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-#subtitle-position-overlay h2 {
+.panel-header {
     text-align: center;
-    margin-bottom: 35px;
-    font-size: 38px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.panel-header h6 {
+    font-size: 26px;
+    margin-bottom: 10px;
     font-weight: 700;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
@@ -72,120 +92,224 @@
     background-clip: text;
 }
 
-#subtitle-position-overlay h3 {
-    margin-bottom: 18px;
-    font-size: 26px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.95);
-    letter-spacing: 0.5px;
-}
-
-/* Current Settings Display */
-#subtitle-position-overlay > div > div:first-of-type {
+.current-values {
+    font-size: 16px;
+    color: rgba(102, 126, 234, 1);
+    margin-bottom: 15px;
     text-align: center;
-    margin-bottom: 35px;
-    font-size: 22px;
-    background: linear-gradient(135deg, 
-        rgba(102, 126, 234, 0.15) 0%,
-        rgba(118, 75, 162, 0.15) 100%
-    );
-    padding: 20px;
-    border-radius: 16px;
-    border: 2px solid rgba(102, 126, 234, 0.3);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-/* Control Sections */
-#subtitle-position-overlay > div > div:not(:first-of-type) {
-    margin-bottom: 35px;
-}
-
-/* Modern Glass Morphism Buttons */
-.subtitle-control {
-    flex: 1;
-    padding: 14px 20px;
-    font-size: 20px;
     font-weight: 600;
+}
+
+.control-section {
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+    padding-bottom: 15px;
+}
+
+.control-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.control-section h7 {
+    display: block;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.position-controls {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.position-button {
     background: linear-gradient(135deg, 
-        rgba(30, 30, 50, 0.8) 0%,
-        rgba(40, 40, 65, 0.8) 100%
+        rgba(30, 30, 50, 0.6) 0%,
+        rgba(40, 40, 65, 0.6) 100%
     );
-    color: white;
     border: 2px solid rgba(102, 126, 234, 0.3);
-    border-radius: 12px;
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: #ddd;
     cursor: pointer;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px) saturate(150%);
-    -webkit-backdrop-filter: blur(10px) saturate(150%);
-    box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    min-width: 110px;
+    text-align: center;
+    min-width: 80px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-.subtitle-control:hover {
-    border-color: rgba(102, 126, 234, 0.6);
-    background: linear-gradient(135deg, 
-        rgba(102, 126, 234, 0.2) 0%,
-        rgba(118, 75, 162, 0.2) 100%
-    );
-    transform: translateY(-2px);
-    box-shadow: 
-        0 6px 20px rgba(102, 126, 234, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
-
-.subtitle-control:active,
-.subtitle-control.active {
+.position-button.active,
+.position-button:hover {
     border-color: rgba(102, 126, 234, 0.9);
     background: linear-gradient(135deg, 
         rgba(102, 126, 234, 0.4) 0%,
         rgba(118, 75, 162, 0.4) 100%
     );
-    box-shadow: 
-        0 0 30px rgba(102, 126, 234, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* Action Buttons - Save & Cancel */
-.subtitle-control.action-control[onclick*="save"] {
+.position-button i {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.preset-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.preset-button {
+    background: linear-gradient(135deg, 
+        rgba(30, 30, 50, 0.6) 0%,
+        rgba(40, 40, 65, 0.6) 100%
+    );
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 14px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.preset-button.active,
+.preset-button:hover {
+    border-color: rgba(102, 126, 234, 0.9);
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.4) 0%,
+        rgba(118, 75, 162, 0.4) 100%
+    );
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.position-action-btn {
     background: linear-gradient(135deg, 
         rgba(102, 126, 234, 0.9) 0%,
         rgba(118, 75, 162, 0.9) 100%
     );
-    border-color: rgba(102, 126, 234, 0.8);
-    font-size: 24px;
-    padding: 18px;
+    border: 2px solid rgba(102, 126, 234, 0.8);
+    border-radius: 8px;
+    padding: 12px 20px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    font-weight: 600;
+    font-size: 16px;
 }
 
-.subtitle-control.action-control[onclick*="save"]:hover {
+.position-action-btn.active,
+.position-action-btn:hover {
     background: linear-gradient(135deg, 
         rgba(102, 126, 234, 1) 0%,
         rgba(118, 75, 162, 1) 100%
     );
+    transform: translateY(-2px);
     box-shadow: 
-        0 8px 32px rgba(102, 126, 234, 0.6),
-        0 0 40px rgba(102, 126, 234, 0.4);
+        0 6px 20px rgba(102, 126, 234, 0.6),
+        0 0 30px rgba(102, 126, 234, 0.4);
 }
 
-.subtitle-control.action-control[onclick*="cancel"] {
-    background: linear-gradient(135deg, 
-        rgba(60, 60, 80, 0.8) 0%,
-        rgba(70, 70, 90, 0.8) 100%
-    );
-    border-color: rgba(255, 255, 255, 0.2);
-    font-size: 24px;
-    padding: 18px;
+/* Size Controls */
+.size-controls {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
 }
 
-.subtitle-control.action-control[onclick*="cancel"]:hover {
-    border-color: rgba(255, 255, 255, 0.4);
+.size-button {
     background: linear-gradient(135deg, 
-        rgba(70, 70, 90, 0.9) 0%,
-        rgba(80, 80, 100, 0.9) 100%
+        rgba(30, 30, 50, 0.6) 0%,
+        rgba(40, 40, 65, 0.6) 100%
     );
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 80px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.size-button.active,
+.size-button:hover {
+    border-color: rgba(102, 126, 234, 0.9);
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.4) 0%,
+        rgba(118, 75, 162, 0.4) 100%
+    );
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.size-button i {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.size-presets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* Background Controls */
+.background-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.bg-color-button {
+    background: linear-gradient(135deg, 
+        rgba(30, 30, 50, 0.6) 0%,
+        rgba(40, 40, 65, 0.6) 100%
+    );
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 14px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.bg-color-button.active,
+.bg-color-button:hover {
+    border-color: rgba(102, 126, 234, 0.9);
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.4) 0%,
+        rgba(118, 75, 162, 0.4) 100%
+    );
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 /* Subtitle Selection Modal */

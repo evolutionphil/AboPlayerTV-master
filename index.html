@@ -1218,98 +1218,107 @@
                     </div>
                 </div>
             </div>
-            <!-- Modern Subtitle Position Overlay -->
-            <div id="subtitle-position-overlay">
-                <div>
-                    <h2>Subtitle Settings</h2>
-                    
-                    <!-- Current Settings Display -->
-                    <div>
-                        Position: <span id="position-value">10vh</span> | 
-                        Size: <span id="size-value">24px</span> | 
-                        Background: <span id="background-value">Black</span>
+            <!-- Subtitle Settings Right-Side Panel -->
+            <div id="subtitle-position-overlay" style="display: none;">
+                <div class="position-control-panel">
+                    <div class="panel-header">
+                        <h6 data-word_code="subtitle_settings">Subtitle Settings</h6>
+                        <div class="current-values">
+                            <span id="position-value">10vh</span> | 
+                            <span id="size-value">18px</span> | 
+                            <span id="background-value">Black</span>
+                        </div>
                     </div>
                     
                     <!-- Position Controls -->
-                    <div>
-                        <h3>Position</h3>
-                        <div style="display:flex; gap:15px; margin-bottom:15px;">
-                            <button class="subtitle-control position-control" data-index="0" onclick="vod_series_player.adjustSubtitlePosition('up')">
-                                ▲ Move Up
-                            </button>
-                            <button class="subtitle-control position-control" data-index="1" onclick="vod_series_player.adjustSubtitlePosition('down')">
-                                ▼ Move Down
-                            </button>
+                    <div class="control-section">
+                        <h7 data-word_code="position">Position</h7>
+                        <div class="position-controls">
+                            <div class="position-button" onclick="vod_series_player.adjustSubtitlePosition('up')" onmouseenter="vod_series_player.hoverPositionControl(0)">
+                                <i class="fas fa-arrow-up"></i>
+                                <span data-word_code="move_up">Up</span>
+                            </div>
+                            
+                            <div class="position-button" onclick="vod_series_player.adjustSubtitlePosition('down')" onmouseenter="vod_series_player.hoverPositionControl(1)">
+                                <i class="fas fa-arrow-down"></i>
+                                <span data-word_code="move_down">Down</span>
+                            </div>
                         </div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <button class="subtitle-control position-control" data-index="2" onclick="vod_series_player.setSubtitlePosition(5)">
-                                Bottom (5vh)
-                            </button>
-                            <button class="subtitle-control position-control" data-index="3" onclick="vod_series_player.setSubtitlePosition(20)">
-                                Middle (20vh)
-                            </button>
-                            <button class="subtitle-control position-control" data-index="4" onclick="vod_series_player.setSubtitlePosition(30)">
-                                Center (30vh)
-                            </button>
-                            <button class="subtitle-control position-control" data-index="5" onclick="vod_series_player.setSubtitlePosition(40)">
-                                Upper (40vh)
-                            </button>
+                        
+                        <div class="preset-buttons">
+                            <div class="preset-button" onclick="vod_series_player.setSubtitlePosition(5)" onmouseenter="vod_series_player.hoverPositionControl(2)">
+                                <span data-word_code="bottom">Bottom</span>
+                            </div>
+                            <div class="preset-button" onclick="vod_series_player.setSubtitlePosition(20)" onmouseenter="vod_series_player.hoverPositionControl(3)">
+                                <span data-word_code="middle">Middle</span>
+                            </div>
+                            <div class="preset-button" onclick="vod_series_player.setSubtitlePosition(30)" onmouseenter="vod_series_player.hoverPositionControl(4)">
+                                <span data-word_code="center">Center</span>
+                            </div>
+                            <div class="preset-button" onclick="vod_series_player.setSubtitlePosition(40)" onmouseenter="vod_series_player.hoverPositionControl(5)">
+                                <span data-word_code="upper">Upper</span>
+                            </div>
                         </div>
                     </div>
-                    
+
                     <!-- Size Controls -->
-                    <div>
-                        <h3>Size</h3>
-                        <div style="display:flex; gap:15px; margin-bottom:15px;">
-                            <button class="subtitle-control size-control" data-index="6" onclick="vod_series_player.adjustSubtitleSize('smaller')">
-                                ◄ Smaller
-                            </button>
-                            <button class="subtitle-control size-control" data-index="7" onclick="vod_series_player.adjustSubtitleSize('larger')">
-                                ► Larger
-                            </button>
+                    <div class="control-section">
+                        <h7 data-word_code="size">Size</h7>
+                        <div class="size-controls">
+                            <div class="size-button" onclick="vod_series_player.adjustSubtitleSize('smaller')" onmouseenter="vod_series_player.hoverPositionControl(6)">
+                                <i class="fas fa-minus"></i>
+                                <span>Smaller</span>
+                            </div>
+                            
+                            <div class="size-button" onclick="vod_series_player.adjustSubtitleSize('larger')" onmouseenter="vod_series_player.hoverPositionControl(7)">
+                                <i class="fas fa-plus"></i>
+                                <span>Larger</span>
+                            </div>
                         </div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <button class="subtitle-control size-control" data-index="8" onclick="vod_series_player.setSubtitleSize(14)">
-                                Small
-                            </button>
-                            <button class="subtitle-control size-control" data-index="9" onclick="vod_series_player.setSubtitleSize(18)">
-                                Normal
-                            </button>
-                            <button class="subtitle-control size-control" data-index="10" onclick="vod_series_player.setSubtitleSize(24)">
-                                Large
-                            </button>
-                            <button class="subtitle-control size-control" data-index="11" onclick="vod_series_player.setSubtitleSize(32)">
-                                Extra
-                            </button>
+                        
+                        <div class="size-presets">
+                            <div class="preset-button" onclick="vod_series_player.setSubtitleSize(14)" onmouseenter="vod_series_player.hoverPositionControl(8)">
+                                <span>Small</span>
+                            </div>
+                            <div class="preset-button" onclick="vod_series_player.setSubtitleSize(18)" onmouseenter="vod_series_player.hoverPositionControl(9)">
+                                <span>Normal</span>
+                            </div>
+                            <div class="preset-button" onclick="vod_series_player.setSubtitleSize(24)" onmouseenter="vod_series_player.hoverPositionControl(10)">
+                                <span>Large</span>
+                            </div>
+                            <div class="preset-button" onclick="vod_series_player.setSubtitleSize(32)" onmouseenter="vod_series_player.hoverPositionControl(11)">
+                                <span>Extra Large</span>
+                            </div>
                         </div>
                     </div>
-                    
+
                     <!-- Background Controls -->
-                    <div>
-                        <h3>Background</h3>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <button class="subtitle-control bg-control" data-index="12" onclick="vod_series_player.setSubtitleBackground('transparent')">
-                                None
-                            </button>
-                            <button class="subtitle-control bg-control" data-index="13" onclick="vod_series_player.setSubtitleBackground('black')">
-                                Black
-                            </button>
-                            <button class="subtitle-control bg-control" data-index="14" onclick="vod_series_player.setSubtitleBackground('gray')">
-                                Red
-                            </button>
-                            <button class="subtitle-control bg-control" data-index="15" onclick="vod_series_player.setSubtitleBackground('dark')">
-                                Green
-                            </button>
+                    <div class="control-section">
+                        <h7 data-word_code="background">Background</h7>
+                        <div class="background-controls">
+                            <div class="bg-color-button" onclick="vod_series_player.setSubtitleBackground('transparent')" onmouseenter="vod_series_player.hoverPositionControl(12)">
+                                <span>None</span>
+                            </div>
+                            <div class="bg-color-button" onclick="vod_series_player.setSubtitleBackground('black')" onmouseenter="vod_series_player.hoverPositionControl(13)">
+                                <span>Black</span>
+                            </div>
+                            <div class="bg-color-button" onclick="vod_series_player.setSubtitleBackground('gray')" onmouseenter="vod_series_player.hoverPositionControl(14)">
+                                <span>Red</span>
+                            </div>
+                            <div class="bg-color-button" onclick="vod_series_player.setSubtitleBackground('dark')" onmouseenter="vod_series_player.hoverPositionControl(15)">
+                                <span>Green</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Action Buttons -->
-                    <div style="display:flex; gap:20px; margin-top:40px;">
-                        <button class="subtitle-control action-control" data-index="16" onclick="vod_series_player.saveSubtitlePosition()">
-                            Save
+                    <div class="action-buttons">
+                        <button type="button" class="btn position-action-btn"
+                            onmouseenter="vod_series_player.hoverPositionControl(16)" onclick="vod_series_player.saveSubtitlePosition()">
+                            <span data-word_code="save">Save</span>
                         </button>
-                        <button class="subtitle-control action-control" data-index="17" onclick="vod_series_player.cancelSubtitlePosition()">
-                            Cancel
+                        <button type="button" class="btn position-action-btn"
+                            onmouseenter="vod_series_player.hoverPositionControl(17)" onclick="vod_series_player.cancelSubtitlePosition()">
+                            <span data-word_code="cancel">Cancel</span>
                         </button>
                     </div>
                 </div>
