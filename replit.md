@@ -10,6 +10,22 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - **Server**: Python HTTP server for static file serving
 
 ## Recent Changes
+- **2025-10-15**: Implemented Terms of Use Popup (First Launch) feature for legal compliance
+  - **First-Launch Detection**: Modal shows only on first app launch or when terms version changes
+  - **Version-Based Acceptance**: Tracks accepted version in localStorage to re-show if terms are updated
+  - **Accept/Decline Buttons**: Accept continues to app, Decline triggers exit confirmation (legal protection)
+  - **Backend API Integration**: Fetches terms from `/api/device_info` endpoint response
+  - **Multi-Language Support**: Integrated with translation system via data-word_code attributes
+  - **TV Remote Navigation**: 
+    - UP/DOWN: Scroll through terms content
+    - LEFT/RIGHT: Navigate between Accept/Decline buttons
+    - ENTER: Confirm selection
+    - RETURN: Disabled (users must make a choice)
+  - **Version Tracking**: Stores accepted version in localStorage (storage_id+'terms_accepted_version')
+  - **Backend API Format**: `{terms: {version: "1.0", content: "...", updated_date: "2025-10-15"}}`
+  - Frontend implementation complete and ready for backend integration
+  - Architect reviewed and approved with confirmation that feature works when backend sends terms data
+
 - **2025-10-15**: Implemented Hide Blocked Content Toggle feature for parental controls
   - **Settings Toggle**: Added "Hide Blocked Content" menu item with live ON/OFF indicator
   - **Keyword Filtering**: isContentBlocked() function checks content names against blocked keywords from localStorage
