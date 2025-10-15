@@ -10,6 +10,20 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - **Server**: Python HTTP server for static file serving
 
 ## Recent Changes
+- **2025-10-15**: Fixed aspect ratio functionality for both Samsung Tizen and LG WebOS platforms
+  - **Samsung Tizen Enhancement**: Upgraded from 2-mode toggle to 3-mode cycling system
+    - Added `aspect_ratio_modes` configuration with 3 modes (Auto, Fit Screen, Fill Screen)
+    - Implemented proper cycling through all display modes using `current_aspect_ratio_index`
+    - Added toast notifications showing current aspect ratio mode to user
+    - Uses Samsung's native `webapis.avplay.setDisplayMethod()` API
+  - **LG WebOS Fix**: Implemented complete aspect ratio functionality (was completely broken/empty)
+    - Added `aspect_ratio_modes` configuration with 3 CSS object-fit modes (Letterbox, Zoom, Stretch)
+    - Implemented cycling through modes using CSS `object-fit` property
+    - Added toast notifications showing current aspect ratio mode to user
+    - Uses CSS-based approach for video element manipulation
+  - **Ported from LGTV-master**: Complete implementation matches the working reference project
+  - All modes cycle properly with visual feedback on both platforms
+
 - **2025-10-09**: Complete branding update from "Abo" to "ASA"
   - Updated all application titles and branding from "Abo IPTV" to "ASA IPTV"
   - Changed Tizen widget ID from "AboPlayer" to "ASAPlayer"

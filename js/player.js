@@ -18,6 +18,19 @@ function initPlayer() {
             reconnect_max_count: 20,
             url:'',
             id:'',
+            aspect_ratio_modes: {
+                samsung: [
+                    'PLAYER_DISPLAY_MODE_AUTO_ASPECT_RATIO',
+                    'PLAYER_DISPLAY_MODE_LETTER_BOX',
+                    'PLAYER_DISPLAY_MODE_FULL_SCREEN'
+                ],
+                lg: [
+                    'contain',
+                    'cover',
+                    'fill'
+                ]
+            },
+            current_aspect_ratio_index: 0,
             init:function(id, parent_id) {
                 this.id=id;
                 this.parent_id=parent_id;
@@ -179,18 +192,18 @@ function initPlayer() {
                 webapis.avplay.setDisplayRect(left_position,top_position,width,height);
             },
             toggleScreenRatio:function(){
-                if(this.full_screen_state==1){
-                    try{
-                        webapis.avplay.setDisplayMethod('PLAYER_DISPLAY_MODE_AUTO_ASPECT_RATIO');
-                        this.full_screen_state=0;
-                    }catch (e) {
-                    }
-                }else{
-                    try{
-                        webapis.avplay.setDisplayMethod('PLAYER_DISPLAY_MODE_FULL_SCREEN');
-                        this.full_screen_state=1;
-                    }catch (e) {
-                    }
+                try{
+                    // Cycle through Samsung display modes
+                    var modes = this.aspect_ratio_modes.samsung;
+                    this.current_aspect_ratio_index = (this.current_aspect_ratio_index + 1) % modes.length;
+                    var selectedMode = modes[this.current_aspect_ratio_index];
+                    
+                    webapis.avplay.setDisplayMethod(selectedMode);
+                    
+                    // Show user feedback
+                    var modeNames = ['Auto', 'Fit Screen', 'Fill Screen'];
+                    showToast('Aspect Ratio', modeNames[this.current_aspect_ratio_index]);
+                }catch (e) {
                 }
             },
             formatTime:function(seconds) {
@@ -373,12 +386,20 @@ function initPlayer() {
             next_video_showing:false,
             subtitles:[],
             tracks:[],
+            aspect_ratio_modes: {
+                lg: [
+                    'contain',
+                    'cover',
+                    'fill'
+                ]
+            },
+            current_aspect_ratio_index: 0,
             init:function(id, parent_id) {
                 id+='-lg';
                 this.next_video_showing=false;
                 clearTimeout(this.next_video_timer);
                 this.id=id;
-                this.videoObj=null;	// tag video
+                this.videoObj=null;     // tag video
                 this.parent_id=parent_id;
                 this.current_time=0;
                 this.state = this.STATES.STOPPED;
@@ -526,10 +547,23 @@ function initPlayer() {
                 this.subtitles=[];
             },
             toggleScreenRatio:function(){
-
+                try{
+                    // Cycle through LG CSS object-fit modes
+                    var modes = this.aspect_ratio_modes.lg;
+                    this.current_aspect_ratio_index = (this.current_aspect_ratio_index + 1) % modes.length;
+                    var selectedMode = modes[this.current_aspect_ratio_index];
+                    
+                    // Apply CSS object-fit to video element
+                    $(this.videoObj).css('object-fit', selectedMode);
+                    
+                    // Show user feedback
+                    var modeNames = ['Letterbox', 'Zoom', 'Stretch'];
+                    showToast('Aspect Ratio', modeNames[this.current_aspect_ratio_index]);
+                }catch (e) {
+                }
             },
             setDisplayArea:function(){
-
+                channel_page.toggleFavoriteAndRecentBottomOptionVisbility();
             },
             formatTime:function(seconds) {
                 var hh = Math.floor(seconds / 3600),
