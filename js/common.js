@@ -72,6 +72,9 @@ var platform = "samsung",
     app_loading = false;
 var storage_id = "kiSsTUE1Jx_";
 var lock = 0;
+var video_file_exts = ["webm", "mpg", "mp2", "mpeg", "mpe", "mpv", "ogg", "mp4", "m4p", "m4v", "avi", "wmv", "mov", "qt", "flv", "swf", "avchd", "mkv"];
+var image_file_exts = ["apng", "avif", "gif", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "png", "svg", "webp", "bmp", "ico", "cur", "tif", "tiff"];
+var storage_environment = 'develop'; // 'develop' or 'production'
 var samsung_version = "1.0.0",
     lg_version = "1.0.2";
 var focus_colors = [],
@@ -962,4 +965,59 @@ function assignColorCode(color, kind) {
     }
 
     $("<style/>", { text: cssText }).appendTo("head");
+}
+
+// Storage helper functions for file browser
+function checkCorruptedRemovableDrives(storages1) {
+    var storages = [];
+    for (var i = 0; i < storages1.length; i++) {
+        if (storages1[i].state != 'UNMOUNTABLE' && !storages1[i].label.includes('wgt-')) {
+            storages.push(storages1[i]);
+        }
+    }
+    storage_page.storages = storages;
+    storage_page.initPage();
+}
+
+function onResolveSuccess(dir) {
+    dir.listFiles(onsuccess);
+}
+
+function onsuccess(files) {
+    var video_files = [], video_index = 0, image_index = 0, image_files = [];
+    var diff_index = storage_page.current_level == 0 ? 0 : 1;
+    var final_files = [], skip_file_count = 0;
+    
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (file.isFile) {
+            var ext = getExt(file.name);
+            if (video_file_exts.includes(ext.toLowerCase())) {
+                video_files.push({
+                    index: i - skip_file_count + diff_index,
+                    file: file,
+                    video_index: video_index
+                });
+                video_index++;
+                final_files.push(file);
+            } else if (image_file_exts.includes(ext.toLowerCase())) {
+                image_files.push({
+                    index: i - skip_file_count + diff_index,
+                    file: file,
+                    image_index: image_index
+                });
+                image_index++;
+                final_files.push(file);
+            } else {
+                skip_file_count++;
+            }
+        } else {
+            final_files.push(file);
+        }
+    }
+    
+    storage_page.video_files = video_files;
+    storage_page.image_files = image_files;
+    storage_page.storages = final_files;
+    storage_page.renderDirectories();
 }
