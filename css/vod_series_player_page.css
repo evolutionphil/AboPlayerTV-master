@@ -189,53 +189,117 @@
 .rangeslider.active .rangeslider__handle{
     border: 3px solid #ff6a00;
 }
+/* Modern Video Info Modal with Glass Morphism */
 #vod-video-info-container {
     position: fixed;
-    top: 20vh;
-    left: 20vw;
-    width: 60vw;
-    height: 60vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70vw;
+    max-width: 1200px;
+    height: auto;
+    max-height: 70vh;
     font-size: 0;
-    border-radius: 10px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 0 30px #68696f;
-    background: #16b5c5;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 1px rgba(102, 126, 234, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, 
+        rgba(20, 20, 35, 0.98) 0%,
+        rgba(30, 30, 50, 0.95) 100%
+    );
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
     display: none;
+    animation: fadeInScale 0.3s ease;
 }
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
 #vod-video-info-img-container {
-    width: 30%;
+    width: 35%;
     display: inline-block;
     height: 100%;
     vertical-align: top;
+    position: relative;
 }
+
 #vod-video-info-img-container img{
     width: 100%;
     height: 100%;
+    object-fit: cover;
 }
+
 #vod-video-info-wrapper {
     display: inline-block;
-    width: 70%;
+    width: 65%;
     height: 100%;
     font-size: 25px;
     color: #fff;
     vertical-align: top;
-    padding:20px;
+    padding: 35px 40px;
     position: relative;
 }
+
 #vod-video-info-title {
-    font-size: 35px;
-    font-weight: bold;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
+
 #vod-video-info-desc {
-    font-size: 25px;
+    font-size: 26px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
+
+#vod-video-info-desc::-webkit-scrollbar {
+    width: 8px;
+}
+
+#vod-video-info-desc::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#vod-video-info-desc::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+}
+
 #vod-video-info-subwrapper2 {
     position: absolute;
     bottom: 0;
-    border-top: 1px solid;
-    right: 20px;
-    left: 20px;
-    padding: 10px 0;
+    border-top: 1px solid rgba(102, 126, 234, 0.3);
+    right: 40px;
+    left: 40px;
+    padding: 20px 0 0 0;
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 #video-resume-modal {
