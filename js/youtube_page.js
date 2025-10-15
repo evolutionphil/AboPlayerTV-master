@@ -72,8 +72,7 @@ var youtube_page = {
                 'controls': 1,
                 'rel': 0,
                 'modestbranding': 1,
-                'enablejsapi': 1,
-                'origin': window.location.origin
+                'enablejsapi': 1
             },
             events: {
                 'onReady': function(event) {
