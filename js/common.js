@@ -308,13 +308,28 @@ function goHomePageWithMovieType(movie_type) {
 }
 
 function changeBackgroundImage() {
+    var fallback_bg = 'images/background1.png';
     var bg_img_index = settings.bg_img_index;
+    
+    // Function to apply fallback if image fails to load
+    function applyFallbackIfNeeded(imageUrl) {
+        var testImage = new Image();
+        testImage.onerror = function() {
+            // Image failed to load, use fallback
+            console.log('Background image failed to load, using fallback: ' + fallback_bg);
+            $('#login-container').css({'background-image':'url(' + fallback_bg + ')'});
+            $('#app').css({'background-image':'url(' + fallback_bg + ')'});
+        };
+        testImage.src = imageUrl;
+    }
+    
     if (typeof themes[bg_img_index] != "undefined") {
         var bg_img = themes[bg_img_index].url;
         $("#login-container").css({
             "background-image": "url(" + bg_img + ")",
         });
         $("#app").css({ "background-image": "url(" + bg_img + ")" });
+        applyFallbackIfNeeded(bg_img);
     } else {
         // if background image not setted, or not exist
         if (typeof themes[0] != "undefined") {
@@ -323,13 +338,14 @@ function changeBackgroundImage() {
                 "background-image": "url(" + bg_img + ")",
             });
             $("#app").css({ "background-image": "url(" + bg_img + ")" });
+            applyFallbackIfNeeded(bg_img);
         } else {
             // Fallback to local background1.png when themes are not available
-            var bg_img = "images/background1.png";
+            console.log('No themes available, using fallback: ' + fallback_bg);
             $("#login-container").css({
-                "background-image": "url(" + bg_img + ")",
+                "background-image": "url(" + fallback_bg + ")",
             });
-            $("#app").css({ "background-image": "url(" + bg_img + ")" });
+            $("#app").css({ "background-image": "url(" + fallback_bg + ")" });
         }
     }
 }

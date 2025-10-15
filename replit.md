@@ -70,6 +70,7 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Tizen/WebOS Compatibility:** Specific platform-dependent APIs and CSS approaches are used to ensure functionality across both TV operating systems.
 -   **Development Server:** A Python HTTP server (`server.py`) with CORS support and socket reuse enabled for reliable workflow restarts.
 -   **Network Error Handling:** When playlists fail to load, the network error modal appears with options to Retry, Continue with Demo Mode, or Choose Another Playlist (if multiple available). RETURN key provides quick access to demo mode.
+-   **Background Image Fallback:** API background images are tested on load; if they fail, the app automatically falls back to `images/background1.png` for reliable display.
 
 ## External Dependencies
 -   **Libraries:**
