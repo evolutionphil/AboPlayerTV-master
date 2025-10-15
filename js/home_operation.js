@@ -103,7 +103,7 @@ var home_page={
                 first_play_video=getMovieUrl(vod_featured_movies[0].stream_id, 'movie', vod_featured_movies[0].container_extension);
             else
                 first_play_video=vod_featured_movies[0].url;
-            home_page.current_preview_id=vod_featured_movies.stream_id;
+            home_page.current_preview_id=vod_featured_movies[0].stream_id;
             home_page.current_preview_type='movie';
         }
         current_route='home-page';

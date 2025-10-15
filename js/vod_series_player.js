@@ -1126,7 +1126,7 @@ var vod_series_player = {
     
     getSubtitleLevel: function() {
         var level = parseInt(localStorage.getItem('subtitle_level') || this.SUBTITLE_LEVELS.DEFAULT);
-        return Math.max(this.SUBTITLE_LEVELS.MIN, Math.min(this.SUBTITLE_LEVELS.MAX, level));
+        return Number.isFinite(level) ? Math.max(this.SUBTITLE_LEVELS.MIN, Math.min(this.SUBTITLE_LEVELS.MAX, level)) : this.SUBTITLE_LEVELS.DEFAULT;
     },
     
     adjustSubtitlePosition: function(direction) {
@@ -1164,19 +1164,31 @@ var vod_series_player = {
     },
     
     setSubtitleSize: function(size) {
-        // Convert absolute size to level
+        // Convert absolute size to level for consistent handling
         var level = this.SUBTITLE_LEVELS.SIZES.indexOf(parseInt(size));
-        if(level !== -1) {
-            this.setSubtitleLevel(level);
+        if(level === -1) {
+            // If size not in presets, find closest level
+            var targetSize = parseInt(size);
+            level = this.SUBTITLE_LEVELS.DEFAULT;
+            var minDiff = Infinity;
+            for(var i = 0; i < this.SUBTITLE_LEVELS.SIZES.length; i++) {
+                var diff = Math.abs(this.SUBTITLE_LEVELS.SIZES[i] - targetSize);
+                if(diff < minDiff) {
+                    minDiff = diff;
+                    level = i;
+                }
+            }
         }
+        this.setSubtitleLevel(level);
     },
     
     setSubtitleLevel: function(level) {
         level = Math.max(this.SUBTITLE_LEVELS.MIN, Math.min(this.SUBTITLE_LEVELS.MAX, level));
         this.currentSubtitleSize = this.SUBTITLE_LEVELS.SIZES[level];
         
-        // Save both level and size
+        // Save both level and size for backward compatibility
         localStorage.setItem('subtitle_level', level);
+        localStorage.setItem('subtitle_size', this.currentSubtitleSize);
         
         this.applyLiveSubtitleStyles();
         this.updateAllDisplays();
