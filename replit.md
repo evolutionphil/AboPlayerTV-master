@@ -22,21 +22,30 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Interaction:** Optimized for TV remote control navigation with clear focus states and intuitive button mapping (UP/DOWN, LEFT/RIGHT, ENTER, RETURN).
 
 **Technical Implementations & Feature Specifications:**
--   **Content Delivery:** Supports live TV, movies, and series.
--   **Local File Browser / USB Storage:** Enables browsing internal TV storage and external USB drives.
+-   **Content Delivery:** Supports live TV, movies, series, and local storage media (USB/internal).
+-   **Local File Browser / USB Storage:** Full local media support for TV storage and USB drives.
     -   Uses Tizen Filesystem API (`tizen.filesystem.listStorages()`, `resolve()`) for real device enumeration.
     -   **Platform Visibility:** Storage Play menu is hidden on LG WebOS (class `not-lg`) as LG doesn't support Tizen Filesystem API.
     -   Automatic file type detection (video, image) and directory navigation.
-    -   Playback of local video files via `vod_series_player` and image viewing via `image_page` with photobox.
+    -   **Storage Playback:** Full integration with `vod_series_player` using `movie_type === 'storage'` and `movie.toURI()`.
+    -   Image viewing via `image_page` with photobox gallery.
+    -   Resume time tracking disabled for storage files (stateless playback).
 -   **YouTube Playlist Integration:** Embeds YouTube player with playlist support.
     -   Full TV remote control, auto-play next video, full-screen toggle, quality control, and error handling.
     -   Expects playlist data from a backend API.
 -   **Terms of Use Popup:** Displays on first app launch or version change, requiring acceptance.
     -   Fetches terms from `/api/device_info` and stores acceptance in `localStorage`.
     -   Multi-language support.
--   **Hide Blocked Content:** Parental control feature to filter content based on keywords.
-    -   Settings toggle with real-time UI refresh across all views (home, search, channels).
-    -   Persistence via `localStorage`.
+-   **Configurable Featured Content:**
+    -   Settings toggle `show_featured_movies` (on/off) to show/hide featured movies section.
+    -   Reduces home page load time and clutter when disabled.
+    -   Preference persisted via `localStorage`.
+-   **Parental Controls / Content Blocking:** Comprehensive parental control system.
+    -   **Playback Enforcement:** Blocks restricted content at player init() before playback starts (movies, series).
+    -   **Channel Filtering:** Filters blocked channels in real-time when browsing categories.
+    -   **Settings Toggle:** `hide_blocked_content` with real-time UI refresh across all views.
+    -   **Persistence:** Blocked keywords stored in `localStorage` (blocked_channels, blocked_movies, blocked_series).
+    -   **User Feedback:** Toast notifications when access is denied.
 -   **Aspect Ratio Functionality:**
     -   **Samsung Tizen:** 3-mode cycling (Auto, Fit Screen, Fill Screen) using `webapis.avplay.setDisplayMethod()`.
     -   **LG WebOS:** 3-mode cycling (Letterbox, Zoom, Stretch) using CSS `object-fit`.
@@ -45,14 +54,21 @@ The application is a static web application built with HTML, CSS, and JavaScript
     -   **Gear Icon Access:** Direct access to subtitle settings via gear icon (fa-cog) on VOD/series player bar.
     -   **Right-Side Panel Design:** 350px wide control panel positioned on right side (matching LGTV-Master reference), not full-screen overlay.
     -   **Remote Control Support:** Full Samsung and LG TV remote navigation (UP/DOWN, LEFT/RIGHT, ENTER, RETURN) with smart 2D grid navigation across all controls.
+    -   **Enhanced Size Management:** 
+        -   5 predefined levels (Small: 14px, Normal: 18px, Large: 24px, Extra Large: 32px, Maximum: 40px)
+        -   `Number.isFinite()` validation prevents invalid subtitle sizes
+        -   Intelligent fallback finds closest level for arbitrary sizes
+        -   Backward compatibility with both level and size storage
     -   **API Integration:** Fetches subtitles from ExoApp.tv API with intelligent episode matching and fallback to native embedded subtitles.
     -   **Universal Support:** Enhanced subtitle workflow now works for ALL content types (movies and series) across all playlist types (Xtreme, demo, and custom playlists).
     -   **Modern UI:** Purple gradient titles, glass morphism buttons, backdrop blur effects, and smooth transitions.
     -   SRT parsing with format correction.
     -   User settings are stored in `localStorage`.
 -   **App Stability & Crash Prevention:**
+    -   **UI Locking Mechanism:** Prevents rapid key press corruption with configurable lock duration (default 800ms).
+    -   **Display Area Scheduling:** Debounced setDisplayArea() calls for smooth channel transitions (default 250ms delay).
+    -   **Null Safety:** Fixed vod_featured_movies array indexing bug to prevent crashes.
     -   Content guards to prevent navigation to empty channels.
-    -   Null safety checks for UI elements.
     -   TV API feature detection (`typeof webapis` and `tizen`).
     -   Cache management for reliable updates.
 -   **Local Demo Playlist Fallback:**
