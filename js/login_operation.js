@@ -4,7 +4,8 @@ var login_page={
         focused_part:"playlist_selection",
         playlist_selection:0,
         turn_off_modal:0,
-        network_issue_btn:0
+        network_issue_btn:0,
+        terms_of_use_button:1
     },
     playlist_doms:[],
     network_btn_doms:$('.network-issue-btn'),
@@ -25,6 +26,12 @@ var login_page={
         var today=moment().format('Y-MM-DD');
         var that=this;
         // that.hideLoadImage();
+        
+        // Save terms data if available
+        if(data.terms) {
+            saveData('terms', data.terms);
+        }
+        
         saveData('adverts', data.adverts);
         saveData('playlist_urls',data.playlists);
         var  themes=data.themes;
@@ -270,7 +277,14 @@ var login_page={
             settings.saveSettings('playlist_url', playlist_urls[keys.playlist_selection].url,'');
             settings.saveSettings('playlist_id', playlist_urls[keys.playlist_selection].id,'');
             parseM3uUrl();
-            this.proceed_login();
+            
+            // Check and show terms of use if needed (first launch or version changed)
+            var termsShown = this.checkAndShowTerms();
+            
+            // Only proceed to login if terms were not shown (already accepted)
+            if(!termsShown) {
+                this.proceed_login();
+            }
         }
         else{
             showToast("Sorry","You can not use our service now, please extend your expire date by paying us")
@@ -481,6 +495,16 @@ var login_page={
                 showToast("Sorry","You can not use our service now, please activate your device at https://asatv.app/activation and restart your app");
             }
         }
+        else if(keys.focused_part==="terms_of_use_modal"){
+            if(keys.terms_of_use_button === 0){
+                // Decline button clicked
+                this.declineTerms();
+            }
+            else{
+                // Accept button clicked
+                this.acceptTerms();
+            }
+        }
         else if(keys.focused_part==="turn_off_modal"){
             if(keys.turn_off_modal==0){
                 $('#turn-off-modal').modal('hide');
@@ -511,6 +535,10 @@ var login_page={
             $(this.playlist_doms[keys.playlist_selection]).addClass('active');
             moveScrollPosition($('#login-playlist-items-container'),this.playlist_doms[keys.playlist_selection],'vertical',false);
         }
+        else if(keys.focused_part==="terms_of_use_modal"){
+            // Scroll terms content
+            this.scrollTermsContent(increment > 0 ? 'down' : 'up');
+        }
 
     },
     handleMenuLeftRight:function(increment){
@@ -524,7 +552,17 @@ var login_page={
             $(this.network_btn_doms).removeClass('active');
             $(this.network_btn_doms[keys.network_issue_btn]).addClass('active');
         }
-        if(keys.focused_part==="turn_off_modal"){
+        else if(keys.focused_part==="terms_of_use_modal"){
+            keys.terms_of_use_button+=increment;
+            var buttons=$('.terms-action-btn');
+            if(keys.terms_of_use_button<0)
+                keys.terms_of_use_button=1;
+            if(keys.terms_of_use_button>1)
+                keys.terms_of_use_button=0;
+            $(buttons).removeClass('active');
+            $(buttons[keys.terms_of_use_button]).addClass('active');
+        }
+        else if(keys.focused_part==="turn_off_modal"){
             keys.turn_off_modal+=increment;
             var buttons=$('#turn-off-modal').find('button');
             if(keys.turn_off_modal<0)
@@ -553,6 +591,12 @@ var login_page={
                 this.handleMenuClick();
                 break;
             case tvKey.RETURN:
+                // Disable RETURN key on terms modal (user must choose Accept/Decline)
+                if(this.keys.focused_part==="terms_of_use_modal"){
+                    // Do nothing - RETURN is disabled on terms modal
+                    break;
+                }
+                
                 if(this.keys.focused_part==="playlist_selection" || this.keys.focused_part==="network_issue_btn"){
                     $('#turn-off-modal').modal('show');
                     this.keys.focused_part="turn_off_modal";
@@ -571,5 +615,80 @@ var login_page={
                 }
                 break;
         }
+    },
+    checkAndShowTerms:function(){
+        var that = this;
+        var terms = getData('terms');
+        
+        if(!terms || !terms.version || !terms.content) {
+            // No terms from backend, proceed with login
+            return false;
+        }
+        
+        var acceptedVersion = localStorage.getItem(storage_id+'terms_accepted_version');
+        
+        // Show terms if never accepted or version changed
+        if(!acceptedVersion || acceptedVersion !== terms.version) {
+            // Populate terms content
+            $('#terms-content').text(terms.content);
+            $('#terms-version-text').text(terms.version);
+            $('#terms-updated-date').text(terms.updated_date || moment().format('YYYY-MM-DD'));
+            
+            // Show modal and set focus
+            $('#terms-of-use-modal').modal('show');
+            this.keys.focused_part = "terms_of_use_modal";
+            this.keys.terms_of_use_button = 1; // Default to Accept button
+            
+            var buttons = $('.terms-action-btn');
+            $(buttons).removeClass('active');
+            $(buttons[1]).addClass('active'); // Accept button is active by default
+            
+            return true; // Terms shown
+        }
+        
+        return false; // Terms already accepted
+    },
+    hoverTermsButton:function(index){
+        this.keys.terms_of_use_button = index;
+        var buttons = $('.terms-action-btn');
+        $(buttons).removeClass('active');
+        $(buttons[index]).addClass('active');
+    },
+    scrollTermsContent:function(direction){
+        var container = $('#terms-content-wrapper');
+        var currentScroll = container.scrollTop();
+        var scrollAmount = 50; // pixels to scroll
+        
+        if(direction === 'up') {
+            container.scrollTop(currentScroll - scrollAmount);
+        } else if(direction === 'down') {
+            container.scrollTop(currentScroll + scrollAmount);
+        }
+    },
+    acceptTerms:function(){
+        var terms = getData('terms');
+        if(terms && terms.version) {
+            localStorage.setItem(storage_id+'terms_accepted_version', terms.version);
+            showToast("Terms Accepted", "Thank you for accepting the terms of use");
+        }
+        $('#terms-of-use-modal').modal('hide');
+        this.keys.focused_part = "playlist_selection";
+        
+        // Continue with normal login flow
+        this.login();
+    },
+    declineTerms:function(){
+        showToast("Terms Declined", "You must accept the terms to use this application");
+        $('#terms-of-use-modal').modal('hide');
+        
+        // Show exit modal
+        setTimeout(function(){
+            $('#turn-off-modal').modal('show');
+            login_page.keys.focused_part = "turn_off_modal";
+            login_page.keys.turn_off_modal = 0;
+            var buttons = $('#turn-off-modal').find('button');
+            $(buttons).removeClass('active');
+            $(buttons[0]).addClass('active');
+        }, 500);
     }
 }
