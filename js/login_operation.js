@@ -288,52 +288,32 @@ var login_page={
         api_host_url=settings.playlist_url;
         this.proceed_login();
     },
-    fallbackToLocalDemo:function(){
-        console.log('📺 Activating Demo Mode - Loading local demo playlist IMMEDIATELY');
-        
+    fallbackToLocalDemo: function() {
+        var that = this;
+        console.log("Falling back to local demo playlist");
+
+        // Set up demo playlist configuration
         settings.playlist_type = "type1";
         settings.playlist_url = "demoo.m3u";
-        settings.saveSettings('playlist_type', 'type1', '');
-        settings.saveSettings('playlist_url', 'demoo.m3u', '');
-        
-        localStorage.removeItem(storage_id + 'api_data');
-        
-        // Hide any visible modals
+        api_host_url = settings.playlist_url;
+
+        // Clear any existing data to force fresh load
+        localStorage.removeItem(storage_id+'api_data');
+
+        // Hide loading and network issue dialog
+        that.hideLoadImage();
         $('#network-issue-container').hide();
-        $('#login-page-error-playlists-container').hide();
-        $('#refresh-modal').modal('hide');
-        $('#turn-off-modal').modal('hide');
-        
-        showToast("Demo Mode", "Loading demo content...");
-        
-        // Clear existing categories and movies to prevent duplicates
-        LiveModel.setCategories([]);
-        VodModel.setCategories([]);
-        SeriesModel.setCategories([]);
-        LiveModel.setMovies([]);
-        VodModel.setMovies([]);
-        SeriesModel.setMovies([]);
-        
-        // Load demo playlist IMMEDIATELY without going to login flow
-        $.ajax({
-            method:'get',
-            url: 'demoo.m3u',
-            success: function(data) {
-                parseM3uResponse("type1", data);
-                LiveModel.insertMoviesToCategories();
-                VodModel.insertMoviesToCategories();
-                SeriesModel.insertMoviesToCategories();
-                playlist_succeed = true;
-                
-                login_page.goToHomePage();
-                
-                showToast("Demo Loaded", "Demo content ready!");
-            },
-            error: function(error) {
-                showToast("Error", "Failed to load demo playlist");
-                login_page.proceed_login(); // Fallback to regular flow
-            }
-        });
+
+        // Show loading while processing demo playlist
+        that.showLoadImage();
+
+        // Proceed with login using demo playlist
+        that.proceed_login();
+
+        // Show a toast to inform user they're using demo content
+        setTimeout(function() {
+            showToast("Demo Mode", "You are now using demo content with limited functionality");
+        }, 2000);
     },
     goHomePageWithPlaylistError:function (){
         LiveModel.setCategories([]);

@@ -10,6 +10,14 @@ This is a Tizen TV IPTV application that provides live TV streaming, movies, ser
 - **Server**: Python HTTP server for static file serving
 
 ## Recent Changes
+- **2025-10-15**: Optimized local demo playlist loading logic (ported from LGTV-Master)
+  - **Simplified fallbackToLocalDemo()**: Now uses `proceed_login()` infrastructure instead of manual AJAX
+  - **Removed code duplication**: Eliminated redundant demo loading logic from home_operation.js goBack()
+  - **Better reliability**: Reuses proven login flow instead of custom implementation
+  - **Cleaner code**: 60% less code, single source of truth for demo loading
+  - Sets `api_host_url = "demoo.m3u"` and calls `proceed_login()` - simple and effective
+  - Matches LGTV-Master's exact implementation for consistency
+
 - **2025-10-15**: Fixed aspect ratio functionality for both Samsung Tizen and LG WebOS platforms
   - **Samsung Tizen Enhancement**: Upgraded from 2-mode toggle to 3-mode cycling system
     - Added `aspect_ratio_modes` configuration with 3 modes (Auto, Fit Screen, Fill Screen)

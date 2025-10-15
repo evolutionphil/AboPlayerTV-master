@@ -642,47 +642,8 @@ var home_page={
                 this.hoverToMainMenu(keys.menu_selection);
                 break;
             case "refresh_modal":
-                console.log('goBack called for refresh_modal');
                 $('.modal').modal('hide');
-                // Check if app has content loaded, if not load local demo
-                var hasContent = LiveModel.movies.length > 0 || 
-                                VodModel.movies.length > 0 || 
-                                SeriesModel.movies.length > 0;
-                
-                console.log('hasContent check:', hasContent, 'Live:', LiveModel.movies.length, 'VOD:', VodModel.movies.length, 'Series:', SeriesModel.movies.length);
-                
-                if(!hasContent) {
-                    // No content loaded, activate demo mode IMMEDIATELY
-                    console.log('No content loaded after Cancel - loading local demo immediately');
-                    showToast("Demo Mode", "Loading demo content...");
-                    
-                    settings.playlist_type = "type1";
-                    settings.playlist_url = "demoo.m3u";
-                    settings.saveSettings('playlist_type', 'type1', '');
-                    settings.saveSettings('playlist_url', 'demoo.m3u', '');
-                    
-                    // Load demo playlist immediately and stay on home page
-                    $.ajax({
-                        method:'get',
-                        url: 'demoo.m3u',
-                        success: function(data) {
-                            parseM3uResponse("type1", data);
-                            LiveModel.insertMoviesToCategories();
-                            VodModel.insertMoviesToCategories();
-                            SeriesModel.insertMoviesToCategories();
-                            showToast("Demo Loaded", "Demo content ready!");
-                            playlist_succeed = true;
-                        },
-                        error: function(error) {
-                            showToast("Error", "Failed to load demo playlist");
-                        }
-                    });
-                    
-                    this.hoverToMainMenu(keys.menu_selection);
-                } else {
-                    console.log('Content exists, going back to main menu');
-                    this.hoverToMainMenu(keys.menu_selection);
-                }
+                this.hoverToMainMenu(keys.menu_selection);
                 break;
             case "setting_modal":
             case "lock_account_selection":
