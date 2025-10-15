@@ -48,6 +48,19 @@ The application is a static web application built with HTML, CSS, and JavaScript
     -   Includes `demoo.m3u` for offline/trial mode.
     -   Automatic demo mode activation on network issues or content failure.
     -   Graceful degradation with "Continue Anyway (Demo Mode)" option.
+-   **MAC Address Fallback System:**
+    -   **Samsung Tizen:** 4-tier fallback (Ethernet → DUID → Tizen ID → Hardcoded)
+        -   Primary: Ethernet MAC via `tizen.systeminfo.getPropertyValue('ETHERNET_NETWORK')`
+        -   Secondary: DUID (Base64 encoded, converted to MAC format)
+        -   Tertiary: Tizen ID (Base64 encoded, converted to MAC format)
+        -   Final: Hardcoded MAC `52:54:00:12:34:59`
+    -   **LG WebOS:** 3-tier fallback (LGUDID → Ethernet → Hardcoded)
+        -   Primary: LGUDID via `luna://com.webos.service.sm`
+        -   Secondary: Ethernet MAC via `luna://com.webos.service.connectionmanager`
+        -   Final: Hardcoded MAC `52:54:00:12:34:59`
+    -   Helper function `stringToMacAddress()` converts device IDs to MAC format
+    -   Network error modal displays MAC address for troubleshooting
+    -   Implementation follows LGTV-Master reference for reliability
 
 **System Design Choices:**
 -   **Frontend Framework:** Vanilla JavaScript with jQuery for DOM manipulation.
