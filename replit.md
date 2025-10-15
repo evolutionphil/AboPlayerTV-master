@@ -14,7 +14,7 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Responsive Design:** Utilizes Bootstrap 4.4.1 for a consistent look and feel, adapted for TV interfaces.
 -   **Iconography:** Employs Font Awesome 5.12.1 for modern, semantic icons across all menus and settings.
 -   **Settings Menu Icons:** Modern icons for clarity (user-circle, tv, film, video, ban, palette, list-ul, sort-alpha-down, globe, shield-alt, highlighter, fill-drip, font, broom).
--   **VOD/Series Player Icons:** Intuitive playback controls (step-backward, undo, pause/play, redo, step-forward) and info buttons (info-circle, closed-captioning, volume-up, expand-arrows-alt, arrow-left).
+-   **VOD/Series Player Icons:** Intuitive playback controls (step-backward, undo, pause/play, redo, step-forward) and info buttons (info-circle, closed-captioning, cog/gear for subtitle settings, volume-up, expand-arrows-alt, arrow-left).
 -   **Video Info Modal:** Modern glass morphism design with dark gradient background, purple accents, smooth animations, and custom scrollbar for long descriptions.
 -   **Search Input:** Modern glass morphism design with purple gradient focus state, blur effects, and animated search icon.
 -   **Episode Cards:** Modern glass morphism carousel with purple gradient active states, scaled animations, gradient overlays, and enhanced depth effects.
