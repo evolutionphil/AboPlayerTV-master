@@ -60,9 +60,17 @@
             <div id="network-issue-container">
                 <div id="network-issue-content-wrapper">
                     <img id="network-issue-icon" src="images/network-issue.png">
+                    <div id="network-issue-title">
+                        Playlist Connection Error
+                    </div>
                     <div id="network-issue-text">
                         Sorry, network disconnected.
                         Please check your network state and try again.
+                    </div>
+                    <!-- MAC Address Display in Network Issue Modal -->
+                    <div id="network-issue-mac-container" style="text-align: center; margin: 12px 0; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
+                        <span style="color: #aaa; font-size: 12px;">MAC Address: </span>
+                        <span id="network-issue-mac-address" class="mac-address" style="color: #fff; font-size: 12px; font-family: monospace; font-weight: 500;">-----------------</span>
                     </div>
                     <div id="network-issue-btns-container">
                         <div class="network-issue-btn"
