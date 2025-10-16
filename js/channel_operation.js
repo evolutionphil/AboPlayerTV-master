@@ -455,7 +455,6 @@ var channel_page={
         if(this.full_screen_video){
             clearTimeout(this.full_screen_timer);
             $('#full-screen-information').slideDown();
-            $('#full-screen-channel-name').slideDown(400);
             var that=this;
             this.full_screen_timer=setTimeout(function () {
                 that.hideFullScreenInfo();
@@ -464,7 +463,6 @@ var channel_page={
     },
     hideFullScreenInfo:function(){
         $('#full-screen-information').slideUp();
-        $('#full-screen-channel-name').slideUp(400);
     },
     zoomInOut:function(){
         var keys=this.keys;
@@ -504,7 +502,7 @@ var channel_page={
         }catch (e){
         }
         this.current_channel_id=movie_id;
-        $('#full-screen-channel-name').text(current_movie.name);
+        $('#full-screen-channel-name-inline').text(current_movie.name);
         $('#full-screen-channel-logo').attr('src',current_movie.stream_icon);
         if(!checkForAdult(current_movie,'movie',LiveModel.categories))
             LiveModel.addRecentOrFavouriteMovie(current_movie,'recent');   // add to recent live channels

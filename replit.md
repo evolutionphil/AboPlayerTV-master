@@ -24,14 +24,16 @@ The application is a static web application built with HTML, CSS, and JavaScript
 **Technical Implementations & Feature Specifications:**
 -   **Content Delivery:** Supports live TV, movies, series, and local storage media (USB/internal).
 -   **Live TV Player Bar:** Compact horizontal bar design matching LGTV-Master reference.
-    -   **Layout:** 3-section flexbox (channel logo + program info + status indicators)
+    -   **Layout:** 3-section flexbox (LEFT: logo + channel name | CENTER: program info + progress | RIGHT: LIVE badge)
     -   **Position:** Bottom-centered bar (bottom: 1.5vh; left/right: 8vw)
     -   **Background:** Semi-transparent black with optional blur support
-    -   **Typography:** Compact sizes (24px title, 14px description)
+    -   **Channel Name:** Integrated inline with logo (20px, white, next to 60px logo)
+    -   **Typography:** Compact sizes (24px program title, 14px description)
     -   **Colors:** Purple gradient (#667eea → #764ba2) with cyan accents (#00d4ff)
     -   **Progress Bar:** Simple gradient bar with smooth transitions
     -   **Current/Next Programs:** Compact cards with left border accent
     -   **LIVE Badge:** Red gradient badge (top-right corner)
+    -   **Removed:** Separate top channel name element (now integrated in player bar)
 -   **Local File Browser / USB Storage:** Full local media support for TV storage and USB drives.
     -   Uses Tizen Filesystem API (`tizen.filesystem.listStorages()`, `resolve()`) for real device enumeration.
     -   **Platform Visibility:** Storage Play menu is hidden on LG WebOS (class `not-lg`) as LG doesn't support Tizen Filesystem API.
