@@ -1,0 +1,51 @@
+Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+VM10:1 [ProductInfo] webapis.avinfo.isHdrTvSupport has been overwritten for performance
+webapis.js:19725 handle writable property, false
+webapis.js:19725 run append func, kiSsTUE1Jx
+webapis.js:19725 Uwa of pepper type doesn't exist
+login_operation.js?v=1760107540:245 Samsung: Using Ethernet MAC address
+common.js?v=1760106720:856 encrypt_position_char=Q encrypt_length_position_char=u
+common.js?v=1760106720:872 enc_pos_char=Y enc_len_char=u
+asatv.app/images/upload/913975.png:1          Failed to load resource: the server responded with a status of 404 ()
+common.js?v=1760106720:319 Background image failed to load, using fallback: images/background1.png
+VodModel.js?v=1760107175:147 Object
+VM52:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+VM52:1 avplay_api.js adding listener for ID: [1]
+DevTools failed to load source map: Could not load content for file:///js/libs/popper.min.js.map: Unknown error
+DevTools failed to load source map: Could not load content for file:///js/libs/bootstrap.min.js.map: Unknown error
+DevTools failed to load source map: Could not load content for file:///css/libs/bootstrap.min.css.map: Unknown error
+DevTools failed to load source map: Could not load content for file:///css/libs/rangeslider.min.css.map: Unknown error
+home_operation.js?v=1760106720:1109 0
+home_operation.js?v=1760106720:1109 1
+VM52:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+vod_series_player.js:161 TypeError: this.detectTVCapabilities is not a function
+    at Object.setDisplayArea (player.js:191:41)
+    at Object.init (vod_series_player.js:159:26)
+    at Object.showMovie (vod_summary.js:138:27)
+    at HTMLButtonElement.onclick (index.html:863:51)
+    at Object.trigger (jquery.3.4.1.min.js:2:70678)
+    at HTMLButtonElement.<anonymous> (jquery.3.4.1.min.js:2:71222)
+    at Function.each (jquery.3.4.1.min.js:2:2777)
+    at k.fn.init.each (jquery.3.4.1.min.js:2:1419)
+    at k.fn.init.trigger (jquery.3.4.1.min.js:2:71198)
+    at Object.handleMenuClick (vod_summary.js:170:42)
+VM52:1 avplay_api.js adding listener for ID: [2]
+home_operation.js?v=1760106720:1109 6
+home_operation.js?v=1760106720:1109 7
+VM52:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+vod_series_player.js:161 TypeError: this.detectTVCapabilities is not a function
+    at Object.setDisplayArea (player.js:191:41)
+    at Object.init (vod_series_player.js:159:26)
+    at Object.showMovie (vod_summary.js:138:27)
+    at HTMLButtonElement.onclick (index.html:863:51)
+    at Object.trigger (jquery.3.4.1.min.js:2:70678)
+    at HTMLButtonElement.<anonymous> (jquery.3.4.1.min.js:2:71222)
+    at Function.each (jquery.3.4.1.min.js:2:2777)
+    at k.fn.init.each (jquery.3.4.1.min.js:2:1419)
+    at k.fn.init.trigger (jquery.3.4.1.min.js:2:71198)
+    at Object.handleMenuClick (vod_summary.js:170:42)
+VM52:1 avplay_api.js adding listener for ID: [3]
+vod_series_player.js:1354 here clicked true info_bar
+vod_series_player.js:715 info_bar in subtitle audio modal
+VM52:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+VM52:1 avplay_api.js adding listener for ID: [4]

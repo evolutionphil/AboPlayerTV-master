@@ -31,6 +31,50 @@ function initPlayer() {
                 ]
             },
             current_aspect_ratio_index: 0,
+            tv_capabilities: null,
+            detectTVCapabilities: function() {
+                if (this.tv_capabilities) {
+                    return this.tv_capabilities;
+                }
+                
+                var capabilities = {
+                    resolution: { width: 1920, height: 1080 },
+                    hdrSupport: false,
+                    uhd4k: false,
+                    uhd8k: false,
+                    apiVersion: 'unknown'
+                };
+                
+                try {
+                    if (typeof tizen !== 'undefined' && tizen.tvwindow) {
+                        var tvResolution = tizen.tvwindow.getVideoResolution();
+                        capabilities.resolution.width = tvResolution.width;
+                        capabilities.resolution.height = tvResolution.height;
+                        
+                        if (tvResolution.width >= 3840) {
+                            capabilities.uhd4k = true;
+                        }
+                        if (tvResolution.width >= 7680) {
+                            capabilities.uhd8k = true;
+                        }
+                    }
+                } catch (e) {
+                }
+                
+                try {
+                    if (typeof webapis !== 'undefined' && webapis.avinfo) {
+                        capabilities.apiVersion = 'webapis';
+                        try {
+                            capabilities.hdrSupport = webapis.avinfo.isHdrTvSupport();
+                        } catch (e) {
+                        }
+                    }
+                } catch (e) {
+                }
+                
+                this.tv_capabilities = capabilities;
+                return capabilities;
+            },
             init:function(id, parent_id) {
                 this.id=id;
                 this.parent_id=parent_id;
@@ -47,6 +91,9 @@ function initPlayer() {
                 $('#'+parent_id).find('.subtitle-container').hide();
                 $('#' + parent_id).find('.video-reconnect-message').hide();
                 this.full_screen_state=0;
+                
+                this.detectTVCapabilities();
+                
                 try{
                     webapis.avplay.setDisplayMethod('PLAYER_DISPLAY_MODE_AUTO_ASPECT_RATIO');
                 }catch (e) {
