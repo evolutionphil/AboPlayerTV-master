@@ -164,7 +164,9 @@ function initPlayer() {
                 $('#' + this.parent_id).find('.video-reconnect-message').hide();
             },
             tryReconnect: function () {
-                if (current_route !== 'channel-page' && !(current_route=='home-page' && home_page.current_preview_type==='live'))
+                if (current_route !== 'channel-page' && 
+                    !(current_route=='home-page' && home_page.current_preview_type==='live') &&
+                    current_route !== 'vod-series-player-video')
                     return;
                 clearTimeout(this.reconnect_timer);
                 this.reconnect_count += 1;
