@@ -62,6 +62,8 @@ The application is a static web application built with HTML, CSS, and JavaScript
     -   **LG WebOS:** 3-mode cycling (Letterbox, Zoom, Stretch) using CSS `object-fit`.
 -   **Subtitle System (LGTV-Master Implementation):**
     -   **Exact LGTV-Master Logic:** Subtitle workflow now uses identical implementation from LGTV-Master reference for proven reliability.
+    -   **Universal Platform Support:** Enhanced subtitle workflow now works on BOTH Samsung Tizen and LG WebOS platforms for API and native subtitles.
+    -   **Language Label Support:** Subtitles display proper language names (English, Spanish, French, etc.) instead of generic "Subtitle 1, Subtitle 2" labels.
     -   **Performance Optimized Rendering:** `renderEnhancedSubtitles()` with subtitle caching (10-min TTL), batch DOM updates via requestAnimationFrame, and event delegation for smooth performance.
     -   **Enhanced Track Display:** `makeEnhancedMediaTrackElement()` creates properly formatted subtitle options with label support.
     -   **Event Delegation:** Throttled hover events (60fps) and optimized click handlers via `setupSubtitleEventDelegation()`.

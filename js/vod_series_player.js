@@ -1146,7 +1146,7 @@ var vod_series_player = {
                 .find("input[type=radio]:checked")
                 .val();
             
-            if (platform !== "samsung" && media_player.subtitles && media_player.subtitles.length > 0) {
+            if (media_player.subtitles && media_player.subtitles.length > 0) {
                 $("#subtitle-loader-container").show();
                 
                 EnhancedSubtitleWorkflow.selectSubtitle(
