@@ -312,10 +312,17 @@ var SubtitleFetcher = {
             timeout: 10000, // 10 second timeout
             success: function(result) {
                 if(result.status === 'success' && result.subtitles && result.subtitles.length > 0) {
-                    // Mark subtitles as API source
-                    result.subtitles.forEach(function(subtitle) {
+                    // Mark subtitles as API source and create proper labels
+                    result.subtitles.forEach(function(subtitle, index) {
                         subtitle.source = 'api';
                         subtitle.apiData = subtitle;
+                        
+                        // Create label from language property (ExoApp API format)
+                        if(!subtitle.label && subtitle.language) {
+                            subtitle.label = subtitle.language;
+                        } else if(!subtitle.label) {
+                            subtitle.label = 'Subtitle ' + (index + 1);
+                        }
                     });
                     
                     if(successCallback) {
