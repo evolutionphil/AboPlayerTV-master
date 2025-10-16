@@ -80,12 +80,14 @@ function initPlayer() {
                             $('#' + that.parent_id).find('.video-reconnect-message').hide();
                             console.log('here video loaded');
                             $('#'+that.parent_id).find('.video-error').hide();
+                            $('#'+that.parent_id).find('.video-loader').hide();
                             that.state = that.STATES.PLAYING;
                             webapis.avplay.play();
-                            try{
+                            
+                            that.setDisplayArea();
+                            
+                            if(current_route==='vod-series-player-video'){
                                 that.full_screen_state=1;
-                                webapis.avplay.setDisplayMethod('PLAYER_DISPLAY_MODE_FULL_SCREEN');
-                            }catch (e) {
                             }
                             $('#'+that.parent_id).find('.video-total-time').text(that.formatTime(webapis.avplay.getDuration()/1000));
                             $('#'+that.parent_id).find('.video-error').hide();
