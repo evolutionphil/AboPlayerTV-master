@@ -183,10 +183,11 @@ function initPlayer() {
                 }, 4000)
             },
             setDisplayArea:function() {
-                var top_position=$(this.videoObj).offset().top;
-                var left_position=$(this.videoObj).offset().left;
-                var width=parseInt($(this.videoObj).width())
-                var height=parseInt($(this.videoObj).height());
+                var $parent = $(this.videoObj).parent();
+                var top_position = $parent.offset().top;
+                var left_position = $parent.offset().left;
+                var width = parseInt($parent.width());
+                var height = parseInt($parent.height());
                 console.log(top_position,left_position,width,height);
                 // console.log(this.videoObj);
                 webapis.avplay.setDisplayRect(left_position,top_position,width,height);
