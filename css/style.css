@@ -625,13 +625,34 @@
     color:#ccc;
 }
 
+/* Premium LIVE Badge with Glow Effect */
 .video-resolution {
     position: fixed;
-    bottom: 20px;
-    right: 30px;
+    bottom: 50px;
+    right: 60px;
     color: #fff;
-    font-size: 30px;
+    font-size: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
     letter-spacing: 3px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, 
+        rgba(236, 72, 153, 0.95) 0%,
+        rgba(249, 115, 22, 0.9) 100%
+    );
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 
+        0 0 30px rgba(236, 72, 153, 0.65),
+        0 0 60px rgba(249, 115, 22, 0.4),
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    animation: glowPulse 2s ease-in-out infinite;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.6);
 }
 .video-loader{
     position:absolute;
