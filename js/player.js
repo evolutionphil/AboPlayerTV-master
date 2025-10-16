@@ -183,14 +183,49 @@ function initPlayer() {
                 }, 4000)
             },
             setDisplayArea:function() {
-                var $parent = $(this.videoObj).parent();
-                var top_position = $parent.offset().top;
-                var left_position = $parent.offset().left;
-                var width = parseInt($parent.width());
-                var height = parseInt($parent.height());
-                console.log(top_position,left_position,width,height);
-                // console.log(this.videoObj);
-                webapis.avplay.setDisplayRect(left_position,top_position,width,height);
+                var that = this;
+                var capabilities = this.detectTVCapabilities();
+                var avplayBaseWidth = capabilities.resolution.width;
+                var avplayBaseHeight = capabilities.resolution.height;
+                
+                // Use requestAnimationFrame to wait for CSS to apply
+                requestAnimationFrame(function() {
+                    if (that.full_screen_state === 1) {
+                        try {
+                            // CRITICAL: Force fullscreen display mode
+                            webapis.avplay.setDisplayMethod('PLAYER_DISPLAY_MODE_FULL_SCREEN');
+                        } catch (e) {
+                        }
+                        
+                        try {
+                            // Use detected resolution (works on 1080p, 4K, 8K)
+                            webapis.avplay.setDisplayRect(0, 0, avplayBaseWidth, avplayBaseHeight);
+                        } catch (e) {
+                        }
+                    } else {
+                        // PREVIEW MODE: Use video element dimensions (not parent)
+                        var top_position=$(that.videoObj).offset().top;
+                        var left_position=$(that.videoObj).offset().left;
+                        var width=parseInt($(that.videoObj).width())
+                        var height=parseInt($(that.videoObj).height());
+                    
+                        var ratioX = avplayBaseWidth / window.document.documentElement.clientWidth;
+                        var ratioY = avplayBaseHeight / window.document.documentElement.clientHeight;
+                        
+                        var scaledLeft = Math.round(left_position * ratioX);
+                        var scaledTop = Math.round(top_position * ratioY);
+                        var scaledWidth = Math.round(width * ratioX);
+                        var scaledHeight = Math.round(height * ratioY);
+                        
+                        console.log(scaledTop,scaledLeft,scaledWidth,scaledHeight);
+                        try {
+                            webapis.avplay.setDisplayRect(scaledLeft, scaledTop, scaledWidth, scaledHeight);
+                        } catch (e) {
+                        }
+                    }
+                    
+                    channel_page.toggleFavoriteAndRecentBottomOptionVisbility();
+                });
             },
             toggleScreenRatio:function(){
                 try{
