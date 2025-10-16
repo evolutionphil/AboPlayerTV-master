@@ -79,6 +79,8 @@ The application is a static web application built with HTML, CSS, and JavaScript
     -   **UI Locking Mechanism:** Prevents rapid key press corruption with configurable lock duration (default 800ms).
     -   **Display Area Scheduling:** Debounced setDisplayArea() calls for smooth channel transitions (default 250ms delay).
     -   **Null Safety:** Fixed vod_featured_movies array indexing bug to prevent crashes.
+    -   **TV Capabilities Detection:** Added `detectTVCapabilities()` function to Samsung media player for proper resolution detection (1080p/4K/8K) and HDR support checking.
+    -   **Channel Page UI Control:** Added `toggleFavoriteAndRecentBottomOptionVisbility()` function to properly show/hide favorite/recent buttons based on fullscreen state.
     -   Content guards to prevent navigation to empty channels.
     -   TV API feature detection (`typeof webapis` and `tizen`).
     -   Cache management for reliable updates.

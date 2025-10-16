@@ -1,0 +1,426 @@
+i.picsum.photos/id/1020/500/300.jpg:1          Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+VM10:1 [ProductInfo] webapis.avinfo.isHdrTvSupport has been overwritten for performance
+webapis.js:19725 handle writable property, false
+webapis.js:19725 run append func, kiSsTUE1Jx
+webapis.js:19725 Uwa of pepper type doesn't exist
+login_operation.js?v=1760107540:245 Samsung: Using Ethernet MAC address
+common.js?v=1760106720:856 encrypt_position_char=Q encrypt_length_position_char=u
+common.js?v=1760106720:872 enc_pos_char=Y enc_len_char=u
+asatv.app/images/upload/913975.png:1          Failed to load resource: the server responded with a status of 404 ()
+common.js?v=1760106720:319 Background image failed to load, using fallback: images/background1.png
+DevTools failed to load source map: Could not load content for file:///js/libs/popper.min.js.map: Unknown error
+DevTools failed to load source map: Could not load content for file:///js/libs/bootstrap.min.js.map: Unknown error
+DevTools failed to load source map: Could not load content for file:///css/libs/bootstrap.min.css.map: Unknown error
+DevTools failed to load source map: Could not load content for file:///css/libs/rangeslider.min.css.map: Unknown error
+VodModel.js?v=1760107175:147 {}
+VM10:1 [ProductInfo] ProductInfoManager_isHdrTvSupport : true
+VM53:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+init @ home_operation.js?v=1760106720:126
+goToHomePage @ login_operation.js?v=1760107540:24
+(anonymous) @ login_operation.js?v=1760107540:683
+e @ jquery.3.4.1.min.js:2
+t @ jquery.3.4.1.min.js:2
+setTimeout (async)
+(anonymous) @ jquery.3.4.1.min.js:2
+c @ jquery.3.4.1.min.js:2
+fireWith @ jquery.3.4.1.min.js:2
+fire @ jquery.3.4.1.min.js:2
+c @ jquery.3.4.1.min.js:2
+fireWith @ jquery.3.4.1.min.js:2
+(anonymous) @ jquery.3.4.1.min.js:2
+c @ jquery.3.4.1.min.js:2
+fireWith @ jquery.3.4.1.min.js:2
+l @ jquery.3.4.1.min.js:2
+(anonymous) @ jquery.3.4.1.min.js:2
+VM53:1 avplay_api.js adding listener for ID: [1]
+VM53:1 Entered AVPlayManager.prepareAsync()
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+playAsync @ player.js:119
+(anonymous) @ home_operation.js?v=1760106720:132
+setTimeout (async)
+init @ home_operation.js?v=1760106720:131
+goToHomePage @ login_operation.js?v=1760107540:24
+(anonymous) @ login_operation.js?v=1760107540:683
+e @ jquery.3.4.1.min.js:2
+t @ jquery.3.4.1.min.js:2
+setTimeout (async)
+(anonymous) @ jquery.3.4.1.min.js:2
+c @ jquery.3.4.1.min.js:2
+fireWith @ jquery.3.4.1.min.js:2
+fire @ jquery.3.4.1.min.js:2
+c @ jquery.3.4.1.min.js:2
+fireWith @ jquery.3.4.1.min.js:2
+(anonymous) @ jquery.3.4.1.min.js:2
+c @ jquery.3.4.1.min.js:2
+fireWith @ jquery.3.4.1.min.js:2
+l @ jquery.3.4.1.min.js:2
+(anonymous) @ jquery.3.4.1.min.js:2
+player.js:128 here video loaded
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+(anonymous) @ player.js:134
+NativeManager.callIfPossible @ VM5:1
+callback @ VM53:1
+(anonymous) @ VM5:1
+setTimeout (async)
+(anonymous) @ VM5:1
+VM53:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+VM53:1 avplay_api.js adding listener for ID: [2]
+VM53:1 Entered AVPlayManager.prepareAsync()
+player.js:271 0 1152 768 432
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+showMovie @ channel_operation.js?v=1760106720:497
+init @ channel_operation.js?v=1760106720:167
+showSubMenus @ home_operation.js?v=1760106720:295
+onclick @ index.html:143
+trigger @ jquery.3.4.1.min.js:2
+(anonymous) @ jquery.3.4.1.min.js:2
+each @ jquery.3.4.1.min.js:2
+each @ jquery.3.4.1.min.js:2
+trigger @ jquery.3.4.1.min.js:2
+handleMenuClick @ home_operation.js?v=1760106720:1640
+HandleKey @ home_operation.js?v=1760106720:1738
+(anonymous) @ main.js?v=1760106720:75
+player.js:271 0 1152 768 432
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+playAsync @ player.js:119
+showMovie @ channel_operation.js?v=1760106720:501
+init @ channel_operation.js?v=1760106720:167
+showSubMenus @ home_operation.js?v=1760106720:295
+onclick @ index.html:143
+trigger @ jquery.3.4.1.min.js:2
+(anonymous) @ jquery.3.4.1.min.js:2
+each @ jquery.3.4.1.min.js:2
+each @ jquery.3.4.1.min.js:2
+trigger @ jquery.3.4.1.min.js:2
+handleMenuClick @ home_operation.js?v=1760106720:1640
+HandleKey @ home_operation.js?v=1760106720:1738
+(anonymous) @ main.js?v=1760106720:75
+player.js:128 here video loaded
+player.js:271 0 1152 768 432
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+(anonymous) @ player.js:134
+NativeManager.callIfPossible @ VM5:1
+callback @ VM53:1
+(anonymous) @ VM5:1
+setTimeout (async)
+(anonymous) @ VM5:1
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+zoomInOut @ channel_operation.js?v=1760106720:480
+handleMenuClick @ channel_operation.js?v=1760106720:787
+HandleKey @ channel_operation.js?v=1760106720:885
+(anonymous) @ main.js?v=1760106720:78
+player.js:271 0 1152 768 432
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+zoomInOut @ channel_operation.js?v=1760106720:480
+handleMenuClick @ channel_operation.js?v=1760106720:781
+HandleKey @ channel_operation.js?v=1760106720:885
+(anonymous) @ main.js?v=1760106720:78
+VM53:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+VM53:1 avplay_api.js adding listener for ID: [3]
+VM53:1 Entered AVPlayManager.prepareAsync()
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+showMovie @ channel_operation.js?v=1760106720:497
+handleMenuClick @ channel_operation.js?v=1760106720:790
+HandleKey @ channel_operation.js?v=1760106720:885
+(anonymous) @ main.js?v=1760106720:78
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+playAsync @ player.js:119
+showMovie @ channel_operation.js?v=1760106720:501
+handleMenuClick @ channel_operation.js?v=1760106720:790
+HandleKey @ channel_operation.js?v=1760106720:885
+(anonymous) @ main.js?v=1760106720:78
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+zoomInOut @ channel_operation.js?v=1760106720:480
+handleMenuClick @ channel_operation.js?v=1760106720:787
+HandleKey @ channel_operation.js?v=1760106720:885
+(anonymous) @ main.js?v=1760106720:78
+player.js:128 here video loaded
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+(anonymous) @ player.js:134
+NativeManager.callIfPossible @ VM5:1
+callback @ VM53:1
+(anonymous) @ VM5:1
+setTimeout (async)
+(anonymous) @ VM5:1
+player.js:271 0 1152 768 432
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+zoomInOut @ channel_operation.js?v=1760106720:480
+handleMenuClick @ channel_operation.js?v=1760106720:781
+HandleKey @ channel_operation.js?v=1760106720:885
+(anonymous) @ main.js?v=1760106720:78
+VM53:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+zoomInOut @ channel_operation.js?v=1760106720:480
+Exit @ channel_operation.js?v=1760106720:226
+goBack @ channel_operation.js?v=1760106720:200
+HandleKey @ channel_operation.js?v=1760106720:900
+(anonymous) @ main.js?v=1760106720:78
+VM53:1 avplay_api.js adding listener for ID: [4]
+VM53:1 Entered AVPlayManager.prepareAsync()
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+(anonymous) @ home_operation.js?v=1760106720:184
+setTimeout (async)
+reEnter @ home_operation.js?v=1760106720:182
+Exit @ channel_operation.js?v=1760106720:233
+goBack @ channel_operation.js?v=1760106720:200
+HandleKey @ channel_operation.js?v=1760106720:900
+(anonymous) @ main.js?v=1760106720:78
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+playAsync @ player.js:119
+(anonymous) @ home_operation.js?v=1760106720:188
+setTimeout (async)
+reEnter @ home_operation.js?v=1760106720:182
+Exit @ channel_operation.js?v=1760106720:233
+goBack @ channel_operation.js?v=1760106720:200
+HandleKey @ channel_operation.js?v=1760106720:900
+(anonymous) @ main.js?v=1760106720:78
+player.js:128 here video loaded
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+(anonymous) @ player.js:134
+NativeManager.callIfPossible @ VM5:1
+callback @ VM53:1
+(anonymous) @ VM5:1
+setTimeout (async)
+(anonymous) @ VM5:1
+VM53:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+VM53:1 avplay_api.js adding listener for ID: [5]
+VM53:1 Entered AVPlayManager.prepareAsync()
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+showPreviewVideo @ home_operation.js?v=1760106720:1289
+handleMenuClick @ home_operation.js?v=1760106720:1654
+HandleKey @ home_operation.js?v=1760106720:1738
+(anonymous) @ main.js?v=1760106720:75
+player.js:271 0 0 639 359
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+playAsync @ player.js:119
+showPreviewVideo @ home_operation.js?v=1760106720:1293
+handleMenuClick @ home_operation.js?v=1760106720:1654
+HandleKey @ home_operation.js?v=1760106720:1738
+(anonymous) @ main.js?v=1760106720:75
+VM53:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+VM53:1 avplay_api.js adding listener for ID: [6]
+VM53:1 Entered AVPlayManager.prepareAsync()
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+init @ vod_series_player.js:159
+showPreviewVideo @ home_operation.js?v=1760106720:1256
+handleMenuClick @ home_operation.js?v=1760106720:1654
+HandleKey @ home_operation.js?v=1760106720:1738
+(anonymous) @ main.js?v=1760106720:75
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+playAsync @ player.js:119
+init @ vod_series_player.js:164
+showPreviewVideo @ home_operation.js?v=1760106720:1256
+handleMenuClick @ home_operation.js?v=1760106720:1654
+HandleKey @ home_operation.js?v=1760106720:1738
+(anonymous) @ main.js?v=1760106720:75
+vod_series_player.js:1354 here clicked true control_bar
+player.js:191 WebAPIException {code: 11, name: 'InvalidStateError', message: 'PLAYER_ERROR_INVALID_STATE', stack: 'InvalidStateError: PLAYER_ERROR_INVALID_STATE\n    …ger (file:///js/libs/jquery.3.4.1.min.js:2:71198)'}
+player.js:128 here video loaded
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+(anonymous) @ player.js:134
+NativeManager.callIfPossible @ VM5:1
+callback @ VM53:1
+(anonymous) @ VM5:1
+setTimeout (async)
+(anonymous) @ VM5:1
+vod_series_player.js:1354 here clicked true info_bar
+vod_series_player.js:467 63.415
+5vod_series_player.js:1354 here clicked true info_bar
+vod_series_player.js:715 info_bar in subtitle audio modal
+vod_series_player.js:1652 0 1
+vod_series_player.js:1354 here clicked false subtitle_audio_selection_modal
+home_operation.js?v=1760106720:1109 0
+home_operation.js?v=1760106720:1109 1
+home_operation.js?v=1760106720:1109 6
+home_operation.js?v=1760106720:1109 7
+home_operation.js?v=1760106720:1109 12
+home_operation.js?v=1760106720:1109 17
+home_operation.js?v=1760106720:1109 22
+home_operation.js?v=1760106720:1109 27
+home_operation.js?v=1760106720:1109 26
+home_operation.js?v=1760106720:1109 31
+home_operation.js?v=1760106720:1109 26
+home_operation.js?v=1760106720:1109 25
+VM53:1 in getErrorObjectLocal code:11,name:InvalidStateError NaNmessage:PLAYER_ERROR_INVALID_STATE
+VM53:1 avplay_api.js adding listener for ID: [7]
+VM53:1 Entered AVPlayManager.prepareAsync()
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+init @ vod_series_player.js:159
+showMovie @ vod_summary.js:138
+onclick @ index.html:863
+trigger @ jquery.3.4.1.min.js:2
+(anonymous) @ jquery.3.4.1.min.js:2
+each @ jquery.3.4.1.min.js:2
+each @ jquery.3.4.1.min.js:2
+trigger @ jquery.3.4.1.min.js:2
+handleMenuClick @ vod_summary.js:170
+HandleKey @ vod_summary.js:192
+(anonymous) @ main.js?v=1760106720:84
+player.js:271 0 0 1920 1080
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+playAsync @ player.js:119
+init @ vod_series_player.js:164
+showMovie @ vod_summary.js:138
+onclick @ index.html:863
+trigger @ jquery.3.4.1.min.js:2
+(anonymous) @ jquery.3.4.1.min.js:2
+each @ jquery.3.4.1.min.js:2
+each @ jquery.3.4.1.min.js:2
+trigger @ jquery.3.4.1.min.js:2
+handleMenuClick @ vod_summary.js:170
+HandleKey @ vod_summary.js:192
+(anonymous) @ main.js?v=1760106720:84
+player.js:128 here video loaded
+VM53:1 Entering setDisplayRect
+player.js:278 Uncaught TypeError: channel_page.toggleFavoriteAndRecentBottomOptionVisbility is not a function
+    at player.js:278:34
+(anonymous) @ player.js:278
+requestAnimationFrame (async)
+setDisplayArea @ player.js:243
+(anonymous) @ player.js:134
+NativeManager.callIfPossible @ VM5:1
+callback @ VM53:1
+(anonymous) @ VM5:1
+setTimeout (async)
+(anonymous) @ VM5:1
+vod_series_player.js:1354 here clicked true info_bar
+vod_series_player.js:1354 here clicked false info_bar
+2vod_series_player.js:1354 here clicked true info_bar
+vod_series_player.js:715 info_bar in subtitle audio modal
