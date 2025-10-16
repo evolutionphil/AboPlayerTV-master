@@ -143,7 +143,7 @@
     left: 8vw;
     right: 8vw;
     /* Three-section flexbox layout */
-    display: flex !important;
+    display: none;
     flex-direction: row;
     align-items: center;
     gap: 16px;
@@ -153,17 +153,11 @@
     /* Subtle border for definition */
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
-    /* Smooth transitions */
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-    /* Start hidden */
-    opacity: 0;
-    visibility: hidden;
 }
 
-/* Show/hide with visibility instead of display */
-#full-screen-information.visible {
-    opacity: 1;
-    visibility: visible;
+/* When visible (jQuery slideDown sets display:block, we override to flex) */
+#full-screen-information[style*="display: block"] {
+    display: flex !important;
 }
 
 /* Enhanced styling for browsers that support blur */
