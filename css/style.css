@@ -576,12 +576,13 @@
     font-size: 0;
     width: 80%;
     margin: 0 auto;
+    white-space: nowrap;
 }
 .video-info-btn {
     vertical-align: middle;
     display: inline-block;
     text-align: center;
-    width: 20%;
+    width: 16.666%;
 }
 .video-info-icon {
     width: 60px;
