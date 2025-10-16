@@ -60,7 +60,12 @@ The application is a static web application built with HTML, CSS, and JavaScript
 -   **Aspect Ratio Functionality:**
     -   **Samsung Tizen:** 3-mode cycling (Auto, Fit Screen, Fill Screen) using `webapis.avplay.setDisplayMethod()`.
     -   **LG WebOS:** 3-mode cycling (Letterbox, Zoom, Stretch) using CSS `object-fit`.
--   **Subtitle System:**
+-   **Subtitle System (LGTV-Master Implementation):**
+    -   **Exact LGTV-Master Logic:** Subtitle workflow now uses identical implementation from LGTV-Master reference for proven reliability.
+    -   **Performance Optimized Rendering:** `renderEnhancedSubtitles()` with subtitle caching (10-min TTL), batch DOM updates via requestAnimationFrame, and event delegation for smooth performance.
+    -   **Enhanced Track Display:** `makeEnhancedMediaTrackElement()` creates properly formatted subtitle options with label support.
+    -   **Event Delegation:** Throttled hover events (60fps) and optimized click handlers via `setupSubtitleEventDelegation()`.
+    -   **Subtitle Caching:** Memory-efficient subtitle cache with automatic cleanup of expired entries (10-minute max age).
     -   **Live Customization:** Modern glass morphism right-side panel for subtitle settings (position, size, background) accessible during playback with real-time preview.
     -   **Gear Icon Access:** Direct access to subtitle settings via gear icon (fa-cog) on VOD/series player bar.
     -   **Right-Side Panel Design:** 350px wide control panel positioned on right side (matching LGTV-Master reference), not full-screen overlay.

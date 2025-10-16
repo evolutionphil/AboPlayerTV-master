@@ -763,10 +763,12 @@ var vod_series_player = {
                             that.subtitle_loading = false;
                             that.subtitle_loaded = true;
                             $("#subtitle-loader-container").hide();
+                            
+                            media_player.subtitles = subtitles;
+                            
                             if (subtitles && subtitles.length > 0) {
-                                that.renderSubtitles(kind, subtitles);
+                                that.renderEnhancedSubtitles(kind, subtitles);
                             } else {
-                                media_player.subtitles = [];
                                 that.showEmptySubtitleMessage(kind);
                             }
                         },
@@ -778,13 +780,13 @@ var vod_series_player = {
                         }
                     );
                 } else {
-                    if (media_player.subtitles.length > 0) {
-                        this.renderSubtitles(kind, media_player.subtitles);
+                    if (media_player.subtitles && media_player.subtitles.length > 0) {
+                        this.renderEnhancedSubtitles(kind, media_player.subtitles);
                     } else this.showEmptySubtitleMessage(kind);
                 }
             } else {
                 subtitles = media_player.getSubtitleOrAudioTrack(kind);
-                if (subtitles.length > 0) this.renderSubtitles(kind, subtitles);
+                if (subtitles.length > 0) this.renderEnhancedSubtitles(kind, subtitles);
                 else {
                     if (kind === "TEXT")
                         showToast("Sorry", "No Subtitles exists");
@@ -835,6 +837,167 @@ var vod_series_player = {
             "#subtitle-selection-modal .modal-btn-2",
         );
         $(subtitle_audio_modal_buttons).removeClass("active");
+    },
+    
+    makeEnhancedMediaTrackElement: function(items, kind) {
+        var htmlContent = "";
+        var that = this;
+        
+        items.forEach(function(item, index) {
+            var label = item.label || 'Track ' + (index + 1);
+            var language = item.language || 'unknown';
+            var source = item.source || 'api';
+            
+            htmlContent += 
+                '<div class="modal-operation-menu-type-2 subtitle-option"\
+                    onmouseenter="vod_series_player.hoverSubtitleAudioModal(' + index + ')" \
+                    onclick="vod_series_player.handleMenuClick()" \
+                >\
+                    <input class="magic-radio" type="radio" name="radio"\
+                        value="' + index + '">\
+                    <label>' + label + '</label>\
+                </div>';
+        });
+        
+        return htmlContent;
+    },
+    
+    subtitleCache: {},
+    
+    cleanSubtitleCache: function() {
+        var now = Date.now();
+        var maxAge = 10 * 60 * 1000;
+        
+        for(var key in this.subtitleCache) {
+            if(this.subtitleCache.hasOwnProperty(key)) {
+                var entry = this.subtitleCache[key];
+                if(now - entry.timestamp > maxAge) {
+                    delete this.subtitleCache[key];
+                }
+            }
+        }
+    },
+    
+    getCachedSubtitles: function(contentId) {
+        if(contentId && this.subtitleCache[contentId]) {
+            var entry = this.subtitleCache[contentId];
+            var maxAge = 10 * 60 * 1000;
+            
+            if(Date.now() - entry.timestamp < maxAge) {
+                return entry;
+            } else {
+                delete this.subtitleCache[contentId];
+            }
+        }
+        return null;
+    },
+    
+    renderEnhancedSubtitles: function(kind, subtitles, contentId) {
+        var keys = this.keys;
+        if(keys.focused_part === 'resume_bar') {
+            $('#subtitle-selection-modal').modal('hide');
+            return;
+        }
+        
+        var cachedData = null;
+        if(contentId) {
+            cachedData = this.getCachedSubtitles(contentId);
+            if(cachedData && cachedData.kind === kind) {
+                subtitles = cachedData.subtitles;
+            }
+        }
+        
+        if(contentId && subtitles && !cachedData) {
+            this.cleanSubtitleCache();
+            
+            this.subtitleCache[contentId] = {
+                subtitles: subtitles,
+                kind: kind,
+                timestamp: Date.now()
+            };
+        }
+        
+        if(kind == "TEXT")
+            $("#subtitle-modal-title").text("Subtitle");
+        else
+            $("#subtitle-modal-title").text("Audio Track");
+            
+        keys.focused_part = "subtitle_audio_selection_modal";
+        
+        var container = document.getElementById('subtitle-selection-container');
+        container.style.display = 'none';
+        
+        var htmlContent = this.makeEnhancedMediaTrackElement(subtitles, kind);
+        container.innerHTML = htmlContent;
+        
+        var that = this;
+        requestAnimationFrame(function() {
+            container.style.display = '';
+            
+            that.setupSubtitleEventDelegation();
+            
+            $('#subtitle-selection-modal').addClass('show').modal('show');
+            
+            var subtitle_menus = $('.subtitle-option');
+            that.subtitle_audio_menus = subtitle_menus;
+            
+            that.setActiveSubtitleOption(0, subtitle_menus);
+            keys.subtitle_audio_selection_modal = 0;
+            
+            var current_selected_index = kind === "TEXT" ? that.current_subtitle_index : that.current_audio_track_index;
+            
+            if(current_selected_index !== undefined && current_selected_index !== null && 
+               current_selected_index >= 0 && current_selected_index < subtitle_menus.length) {
+                that.setActiveSubtitleOption(current_selected_index, subtitle_menus);
+                keys.subtitle_audio_selection_modal = current_selected_index;
+            }
+        });
+    },
+    
+    setActiveSubtitleOption: function(index, options) {
+        var that = this;
+        requestAnimationFrame(function() {
+            options.removeClass('active selected focused');
+            options.find('input').prop('checked', false);
+            
+            if(index >= 0 && index < options.length) {
+                $(options[index]).addClass('active focused');
+                $(options[index]).find('input').prop('checked', true);
+            }
+        });
+    },
+    
+    setupSubtitleEventDelegation: function() {
+        var that = this;
+        var container = $('#subtitle-selection-container');
+        
+        container.off('focus mouseenter click', '.subtitle-option');
+        
+        var lastUpdate = 0;
+        var throttleDelay = 16;
+        
+        container.on('focus mouseenter', '.subtitle-option', function(e) {
+            e.preventDefault();
+            
+            var now = Date.now();
+            if(now - lastUpdate < throttleDelay) {
+                return;
+            }
+            lastUpdate = now;
+            
+            var index = $('.subtitle-option').index(this);
+            
+            requestAnimationFrame(function() {
+                that.hoverSubtitleAudioModal(index);
+            });
+        });
+        
+        container.on('click', '.subtitle-option', function(e) {
+            e.preventDefault();
+            var index = $('.subtitle-option').index(this);
+            that.hoverSubtitleAudioModal(index);
+            that.confirmSubtitle();
+        });
     },
     showEmptySubtitleMessage: function (kind) {
         $("#subtitle-selection-modal").modal("hide");
