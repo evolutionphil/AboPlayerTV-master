@@ -416,6 +416,10 @@ var home_page={
         $('#refresh-modal').modal('show');
         this.hoverRefreshModal(0);
     },
+    showRefreshModalFromSettings:function(){
+        $('#settings-modal').modal('hide');
+        this.showRefreshModal();
+    },
     showParentControlModal:function(){
         $('#parent-account-valid-error').hide();
         $('#settings-modal').modal('hide');
