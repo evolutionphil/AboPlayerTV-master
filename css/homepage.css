@@ -58,6 +58,26 @@
     border-bottom-right-radius: 40px;
 }
 
+.home-category-menu-item {
+    padding-right: 95px;
+    position: relative;
+}
+
+.menu-item-category-name {
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.menu-item-movies-count {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 25px;
+    font-weight: 500;
+}
+
 #home-page-right-part-content-1{
     overflow: hidden;
 }
