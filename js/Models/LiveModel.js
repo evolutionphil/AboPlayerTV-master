@@ -65,6 +65,21 @@ var LiveModel={
     setMovies:function(movies){
         if(typeof movies=='undefined' || movies==='' || movies===null)
             movies=[];
+            
+        // Check if API returns blocked content information for LIVE CHANNELS
+        console.log('=== API LIVE CHANNELS DATA CHECK ===');
+        console.log('Total channels received:', movies.length);
+        if(movies.length > 0) {
+            console.log('First channel sample:', movies[0]);
+            console.log('Checking for blocked fields:', {
+                blocked: movies[0].blocked,
+                is_blocked: movies[0].is_blocked,
+                restricted: movies[0].restricted,
+                parental_rating: movies[0].parental_rating,
+                is_adult: movies[0].is_adult
+            });
+        }
+        
         this.movies=movies;
         this.movie_saved=true;
     },

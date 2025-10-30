@@ -66,6 +66,20 @@ var SeriesModel={
         return categories;
     },
     setMovies:function(movies){
+        // Check if API returns blocked content information for SERIES
+        console.log('=== API SERIES DATA CHECK ===');
+        console.log('Total series received:', movies.length);
+        if(movies.length > 0) {
+            console.log('First series sample:', movies[0]);
+            console.log('Checking for blocked fields:', {
+                blocked: movies[0].blocked,
+                is_blocked: movies[0].is_blocked,
+                restricted: movies[0].restricted,
+                parental_rating: movies[0].parental_rating,
+                is_adult: movies[0].is_adult
+            });
+        }
+        
         movies=movies.sort(function(a,b){
             return parseInt(a.last_modified)<parseInt(b.last_modified) ? 1
                     : parseInt(a.last_modified)>parseInt(b.last_modified) ? -1 : 0;
