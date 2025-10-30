@@ -51,12 +51,18 @@ The application is a static web application built with HTML, CSS, and JavaScript
     -   Settings toggle `show_featured_movies` (on/off) to show/hide featured movies section.
     -   Reduces home page load time and clutter when disabled.
     -   Preference persisted via `localStorage`.
--   **Parental Controls / Content Blocking:** Comprehensive parental control system.
+-   **Parental Controls / Content Blocking:** Comprehensive parental control system with backend-managed blocklist.
+    -   **Backend API Integration:** Blocked content lists (channels, movies, series) are received from `/device_info` API endpoint and stored in localStorage.
+    -   **Server-Side Management:** Blocked content is managed through backend admin panel, ensuring centralized control across all devices.
     -   **Playback Enforcement:** Blocks restricted content at player init() before playback starts (movies, series).
-    -   **Channel Filtering:** Filters blocked channels in real-time when browsing categories.
-    -   **Settings Toggle:** `hide_blocked_content` with real-time UI refresh across all views.
-    -   **Persistence:** Blocked keywords stored in `localStorage` (blocked_channels, blocked_movies, blocked_series).
-    -   **User Feedback:** Toast notifications when access is denied.
+    -   **Channel Filtering:** Filters blocked channels in real-time when browsing categories using `isContentBlocked()` function.
+    -   **VOD/Series Filtering:** Automatically hides blocked movies and series from category grids based on keyword matching (case-insensitive).
+    -   **Settings Toggle:** `hide_blocked_content` localStorage setting with real-time UI refresh across all views (home, channels, search).
+    -   **Category Count Updates:** Category counts dynamically update to reflect filtered content when blocking is enabled.
+    -   **Read-Only Display:** Parental Control modal shows current blocked content from server (informational only, managed by backend admin).
+    -   **Keyword Matching:** Content is blocked if its name contains any blocked keyword (case-insensitive substring matching).
+    -   **User Feedback:** Toast notifications when toggling hide blocked content setting.
+    -   **Settings Menu:** Dedicated "Refresh Playlist" option (sync icon) to reload playlists and blocked content from server.
 -   **Aspect Ratio Functionality:**
     -   **Samsung Tizen:** 3-mode cycling (Auto, Fit Screen, Fill Screen) using `webapis.avplay.setDisplayMethod()`.
     -   **LG WebOS:** 3-mode cycling (Letterbox, Zoom, Stretch) using CSS `object-fit`.

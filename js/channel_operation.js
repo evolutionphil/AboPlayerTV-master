@@ -161,17 +161,28 @@ var channel_page={
         
         this.hoverCategory(current_category_index);
         this.showCategoryChannels();
+        
+        // Guard: Check if we have movies after filtering
+        if(this.movies.length === 0) {
+            console.log('⚠️ No channels available after filtering - showing empty state');
+            $('#channel-menus-count').text(0);
+            $('#channel-menu-wrapper').html('<div class="empty-movie-text">No channels available in this category</div>');
+            return;
+        }
+        
         if(!channel_id){
-            if(categories[current_category_index].movies.length>0){
+            if(categories[current_category_index].movies.length>0 && this.movies.length > 0){
                 this.hoverChannel(0);
                 this.showMovie(this.movies[0]);
                 this.full_screen_video=false;
             }
         }else{
-            this.hoverChannel(current_channel_index);
-            this.showMovie(this.movies[current_channel_index]);
-            this.full_screen_video=true;
-            this.zoomInOut();
+            if(this.movies.length > current_channel_index) {
+                this.hoverChannel(current_channel_index);
+                this.showMovie(this.movies[current_channel_index]);
+                this.full_screen_video=true;
+                this.zoomInOut();
+            }
         }
     },
     toggleFavoriteAndRecentBottomOptionVisbility: function () {

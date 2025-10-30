@@ -425,6 +425,77 @@ var home_page={
         $('#settings-modal').modal('hide');
         $('#parent-control-modal').modal('show');
         this.hoverParentModal(0);
+        
+        // Display blocked content from localStorage
+        this.displayBlockedContent();
+    },
+    displayBlockedContent:function(){
+        // Get blocked content from localStorage
+        var blockedChannels = [];
+        var blockedMovies = [];
+        var blockedSeries = [];
+        
+        try {
+            var channelsStr = localStorage.getItem('blocked_channels');
+            if(channelsStr) blockedChannels = JSON.parse(channelsStr);
+        } catch(e) {
+            console.error('Error parsing blocked_channels:', e);
+        }
+        
+        try {
+            var moviesStr = localStorage.getItem('blocked_movies');
+            if(moviesStr) blockedMovies = JSON.parse(moviesStr);
+        } catch(e) {
+            console.error('Error parsing blocked_movies:', e);
+        }
+        
+        try {
+            var seriesStr = localStorage.getItem('blocked_series');
+            if(seriesStr) blockedSeries = JSON.parse(seriesStr);
+        } catch(e) {
+            console.error('Error parsing blocked_series:', e);
+        }
+        
+        // Update counts
+        $('#blocked-channels-count').text(blockedChannels.length);
+        $('#blocked-movies-count').text(blockedMovies.length);
+        $('#blocked-series-count').text(blockedSeries.length);
+        
+        // Display channels
+        if(blockedChannels.length > 0) {
+            var channelsHtml = blockedChannels.map(function(item, index) {
+                return '<div style="padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><i class="fas fa-ban" style="margin-right: 8px; color: #dc3545;"></i>' + item + '</div>';
+            }).join('');
+            $('#blocked-channels-display').html(channelsHtml);
+        } else {
+            $('#blocked-channels-display').html('<em>No blocked channels</em>');
+        }
+        
+        // Display movies
+        if(blockedMovies.length > 0) {
+            var moviesHtml = blockedMovies.map(function(item, index) {
+                return '<div style="padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><i class="fas fa-ban" style="margin-right: 8px; color: #dc3545;"></i>' + item + '</div>';
+            }).join('');
+            $('#blocked-movies-display').html(moviesHtml);
+        } else {
+            $('#blocked-movies-display').html('<em>No blocked movies</em>');
+        }
+        
+        // Display series
+        if(blockedSeries.length > 0) {
+            var seriesHtml = blockedSeries.map(function(item, index) {
+                return '<div style="padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><i class="fas fa-ban" style="margin-right: 8px; color: #dc3545;"></i>' + item + '</div>';
+            }).join('');
+            $('#blocked-series-display').html(seriesHtml);
+        } else {
+            $('#blocked-series-display').html('<em>No blocked series</em>');
+        }
+        
+        console.log('📋 Displayed blocked content:', {
+            channels: blockedChannels.length,
+            movies: blockedMovies.length,
+            series: blockedSeries.length
+        });
     },
     resetParentAccount:function(){
         $('#parent-account-valid-error').hide();
