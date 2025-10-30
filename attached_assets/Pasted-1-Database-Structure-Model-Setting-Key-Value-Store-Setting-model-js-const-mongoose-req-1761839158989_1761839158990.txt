@@ -1,0 +1,324 @@
+1. Database Structure
+Model: Setting (Key-Value Store)
+
+// Setting.model.js
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+let Setting = new Schema({
+    key: {
+        type: String
+    },
+    value: {
+        type: String
+    }
+});
+module.exports = mongoose.model('Setting', Setting);
+
+Storage Keys:
+
+blocked_channels → Stores JSON array of channel names
+blocked_movies → Stores JSON array of movie titles
+blocked_series → Stores JSON array of series names
+Example Database Records:
+
+{
+  "key": "blocked_channels",
+  "value": "[\"BBC News\",\"CNN International\",\"ESPN\"]"
+}
+{
+  "key": "blocked_movies",
+  "value": "[\"The Godfather\",\"Inception\"]"
+}
+{
+  "key": "blocked_series",
+  "value": "[\"Breaking Bad\",\"Game of Thrones\"]"
+}
+
+🖥️ Admin Interface (Frontend)
+Page: /admin/blocked-content
+Features:
+
+Three Textarea Sections:
+
+Blocked Channels
+Blocked Movies
+Blocked Series
+Live Count Badges:
+
+Shows real-time count of items as user types
+Updates dynamically with JavaScript
+Help Text:
+
+Examples and instructions for each section
+Visual icons for better UX
+Form Validation:
+
+One item per line
+Automatic trimming of whitespace
+Empty lines are filtered out
+UI Components:
+
+<!-- Blocked Channels Section -->
+<div class="content-block-section">
+    <h3>
+        <i class="fas fa-tv"></i> Blocked Channels
+        <span class="count-badge" id="channels-count"><%= blocked_channels.length %></span>
+    </h3>
+    <div class="help-text">
+        Enter live TV channel names (one per line)
+    </div>
+    <textarea 
+        class="form-control blocked-list-textarea" 
+        name="blocked_channels" 
+        id="blocked_channels"
+        placeholder="Enter channel names (one per line)"
+    ><%= blocked_channels.join('\n') %></textarea>
+</div>
+<!-- JavaScript for live counting -->
+<script>
+function updateCount(textareaId, countId) {
+    const textarea = document.getElementById(textareaId);
+    const countBadge = document.getElementById(countId);
+    
+    textarea.addEventListener('input', function() {
+        const lines = this.value.split('\n')
+            .map(line => line.trim())
+            .filter(line => line.length > 0);
+        countBadge.textContent = lines.length;
+    });
+}
+updateCount('blocked_channels', 'channels-count');
+updateCount('blocked_movies', 'movies-count');
+updateCount('blocked_series', 'series-count');
+</script>
+
+⚙️ Backend Controllers
+1. Show Blocked Content Page
+Route: GET /admin/blocked-content
+
+Controller Function:
+
+exports.showBlockedContent = async (req, res) => {
+    try {
+        // Fetch settings from database
+        const blockedChannelsSetting = await helpers.getSetting('blocked_channels');
+        const blockedMoviesSetting = await helpers.getSetting('blocked_movies');
+        const blockedSeriesSetting = await helpers.getSetting('blocked_series');
+        // Parse JSON or default to empty arrays
+        let blocked_channels = blockedChannelsSetting ? JSON.parse(blockedChannelsSetting.value) : [];
+        let blocked_movies = blockedMoviesSetting ? JSON.parse(blockedMoviesSetting.value) : [];
+        let blocked_series = blockedSeriesSetting ? JSON.parse(blockedSeriesSetting.value) : [];
+        res.render('admin/pages/blocked-content', {
+            menu: 'blocked-content',
+            layout: './admin/partials/layout',
+            blocked_channels: blocked_channels,
+            blocked_movies: blocked_movies,
+            blocked_series: blocked_series
+        });
+    } catch (error) {
+        console.error('Error loading blocked content:', error);
+        // Return empty arrays on error
+        res.render('admin/pages/blocked-content', {
+            menu: 'blocked-content',
+            layout: './admin/partials/layout',
+            blocked_channels: [],
+            blocked_movies: [],
+            blocked_series: []
+        });
+    }
+}
+
+2. Save Blocked Content
+Route: POST /admin/save-blocked-content
+
+Controller Function:
+
+exports.saveBlockedContent = async (req, res) => {
+    try {
+        const { blocked_channels, blocked_movies, blocked_series } = req.body;
+        // Parse textarea input - one item per line, trim whitespace, filter empty lines
+        const channelsList = blocked_channels 
+            ? blocked_channels.split('\n').map(item => item.trim()).filter(item => item.length > 0)
+            : [];
+        
+        const moviesList = blocked_movies 
+            ? blocked_movies.split('\n').map(item => item.trim()).filter(item => item.length > 0)
+            : [];
+        
+        const seriesList = blocked_series 
+            ? blocked_series.split('\n').map(item => item.trim()).filter(item => item.length > 0)
+            : [];
+        // Delete old settings
+        await Setting.deleteMany({ 
+            key: { $in: ['blocked_channels', 'blocked_movies', 'blocked_series'] } 
+        });
+        // Create new settings (store as JSON strings)
+        await Setting.insertMany([
+            {
+                key: 'blocked_channels',
+                value: JSON.stringify(channelsList)
+            },
+            {
+                key: 'blocked_movies',
+                value: JSON.stringify(moviesList)
+            },
+            {
+                key: 'blocked_series',
+                value: JSON.stringify(seriesList)
+            }
+        ]);
+        // Refresh settings cache (if you use caching)
+        getSettings();
+        req.flash('success', `Blocked content updated! ${channelsList.length} channels, ${moviesList.length} movies, ${seriesList.length} series blocked.`);
+        res.redirect('/admin/blocked-content');
+    } catch (error) {
+        console.error('Error saving blocked content:', error);
+        req.flash('error', 'Failed to save blocked content: ' + error.message);
+        res.redirect('/admin/blocked-content');
+    }
+}
+
+📡 API Distribution (Critical Part)
+How Apps Receive Blocked Content
+The blocked content is distributed to all platform apps via your API endpoints. This is sent along with other configuration data during device registration or playlist requests.
+
+API Endpoints That Include Blocked Content:
+
+Android API
+iOS API
+Samsung/LG Smart TV API
+Windows API
+Example API Response Structure:
+
+// In ApiController.js
+exports.androidApiEndpoint = async (req, res) => {
+    // ... other logic ...
+    
+    result.blocked_channels = settings.blocked_channels || [];
+    result.blocked_movies = settings.blocked_movies || [];
+    result.blocked_series = settings.blocked_series || [];
+    result.terms = settings.terms || { 
+        version: '1.0', 
+        content: '', 
+        updated_date: new Date().toISOString().split('T')[0] 
+    };
+    
+    res.json(result);
+}
+
+Full API Response Example:
+
+{
+  "success": true,
+  "mac_registered": true,
+  "playlists": [...],
+  "blocked_channels": [
+    "BBC News",
+    "CNN International",
+    "ESPN"
+  ],
+  "blocked_movies": [
+    "The Godfather",
+    "Inception"
+  ],
+  "blocked_series": [
+    "Breaking Bad",
+    "Game of Thrones"
+  ],
+  "terms": {
+    "version": "1.0",
+    "content": "...",
+    "updated_date": "2025-01-13"
+  }
+}
+
+🔄 How Apps Use This Data
+Client-Side Implementation (in your apps):
+
+Receive blocked content arrays from API
+Store locally (SharedPreferences, UserDefaults, localStorage)
+Filter content before displaying to user
+Two options:
+Hide completely: Don't show blocked content at all
+Show with lock icon: Display but mark as blocked/restricted
+Example Filtering Logic (Pseudocode):
+
+// When loading channels from M3U playlist
+function getAvailableChannels(allChannels, blockedChannels) {
+    return allChannels.filter(channel => {
+        // Case-insensitive matching
+        return !blockedChannels.some(blocked => 
+            channel.name.toLowerCase().includes(blocked.toLowerCase())
+        );
+    });
+}
+// Usage
+const allChannels = parseM3UPlaylist(playlistUrl);
+const blockedChannels = apiResponse.blocked_channels;
+const visibleChannels = getAvailableChannels(allChannels, blockedChannels);
+
+🛡️ Backward Compatibility
+Critical: Always provide safe defaults for old app versions!
+
+// Safe defaults ensure old apps don't crash
+result.blocked_channels = settings.blocked_channels || [];
+result.blocked_movies = settings.blocked_movies || [];
+result.blocked_series = settings.blocked_series || [];
+
+Why This Matters:
+
+Old app versions might not expect these fields
+Empty arrays are safe fallbacks
+Apps can check if (blocked_channels.length > 0) before processing
+📝 Routes Configuration
+// routes/admin.js
+router.get('/blocked-content', adminController.showBlockedContent);
+router.post('/save-blocked-content', adminController.saveBlockedContent);
+
+🎨 Styling (CSS)
+.blocked-content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.content-block-section {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+.blocked-list-textarea {
+    min-height: 200px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+.count-badge {
+    background: #dc3545;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+✅ Implementation Checklist
+To replicate this feature in your other project:
+
+ Database: Create Setting model with key-value structure
+ Admin Page: Create /admin/blocked-content view with 3 textareas
+ Controllers: Add showBlockedContent and saveBlockedContent functions
+ Routes: Register GET and POST routes
+ API Integration: Add blocked content to ALL platform API responses
+ Default Values: Use || [] for backward compatibility
+ Client Apps: Update apps to receive and filter blocked content
+ Testing: Test with old and new app versions
+🎯 Key Benefits
+✅ Centralized Control - Manage blocked content from one admin panel
+✅ Multi-Platform - Works across Android, iOS, Smart TV, Windows
+✅ Real-time Updates - Apps get updated blocklist on next API call
+✅ Flexible Filtering - Apps can hide or mark content as blocked
+✅ Backward Compatible - Old apps don't break with safe defaults
+✅ Simple UI - Easy-to-use textarea interface for admins
+
+That's the complete system! You can copy this exact architecture to your other project. The key is storing as JSON strings in the database and distributing via API to all platforms. 🚀
+
+1 minute of work

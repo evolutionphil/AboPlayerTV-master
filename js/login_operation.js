@@ -37,6 +37,31 @@ var login_page={
         saveData('playlist_urls',data.playlists);
         var  themes=data.themes;
         saveData('themes',themes);
+        
+        // Extract and store blocked content from API response
+        console.log('=== DEVICE_INFO API RESPONSE ===');
+        console.log('Full API data:', data);
+        
+        if(data.blocked_channels) {
+            localStorage.setItem('blocked_channels', JSON.stringify(data.blocked_channels));
+            console.log('✅ Stored blocked channels:', data.blocked_channels);
+        } else {
+            console.log('⚠️ No blocked_channels field in API response');
+        }
+        
+        if(data.blocked_movies) {
+            localStorage.setItem('blocked_movies', JSON.stringify(data.blocked_movies));
+            console.log('✅ Stored blocked movies:', data.blocked_movies);
+        } else {
+            console.log('⚠️ No blocked_movies field in API response');
+        }
+        
+        if(data.blocked_series) {
+            localStorage.setItem('blocked_series', JSON.stringify(data.blocked_series));
+            console.log('✅ Stored blocked series:', data.blocked_series);
+        } else {
+            console.log('⚠️ No blocked_series field in API response');
+        }
         var htmlContents='';
         themes.map(function(theme, index){
             htmlContents+=
