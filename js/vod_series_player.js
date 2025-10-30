@@ -44,6 +44,8 @@ var vod_series_player = {
     subtitle_loaded: false,
     fw_timer: null,
     current_movie_type: "",
+    subtitleEventsSetup: false,
+    lastCacheCleanup: 0,
     init: function (movie, movie_type, back_url) {
         this.current_movie_type = movie_type;
         this.fw_timer = null;
@@ -83,6 +85,7 @@ var vod_series_player = {
         keys.focused_part = "control_bar";
         keys.prev_focus = "control_bar";
 
+        // Performance: Defer rangeslider initialization to after critical path
         var slider_element = $("#vod-series-player-page").find(
             ".video-progress-bar-slider",
         )[0];
@@ -92,16 +95,20 @@ var vod_series_player = {
             min: 0,
             max: 100,
         });
-        $(slider_element).rangeslider({
-            polyfill: false,
-            rangeClass: "rangeslider",
-            onSlideEnd: function (position, value) {
-                that.sliderPositionChanged(value);
-            },
-        });
-        $(slider_element).val(0).change();
-        $(slider_element).attr("disabled", true);
-        $(slider_element).rangeslider("update");
+        
+        // Defer slider initialization
+        setTimeout(function() {
+            $(slider_element).rangeslider({
+                polyfill: false,
+                rangeClass: "rangeslider",
+                onSlideEnd: function (position, value) {
+                    that.sliderPositionChanged(value);
+                },
+            });
+            $(slider_element).val(0).change();
+            $(slider_element).attr("disabled", true);
+            $(slider_element).rangeslider("update");
+        }, 100);
         var url;
         if (movie_type === "movies") {
             if (settings.playlist_type === "xtreme")
@@ -178,28 +185,39 @@ var vod_series_player = {
             var episodes = current_season.episodes;
             this.episodes = episodes;
             this.has_episodes = true;
-            var html = "";
-            episodes.map(function (item, index) {
+            
+            // Performance: Use document fragment instead of string concatenation
+            var fragment = document.createDocumentFragment();
+            episodes.forEach(function (item, index) {
                 var image = "images/series.png";
-                if (typeof item.info != "undefined") {
+                if (typeof item.info != "undefined" && item.info.movie_image) {
                     image = item.info.movie_image;
                 }
-                html +=
-                    '<div class="player-season-item" ' +
-                    '   onclick="vod_series_player.showSelectedEpisode()"' +
-                    '   onmouseenter="vod_series_player.hoverEpisodeItem(' +
-                    index +
-                    ')"' +
-                    ">" +
-                    '   <img class="player-episode-img" src="' +
-                    image +
-                    '" onerror="this.src=\'images/series.png\'">' +
-                    '   <div class="player-episode-title">' +
-                    item.title +
-                    "</div>\n" +
-                    "</div>";
+                
+                var div = document.createElement('div');
+                div.className = 'player-season-item';
+                div.setAttribute('data-index', index);
+                div.onclick = function() { vod_series_player.showSelectedEpisode(); };
+                div.onmouseenter = function() { vod_series_player.hoverEpisodeItem(index); };
+                
+                var img = document.createElement('img');
+                img.className = 'player-episode-img';
+                img.src = image;
+                img.onerror = function() { this.src = 'images/series.png'; };
+                
+                var titleDiv = document.createElement('div');
+                titleDiv.className = 'player-episode-title';
+                titleDiv.textContent = item.title;
+                
+                div.appendChild(img);
+                div.appendChild(titleDiv);
+                fragment.appendChild(div);
             });
-            $("#player-seasons-container").html(html);
+            
+            var container = document.getElementById('player-seasons-container');
+            container.innerHTML = '';
+            container.appendChild(fragment);
+            
             this.keys.episode_selection = 0;
             this.episode_doms = $(".player-season-item");
             $("#player-seasons-container").removeClass("expanded");
@@ -840,7 +858,8 @@ var vod_series_player = {
     },
     
     makeEnhancedMediaTrackElement: function(items, kind) {
-        var htmlContent = "";
+        // Performance optimization: Use document fragment instead of string concatenation
+        var fragment = document.createDocumentFragment();
         var that = this;
         
         items.forEach(function(item, index) {
@@ -848,18 +867,26 @@ var vod_series_player = {
             var language = item.language || 'unknown';
             var source = item.source || 'api';
             
-            htmlContent += 
-                '<div class="modal-operation-menu-type-2 subtitle-option"\
-                    onmouseenter="vod_series_player.hoverSubtitleAudioModal(' + index + ')" \
-                    onclick="vod_series_player.handleMenuClick()" \
-                >\
-                    <input class="magic-radio" type="radio" name="radio"\
-                        value="' + index + '">\
-                    <label>' + label + '</label>\
-                </div>';
+            // Create DOM elements directly (faster than innerHTML)
+            var div = document.createElement('div');
+            div.className = 'modal-operation-menu-type-2 subtitle-option';
+            div.setAttribute('data-index', index);
+            
+            var input = document.createElement('input');
+            input.className = 'magic-radio';
+            input.type = 'radio';
+            input.name = 'radio';
+            input.value = index;
+            
+            var labelEl = document.createElement('label');
+            labelEl.textContent = label;
+            
+            div.appendChild(input);
+            div.appendChild(labelEl);
+            fragment.appendChild(div);
         });
         
-        return htmlContent;
+        return fragment;
     },
     
     subtitleCache: {},
@@ -907,8 +934,12 @@ var vod_series_player = {
             }
         }
         
+        // Performance: Only clean cache every 5 minutes instead of every time
         if(contentId && subtitles && !cachedData) {
-            this.cleanSubtitleCache();
+            if(!this.lastCacheCleanup || Date.now() - this.lastCacheCleanup > 300000) {
+                this.cleanSubtitleCache();
+                this.lastCacheCleanup = Date.now();
+            }
             
             this.subtitleCache[contentId] = {
                 subtitles: subtitles,
@@ -925,17 +956,20 @@ var vod_series_player = {
         keys.focused_part = "subtitle_audio_selection_modal";
         
         var container = document.getElementById('subtitle-selection-container');
-        container.style.display = 'none';
         
-        var htmlContent = this.makeEnhancedMediaTrackElement(subtitles, kind);
-        container.innerHTML = htmlContent;
+        // Performance: Use document fragment instead of innerHTML
+        var fragment = this.makeEnhancedMediaTrackElement(subtitles, kind);
+        container.innerHTML = ''; // Clear first
+        container.appendChild(fragment);
+        
+        // Setup event delegation only once per session
+        if(!this.subtitleEventsSetup) {
+            this.setupSubtitleEventDelegation();
+            this.subtitleEventsSetup = true;
+        }
         
         var that = this;
         requestAnimationFrame(function() {
-            container.style.display = '';
-            
-            that.setupSubtitleEventDelegation();
-            
             $('#subtitle-selection-modal').addClass('show').modal('show');
             
             var subtitle_menus = $('.subtitle-option');
@@ -971,11 +1005,14 @@ var vod_series_player = {
         var that = this;
         var container = $('#subtitle-selection-container');
         
+        // Remove old events only if they exist
         container.off('focus mouseenter click', '.subtitle-option');
         
         var lastUpdate = 0;
-        var throttleDelay = 16;
+        var throttleDelay = 50; // Increased from 16ms to 50ms for better performance
+        var hoverTimeout = null;
         
+        // Performance: Use data attribute instead of recalculating index
         container.on('focus mouseenter', '.subtitle-option', function(e) {
             e.preventDefault();
             
@@ -985,16 +1022,31 @@ var vod_series_player = {
             }
             lastUpdate = now;
             
-            var index = $('.subtitle-option').index(this);
+            // Clear any pending hover timeout
+            if(hoverTimeout) {
+                clearTimeout(hoverTimeout);
+            }
             
-            requestAnimationFrame(function() {
-                that.hoverSubtitleAudioModal(index);
-            });
+            // Use data attribute for faster lookup
+            var index = parseInt($(this).attr('data-index'), 10);
+            
+            // Debounce hover to reduce rapid firing
+            hoverTimeout = setTimeout(function() {
+                requestAnimationFrame(function() {
+                    that.hoverSubtitleAudioModal(index);
+                });
+            }, 30);
         });
         
         container.on('click', '.subtitle-option', function(e) {
             e.preventDefault();
-            var index = $('.subtitle-option').index(this);
+            var index = parseInt($(this).attr('data-index'), 10);
+            
+            // Clear hover timeout on click
+            if(hoverTimeout) {
+                clearTimeout(hoverTimeout);
+            }
+            
             that.hoverSubtitleAudioModal(index);
             that.confirmSubtitle();
         });
