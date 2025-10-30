@@ -81,6 +81,20 @@ var VodModel ={
         return categories;
     },
     setMovies:function(movies){
+        // Check if API returns blocked content information
+        console.log('=== API VOD MOVIES DATA CHECK ===');
+        console.log('Total movies received:', movies.length);
+        if(movies.length > 0) {
+            console.log('First movie sample:', movies[0]);
+            console.log('Checking for blocked fields:', {
+                blocked: movies[0].blocked,
+                is_blocked: movies[0].is_blocked,
+                restricted: movies[0].restricted,
+                parental_rating: movies[0].parental_rating,
+                is_adult: movies[0].is_adult
+            });
+        }
+        
         if(settings.playlist_type==="xtreme"){
             movies.sort(function(a,b){
                 return parseInt(a.added)<parseInt(b.added) ? 1
