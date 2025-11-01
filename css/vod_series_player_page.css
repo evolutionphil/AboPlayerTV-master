@@ -35,6 +35,15 @@
     box-shadow: 
         0 -10px 50px rgba(0, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+#vod-series-video-controls-container.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
 }
 
 #vod-series-progress-controls-container {
@@ -182,6 +191,15 @@
     font-size: 30px;
     background:rgba(51, 51, 51, 0.7);
     color:#fff;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+#vod-series-video-title.hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
 }
 .rangeslider .rangeslider__handle{
     border:3px solid transparent;

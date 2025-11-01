@@ -651,8 +651,8 @@ var vod_series_player = {
         }
     },
     showControlBar: function (move_focus) {
-        $("#vod-series-video-controls-container").slideDown();
-        $("#vod-series-video-title").slideDown();
+        $("#vod-series-video-controls-container").removeClass("hidden");
+        $("#vod-series-video-title").removeClass("hidden");
         this.show_control = true;
         var that = this;
         var keys = this.keys;
@@ -672,8 +672,8 @@ var vod_series_player = {
         }, 5000);
     },
     hideControlBar: function () {
-        $("#vod-series-video-controls-container").slideUp();
-        $("#vod-series-video-title").slideUp();
+        $("#vod-series-video-controls-container").addClass("hidden");
+        $("#vod-series-video-title").addClass("hidden");
         this.show_control = false;
     },
     makeMediaTrackElement: function (items, kind) {

@@ -1,153 +1,56 @@
 # ASA IPTV - Tizen TV Application
 
 ## Overview
-ASA IPTV is a Tizen TV application providing live TV streaming, movies, series, and other entertainment content, designed for Samsung Tizen and LG WebOS TVs. Its purpose is to deliver a comprehensive entertainment experience on smart TV platforms. The project aims for a rich, interactive user interface with robust content delivery and playback capabilities, including local media access and online streaming from various sources.
+ASA IPTV is a Tizen TV application designed for Samsung Tizen and LG WebOS TVs, providing live TV streaming, movies, series, and other entertainment content. It aims to deliver a comprehensive entertainment experience with a rich, interactive user interface, robust content delivery, and playback capabilities, including local media access and online streaming.
 
 ## User Preferences
 No specific user preferences recorded yet.
 
 ## System Architecture
-The application is a static web application built with HTML, CSS, and JavaScript, designed for both Tizen and WebOS TV platforms.
+The application is a static web application built with HTML, CSS, and JavaScript, targeting both Tizen and WebOS TV platforms.
 
 **UI/UX Decisions:**
--   **Branding:** Updated to "ASA IPTV" across all titles, IDs, and URLs (`asatv.app`).
--   **Responsive Design:** Utilizes Bootstrap 4.4.1 for a consistent look and feel, adapted for TV interfaces.
--   **Iconography:** Employs Font Awesome 5.12.1 for modern, semantic icons across all menus and settings.
--   **Settings Menu Icons:** Modern icons for clarity (user-circle, tv, film, video, ban, palette, list-ul, sort-alpha-down, globe, shield-alt, highlighter, fill-drip, font, broom).
--   **VOD/Series Player Icons:** Intuitive playback controls (step-backward, undo, pause/play, redo, step-forward) and info buttons (info-circle, closed-captioning, cog/gear for subtitle settings, volume-up, expand-arrows-alt, arrow-left).
--   **Video Info Modal:** Modern glass morphism design with dark gradient background, purple accents, smooth animations, and custom scrollbar for long descriptions.
--   **Search Input:** Modern glass morphism design with purple gradient focus state, blur effects, and animated search icon.
--   **Episode Cards:** Modern glass morphism carousel with purple gradient active states, scaled animations, gradient overlays, and enhanced depth effects.
--   **Theming:** Custom CSS (`youtube.css`, `storage_page.css`, `subtitle.css`, `search_page.css`) ensures a cohesive aesthetic throughout different features.
--   **Interaction:** Optimized for TV remote control navigation with clear focus states and intuitive button mapping (UP/DOWN, LEFT/RIGHT, ENTER, RETURN).
+-   **Branding:** "ASA IPTV" branding across the application.
+-   **Responsive Design:** Utilizes Bootstrap 4.4.1 for a consistent and TV-adapted interface.
+-   **Iconography:** Font Awesome 5.12.1 for modern icons across menus and player controls.
+-   **Modern Design Elements:** Features glass morphism design with dark gradients, purple accents, smooth animations, and custom scrollbars for various components like video info modals, search input, and episode cards.
+-   **Theming:** Custom CSS for a cohesive aesthetic across features.
+-   **Interaction:** Optimized for TV remote control navigation with clear focus states.
 
 **Technical Implementations & Feature Specifications:**
 -   **Content Delivery:** Supports live TV, movies, series, and local storage media (USB/internal).
--   **Live TV Player Bar:** Compact horizontal bar design matching LGTV-Master reference.
-    -   **Layout:** 3-section flexbox (LEFT: logo + channel name | CENTER: program info + progress | RIGHT: LIVE badge)
-    -   **Position:** Bottom-centered bar (bottom: 1.5vh; left/right: 8vw)
-    -   **Background:** Semi-transparent black with optional blur support
-    -   **Channel Name:** Integrated inline with logo (20px, white, next to 60px logo)
-    -   **Typography:** Compact sizes (24px program title, 14px description)
-    -   **Colors:** Purple gradient (#667eea → #764ba2) with cyan accents (#00d4ff)
-    -   **Progress Bar:** Simple gradient bar with smooth transitions
-    -   **Current/Next Programs:** Compact cards with left border accent
-    -   **LIVE Badge:** Red gradient badge (top-right corner)
-    -   **Removed:** Separate top channel name element (now integrated in player bar)
--   **Local File Browser / USB Storage:** Full local media support for TV storage and USB drives.
-    -   Uses Tizen Filesystem API (`tizen.filesystem.listStorages()`, `resolve()`) for real device enumeration.
-    -   **Platform Visibility:** Storage Play menu is hidden on LG WebOS (class `not-lg`) as LG doesn't support Tizen Filesystem API.
-    -   Automatic file type detection (video, image) and directory navigation.
-    -   **Storage Playback:** Full integration with `vod_series_player` using `movie_type === 'storage'` and `movie.toURI()`.
-    -   Image viewing via `image_page` with photobox gallery.
-    -   Resume time tracking disabled for storage files (stateless playback).
--   **YouTube Playlist Integration:** Embeds YouTube player with playlist support.
-    -   Full TV remote control, auto-play next video, full-screen toggle, quality control, and error handling.
-    -   Expects playlist data from a backend API.
--   **Terms of Use Popup:** Displays on first app launch or version change, requiring acceptance.
-    -   Fetches terms from `/api/device_info` and stores acceptance in `localStorage`.
-    -   Multi-language support.
--   **Configurable Featured Content:**
-    -   Settings toggle `show_featured_movies` (on/off) to show/hide featured movies section.
-    -   Reduces home page load time and clutter when disabled.
-    -   Preference persisted via `localStorage`.
--   **Parental Controls / Content Blocking:** Comprehensive parental control system with backend-managed blocklist.
-    -   **Backend API Integration:** Blocked content lists (channels, movies, series) are received from `/device_info` API endpoint and stored in localStorage.
-    -   **Server-Side Management:** Blocked content is managed through backend admin panel, ensuring centralized control across all devices.
-    -   **Playback Enforcement:** Blocks restricted content at player init() before playback starts (movies, series).
-    -   **Channel Filtering:** Filters blocked channels in real-time when browsing categories using `isContentBlocked()` function.
-    -   **VOD/Series Filtering:** Automatically hides blocked movies and series from category grids based on keyword matching (case-insensitive).
-    -   **Settings Toggle:** `hide_blocked_content` localStorage setting with real-time UI refresh across all views (home, channels, search).
-    -   **Category Count Updates:** Category counts dynamically update to reflect filtered content when blocking is enabled.
-    -   **Read-Only Display:** Parental Control modal shows current blocked content from server (informational only, managed by backend admin).
-    -   **Keyword Matching:** Content is blocked if its name contains any blocked keyword (case-insensitive substring matching).
-    -   **User Feedback:** Toast notifications when toggling hide blocked content setting.
-    -   **Settings Menu:** Dedicated "Refresh Playlist" option (sync icon) to reload playlists and blocked content from server.
--   **Aspect Ratio Functionality:**
-    -   **Samsung Tizen:** 3-mode cycling (Auto, Fit Screen, Fill Screen) using `webapis.avplay.setDisplayMethod()`.
-    -   **LG WebOS:** 3-mode cycling (Letterbox, Zoom, Stretch) using CSS `object-fit`.
--   **Subtitle System (LGTV-Master Implementation):**
-    -   **Exact LGTV-Master Logic:** Subtitle workflow now uses identical implementation from LGTV-Master reference for proven reliability.
-    -   **Universal Platform Support:** Enhanced subtitle workflow now works on BOTH Samsung Tizen and LG WebOS platforms for API and native subtitles.
-    -   **Language Label Support:** Subtitles display proper language names (English, Spanish, French, etc.) instead of generic "Subtitle 1, Subtitle 2" labels.
-    -   **Performance Optimized Rendering:** 
-        -   Document fragments instead of string concatenation for 3-5x faster DOM creation
-        -   Subtitle caching (10-min TTL) with smart cleanup (every 5 min instead of every render)
-        -   Event delegation setup only once per session (not on every modal open)
-        -   Batch DOM updates via requestAnimationFrame for 60fps smoothness
-        -   Data attributes for instant index lookup (no jQuery index recalculation)
-    -   **Enhanced Track Display:** `makeEnhancedMediaTrackElement()` creates DOM elements directly (faster than innerHTML).
-    -   **Event Delegation:** 
-        -   Throttled hover events (50ms delay, increased from 16ms for better stability)
-        -   Debounced hover with 30ms timeout to prevent rapid firing
-        -   Optimized click handlers via `setupSubtitleEventDelegation()`
-    -   **Subtitle Caching:** Memory-efficient subtitle cache with automatic cleanup of expired entries (10-minute max age).
-    -   **Live Customization:** Modern glass morphism right-side panel for subtitle settings (position, size, background) accessible during playback with real-time preview.
-    -   **Gear Icon Access:** Direct access to subtitle settings via gear icon (fa-cog) on VOD/series player bar.
-    -   **Right-Side Panel Design:** 350px wide control panel positioned on right side (matching LGTV-Master reference), not full-screen overlay.
-    -   **Remote Control Support:** Full Samsung and LG TV remote navigation (UP/DOWN, LEFT/RIGHT, ENTER, RETURN) with smart 2D grid navigation across all controls.
-    -   **Enhanced Size Management:** 
-        -   5 predefined levels (Small: 14px, Normal: 18px, Large: 24px, Extra Large: 32px, Maximum: 40px)
-        -   `Number.isFinite()` validation prevents invalid subtitle sizes
-        -   Intelligent fallback finds closest level for arbitrary sizes
-        -   Backward compatibility with both level and size storage
-    -   **API Integration:** Fetches subtitles from ExoApp.tv API with intelligent episode matching and fallback to native embedded subtitles.
-    -   **Universal Support:** Enhanced subtitle workflow now works for ALL content types (movies and series) across all playlist types (Xtreme, demo, and custom playlists).
-    -   **Modern UI:** Purple gradient titles, glass morphism buttons, backdrop blur effects, and smooth transitions.
-    -   SRT parsing with format correction.
-    -   User settings are stored in `localStorage`.
--   **App Stability & Crash Prevention:**
-    -   **UI Locking Mechanism:** Prevents rapid key press corruption with configurable lock duration (default 800ms).
-    -   **Display Area Scheduling:** Debounced setDisplayArea() calls for smooth channel transitions (default 250ms delay).
-    -   **Null Safety:** Fixed vod_featured_movies array indexing bug to prevent crashes.
-    -   **TV Capabilities Detection:** Added `detectTVCapabilities()` function to Samsung media player for proper resolution detection (1080p/4K/8K) and HDR support checking.
-    -   **Channel Page UI Control:** Added `toggleFavoriteAndRecentBottomOptionVisbility()` function to properly show/hide favorite/recent buttons based on fullscreen state.
-    -   Content guards to prevent navigation to empty channels.
-    -   TV API feature detection (`typeof webapis` and `tizen`).
-    -   Cache management for reliable updates.
--   **Player Performance Optimizations:**
-    -   **Episode Carousel:** Document fragments replace string concatenation for faster rendering (3x improvement on 20+ episodes)
-    -   **Deferred Initialization:** Rangeslider initialization deferred by 100ms to prioritize critical path (player start)
-    -   **Data Attributes:** Episode items use data-index for O(1) lookup instead of jQuery .index() recalculation
-    -   **Memory Management:** Proper cleanup of event handlers and DOM references
--   **Local Demo Playlist Fallback:**
-    -   Includes `demoo.m3u` for offline/trial mode.
-    -   Automatic demo mode activation on network issues or content failure.
-    -   Graceful degradation with "Continue Anyway (Demo Mode)" option.
--   **MAC Address Fallback System:**
-    -   **Samsung Tizen:** 4-tier fallback (Ethernet → DUID → Tizen ID → Hardcoded)
-        -   Primary: Ethernet MAC via `tizen.systeminfo.getPropertyValue('ETHERNET_NETWORK')`
-        -   Secondary: DUID (Base64 encoded, converted to MAC format)
-        -   Tertiary: Tizen ID (Base64 encoded, converted to MAC format)
-        -   Final: Hardcoded MAC `52:54:00:12:34:59`
-    -   **LG WebOS:** 3-tier fallback (LGUDID → Ethernet → Hardcoded)
-        -   Primary: LGUDID via `luna://com.webos.service.sm`
-        -   Secondary: Ethernet MAC via `luna://com.webos.service.connectionmanager`
-        -   Final: Hardcoded MAC `52:54:00:12:34:59`
-    -   Helper function `stringToMacAddress()` converts device IDs to MAC format
-    -   Network error modal displays MAC address for troubleshooting
-    -   Implementation follows LGTV-Master reference for reliability
+-   **Live TV Player Bar:** Compact horizontal bar design with integrated channel info, program details, progress bar, and a "LIVE" badge, designed for bottom-centered display.
+-   **Local File Browser / USB Storage:** Provides full local media support for TV storage and USB drives using Tizen Filesystem API. Visibility is platform-dependent (hidden on LG WebOS).
+-   **YouTube Playlist Integration:** Embeds a YouTube player with playlist support, full TV remote control, auto-play, full-screen toggle, and quality control.
+-   **Terms of Use Popup:** Displays on first app launch or version change, requiring acceptance, with multi-language support.
+-   **Configurable Featured Content:** A setting to toggle the visibility of the "featured movies" section on the home page.
+-   **Parental Controls / Content Blocking:** Comprehensive system using a backend-managed blocklist from `/device_info` API. It filters blocked channels, movies, and series across the UI and prevents playback of restricted content.
+-   **Aspect Ratio Functionality:** Supports 3-mode cycling for aspect ratio adjustments using platform-specific APIs (Tizen's `webapis.avplay.setDisplayMethod()` and WebOS's CSS `object-fit`).
+-   **Subtitle System:** Implements a robust subtitle system based on the LGTV-Master reference, supporting both Samsung Tizen and LG WebOS. Features include language labels, performance-optimized rendering (document fragments, caching, batch DOM updates), remote control support, and a modern glass morphism right-side panel for live customization (position, size, background). Subtitles are fetched from ExoApp.tv API with fallback to native embedded subtitles.
+-   **App Stability & Crash Prevention:** Includes UI locking, debounced `setDisplayArea()` calls, null safety checks, TV capabilities detection, and content guards to prevent crashes and ensure smooth operation.
+-   **Player Performance Optimizations:** Utilizes document fragments for faster rendering of episode carousels, deferred initialization, data attributes for O(1) lookups, and GPU-accelerated CSS transitions for smooth control bar animations.
+-   **Local Demo Playlist Fallback:** Includes a `demoo.m3u` playlist for offline or trial mode, with automatic activation on network issues.
+-   **MAC Address Fallback System:** Implements a multi-tier fallback system for obtaining MAC addresses on both Samsung Tizen and LG WebOS for device identification, following LGTV-Master reference.
 
 **System Design Choices:**
--   **Frontend Framework:** Vanilla JavaScript with jQuery for DOM manipulation.
--   **Modular Structure:** Logic is organized into distinct JavaScript files (e.g., `login_operation.js`, `home_operation.js`, `youtube_page.js`, `storage_operation.js`, `vod_series_player.js`).
--   **State Management:** `localStorage` is used for persisting user preferences, terms acceptance, and settings (e.g., blocked content, subtitle settings).
--   **Tizen/WebOS Compatibility:** Specific platform-dependent APIs and CSS approaches are used to ensure functionality across both TV operating systems.
--   **Development Server:** A Python HTTP server (`server.py`) with CORS support and socket reuse enabled for reliable workflow restarts.
--   **Network Error Handling:** When playlists fail to load, the network error modal appears with options to Retry, Continue with Demo Mode, or Choose Another Playlist (if multiple available). RETURN key provides quick access to demo mode.
--   **Background Image Fallback:** API background images are tested on load; if they fail, the app automatically falls back to `images/background1.png` for reliable display.
--   **Backdrop Image Fallback:** For movies and series, if no backdrop image is available from the API, the app automatically uses the poster/cover image as the background, ensuring a consistent visual experience (matches LGTV-Master implementation).
+-   **Frontend Framework:** Vanilla JavaScript with jQuery.
+-   **Modular Structure:** Organized JavaScript files for distinct functionalities.
+-   **State Management:** `localStorage` for user preferences and settings.
+-   **Tizen/WebOS Compatibility:** Platform-specific APIs and CSS for cross-platform functionality.
+-   **Development Server:** Python HTTP server with CORS support.
+-   **Network Error Handling:** Provides options for retry, demo mode, or selecting another playlist upon network failures.
+-   **Image Fallbacks:** Automatic fallback to default background images or using poster images as backdrops when API images are unavailable.
 
 ## External Dependencies
 -   **Libraries:**
     -   jQuery
     -   Bootstrap 4.4.1
     -   Font Awesome
-    -   photobox (for image gallery)
+    -   photobox
 -   **APIs/Services:**
-    -   YouTube IFrame API (for embedded video playback)
+    -   YouTube IFrame API
     -   ExoApp.tv API (for subtitle fetching)
     -   Tizen Filesystem API (for local storage access on Samsung TVs)
 -   **Backend Endpoints:**
-    -   `/api/device_info` (to fetch Terms of Use)
+    -   `/api/device_info` (for Terms of Use, blocked content lists)
     -   Expected backend API for YouTube playlist data (structure: `{videoId, title, description, thumbnail, duration}`)
