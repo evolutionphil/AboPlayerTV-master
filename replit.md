@@ -19,6 +19,14 @@ The application is a static web application built with HTML, CSS, and JavaScript
 
 **Technical Implementations & Feature Specifications:**
 -   **Content Delivery:** Supports live TV, movies, series, and local storage media (USB/internal).
+-   **Live TV Preview-to-Fullscreen Transition (LG WebOS):**
+    -   **Fixed Critical Issue:** LG WebOS video element now properly resizes when entering/exiting fullscreen
+    -   **Synchronized State:** `media_player.full_screen_state` is now synchronized with `channel_page.full_screen_video` in `zoomInOut()` function
+    -   **Proper Video Sizing:** `setDisplayArea()` now correctly applies CSS dimensions:
+        -   Fullscreen mode: 100vw x 100vh with fixed positioning
+        -   Preview mode: 100% x 100% to fill container (40vh player-container)
+    -   **Smooth Transitions:** Video element properly fills viewport when entering fullscreen, no more small preview stuck in top-left corner
+    -   **State Logging:** Console logs track zoom in/out transitions for debugging
 -   **Live TV Player Bar:** Compact horizontal bar design with integrated channel info, program details, progress bar, and a "LIVE" badge, designed for bottom-centered display.
 -   **Local File Browser / USB Storage:** Provides full local media support for TV storage and USB drives using Tizen Filesystem API. Visibility is platform-dependent (hidden on LG WebOS).
 -   **YouTube Playlist Integration:** Embeds a YouTube player with playlist support, full TV remote control, auto-play, full-screen toggle, and quality control.

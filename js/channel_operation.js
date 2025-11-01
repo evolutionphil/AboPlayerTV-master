@@ -494,11 +494,19 @@ var channel_page={
             $('#channel-page .player-container').removeClass('expanded')
             this.keys.focused_part="channel_selection";
             $('#full-screen-information').slideUp();
+            
+            // CRITICAL: Synchronize media_player state for LG/Samsung
+            media_player.full_screen_state = 0;
+            console.log('🔽 Zoom OUT to preview mode (full_screen_state=0)');
         }
         else{
             $('#channel-page .player-container').addClass('expanded');
             this.showFullScreenInfo();
             keys.focused_part="full_screen";
+            
+            // CRITICAL: Synchronize media_player state for LG/Samsung
+            media_player.full_screen_state = 1;
+            console.log('🔼 Zoom IN to fullscreen mode (full_screen_state=1)');
         }
         try{
             media_player.setDisplayArea();

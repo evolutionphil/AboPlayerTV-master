@@ -463,6 +463,7 @@ function initPlayer() {
             videoObj:null,
             parent_id:'',
             current_time:0,
+            full_screen_state:0,
             STATES:{
                 STOPPED: 0,
                 PLAYING: 1,
@@ -489,6 +490,7 @@ function initPlayer() {
                 this.videoObj=null;     // tag video
                 this.parent_id=parent_id;
                 this.current_time=0;
+                this.full_screen_state=0;
                 this.state = this.STATES.STOPPED;
                 SrtOperation.deStruct();
                 $('#'+this.parent_id).find('.video-loader').show();
@@ -650,7 +652,38 @@ function initPlayer() {
                 }
             },
             setDisplayArea:function(){
-                channel_page.toggleFavoriteAndRecentBottomOptionVisbility();
+                var that = this;
+                
+                // Use requestAnimationFrame to wait for CSS to apply
+                requestAnimationFrame(function() {
+                    if (that.full_screen_state === 1) {
+                        // FULLSCREEN MODE: Video fills entire viewport
+                        $(that.videoObj).css({
+                            'width': '100vw',
+                            'height': '100vh',
+                            'position': 'fixed',
+                            'left': '0',
+                            'top': '0',
+                            'object-fit': 'contain'
+                        });
+                        
+                        console.log('📺 LG Fullscreen: video set to 100vw x 100vh');
+                    } else {
+                        // PREVIEW MODE: Video fills its container (40vh player-container)
+                        $(that.videoObj).css({
+                            'width': '100%',
+                            'height': '100%',
+                            'position': 'absolute',
+                            'left': '0',
+                            'top': '0',
+                            'object-fit': 'contain'
+                        });
+                        
+                        console.log('📺 LG Preview: video set to 100% x 100% (container size)');
+                    }
+                    
+                    channel_page.toggleFavoriteAndRecentBottomOptionVisbility();
+                });
             },
             formatTime:function(seconds) {
                 var hh = Math.floor(seconds / 3600),
